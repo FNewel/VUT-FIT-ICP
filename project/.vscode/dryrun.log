@@ -1,0 +1,6 @@
+make -f /mnt/d/PROJECTS/VUT-FIT/4sem/semester/ICP/VUT-FIT-ICP/project/Makefile --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/mnt/d/PROJECTS/VUT-FIT/4sem/semester/ICP/VUT-FIT-ICP/project'
+qmake -o qMakefile project.pro
+make -f qMakefile
+make: Leaving directory '/mnt/d/PROJECTS/VUT-FIT/4sem/semester/ICP/VUT-FIT-ICP/project'
+ 
