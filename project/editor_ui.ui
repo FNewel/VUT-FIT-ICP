@@ -13,24 +13,7 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QWidget" name="centralwidget">
-   <widget class="QGraphicsView" name="workspace">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>771</width>
-      <height>501</height>
-     </rect>
-    </property>
-    <property name="mouseTracking">
-     <bool>true</bool>
-    </property>
-    <property name="contextMenuPolicy">
-     <enum>Qt::CustomContextMenu</enum>
-    </property>
-   </widget>
-  </widget>
+  <widget class="QWidget" name="centralwidget"/>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
@@ -87,18 +70,6 @@
    <addaction name="actionUndo"/>
    <addaction name="actionRedo"/>
   </widget>
-  <widget class="QToolBar" name="toolBar_2">
-   <property name="windowTitle">
-    <string>toolBar_2</string>
-   </property>
-   <attribute name="toolBarArea">
-    <enum>LeftToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
-   <addaction name="actionSelect"/>
-  </widget>
   <action name="actionNew_Project">
    <property name="enabled">
     <bool>true</bool>
@@ -142,9 +113,14 @@
     <string>Documentation</string>
    </property>
   </action>
-  <action name="actionSelect">
+  <action name="actionnewClass">
    <property name="text">
-    <string>Select</string>
+    <string>newClass</string>
+   </property>
+  </action>
+  <action name="actionnewConnection">
+   <property name="text">
+    <string>newConnection</string>
    </property>
   </action>
  </widget>

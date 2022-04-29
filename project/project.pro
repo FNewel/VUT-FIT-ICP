@@ -14,13 +14,20 @@ TEMPLATE = app
 
 SOURCES += \
     main.cpp \
-    editor_ui.cpp
+    editor_ui.cpp \
+    testwidget.cpp \
+    workscene.cpp \
+    workview.cpp
 
 HEADERS += \
-    editor_ui.h
+    editor_ui.h \
+    testwidget.h \
+    workscene.h \
+    workview.h
 
 FORMS += \
-    editor_ui.ui
+    editor_ui.ui \
+    testwidget.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
