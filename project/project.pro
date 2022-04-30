@@ -13,6 +13,8 @@ TEMPLATE = app
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    classelement.cpp \
+    itemobject.cpp \
     main.cpp \
     editor_ui.cpp \
     testwidget.cpp \
@@ -20,13 +22,18 @@ SOURCES += \
     workview.cpp
 
 HEADERS += \
+    classelement.h \
+    classlines.h \
     editor_ui.h \
+    itemobject.h \
     testwidget.h \
     workscene.h \
     workview.h
 
 FORMS += \
+    classelement.ui \
     editor_ui.ui \
+    itemobject.ui \
     testwidget.ui
 
 # Default rules for deployment.

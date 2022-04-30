@@ -6,6 +6,7 @@
 #include <QGroupBox>
 #include <QGraphicsProxyWidget>
 #include "testwidget.h"
+#include "classelement.h"
 
 WorkScene::WorkScene(QObject *parent) : QGraphicsScene(parent)
 {
@@ -14,8 +15,9 @@ WorkScene::WorkScene(QObject *parent) : QGraphicsScene(parent)
 
 void WorkScene::spawnNewClass(const QPointF local)
 {
-    testWidget *testWidgetObject = new testWidget();
-    QGraphicsProxyWidget* proxyWidget = this->addWidget(testWidgetObject);
-    proxyWidget->setPos(local);
+    ClassElement *classElementObject = new ClassElement();
+    QGraphicsProxyWidget* proxyWidget2 = this->addWidget(classElementObject);
+    proxyWidget2->setPos(local);
+
     //addRect(local.x(), local.y(), 10, 20);
 }
