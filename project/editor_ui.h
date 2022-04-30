@@ -17,7 +17,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    WorkScene* InitWorkspace(WorkView *workspaceView );
+    void InitWorkView(WorkView *workspaceView );
 
 
 private:

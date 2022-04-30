@@ -3,9 +3,12 @@
 #include "workscene.h"
 #include "workview.h"
 
-
+#include <QGraphicsView>
+#include <QGraphicsScene>
 #include <QGraphicsTextItem>
 #include <QDebug>
+
+#define MAX_WORKSPACE_SCALE 10
 
 
 
@@ -15,13 +18,14 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    WorkView *workspaceView = new WorkView(this);
+    this->setCentralWidget(ui->tabWidget);
 
-    this->setCentralWidget(workspaceView);
+    ui->classView->setContextMenuPolicy(Qt::CustomContextMenu);
+    ui->seqView->setContextMenuPolicy(Qt::CustomContextMenu);
 
-    workspaceView->setContextMenuPolicy(Qt::CustomContextMenu);
+    InitWorkView(ui->classView);
+    InitWorkView(ui->seqView);
 
-    workspaceView->activeScene = InitWorkspace(workspaceView);
 
 
 
@@ -33,10 +37,13 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-WorkScene* MainWindow::InitWorkspace(WorkView *workspaceView)
+//Create new work scene
+void MainWindow::InitWorkView(WorkView *workspaceView)
 {
     auto *workspaceScene = new WorkScene(workspaceView);
     workspaceView->setScene(workspaceScene);
-    return workspaceScene;
+    //Maximum Workspace Size
+    workspaceScene->setSceneRect(0,0,workspaceView->width()*MAX_WORKSPACE_SCALE, workspaceView->height()*MAX_WORKSPACE_SCALE);
+    workspaceView->activeScene = workspaceScene;
 }
 
