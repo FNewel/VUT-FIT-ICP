@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QWidget>
-#include <qgraphicsscene.h>
+#include <QGraphicsScene>
 
 
 class WorkScene : public QGraphicsScene
@@ -14,6 +14,10 @@ public:
 
 public slots:
     void spawnNewClass(const QPointF local);
+    void spawnNewObject(const QPointF local);
+    void spawnNewText(const QPointF local);
+    void spawnNewActivation(const QPointF local);
+
 
 signals:
 
