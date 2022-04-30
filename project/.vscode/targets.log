@@ -1,0 +1,286 @@
+make all -f /mnt/d/PROJECTS/VUT-FIT/4sem/semester/ICP/VUT-FIT-ICP/project/Makefile --print-data-base --no-builtin-variables --no-builtin-rules --question
+# GNU Make 4.3
+# Built for x86_64-pc-linux-gnu
+# Copyright (C) 1988-2020 Free Software Foundation, Inc.
+# License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+# This is free software: you are free to change and redistribute it.
+# There is NO WARRANTY, to the extent permitted by law.
+
+# Make data base, printed on Thu Apr 28 21:16:39 2022
+
+# Variables
+
+# makefile (from '/mnt/d/PROJECTS/VUT-FIT/4sem/semester/ICP/VUT-FIT-ICP/project/Makefile', line 2)
+OUTPUT = qMakefile
+# environment
+LC_ALL = C
+# environment
+PULSE_SERVER = /mnt/wslg/PulseServer
+# environment
+WSLENV = ELECTRON_RUN_AS_NODE/w:WT_SESSION::WT_PROFILE_ID
+# environment
+VSCODE_CWD = /mnt/c/Program Files/Microsoft VS Code
+# default
+MAKE_COMMAND := make
+# automatic
+@D = $(patsubst %/,%,$(dir $@))
+# environment
+VSCODE_HANDLES_UNCAUGHT_ERRORS = true
+# default
+.VARIABLES := 
+# environment
+PWD = /mnt/d/PROJECTS/VUT-FIT/4sem/semester/ICP/VUT-FIT-ICP/project
+# automatic
+%D = $(patsubst %/,%,$(dir $%))
+# environment
+LSCOLORS = Gxfxcxdxbxegedabagacad
+# environment
+OLDPWD = /mnt/c/Program Files/Microsoft VS Code
+# automatic
+^D = $(patsubst %/,%,$(dir $^))
+# environment
+VSCODE_LOG_STACK = false
+# automatic
+%F = $(notdir $%)
+# environment
+LANG = C
+# default
+.LOADED := 
+# default
+.INCLUDE_DIRS = /usr/local/include /usr/include /usr/include
+# makefile
+MAKEFLAGS = pqrR
+# makefile
+CURDIR := /mnt/d/PROJECTS/VUT-FIT/4sem/semester/ICP/VUT-FIT-ICP/project
+# environment
+VSCODE_PIPE_LOGGING = true
+# environment
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
+# automatic
+*D = $(patsubst %/,%,$(dir $*))
+# environment
+MFLAGS = -pqrR
+# default
+.SHELLFLAGS := -c
+# environment
+WAYLAND_DISPLAY = wayland-0
+# automatic
++D = $(patsubst %/,%,$(dir $+))
+# environment
+P9K_SSH = 0
+# makefile (from '/mnt/d/PROJECTS/VUT-FIT/4sem/semester/ICP/VUT-FIT-ICP/project/Makefile', line 1)
+MAKEFILE_LIST := /mnt/d/PROJECTS/VUT-FIT/4sem/semester/ICP/VUT-FIT-ICP/project/Makefile
+# automatic
+@F = $(notdir $@)
+# environment
+ZSH = /home/fnewell/.oh-my-zsh
+# environment
+VSCODE_VERBOSE_LOGGING = true
+# automatic
+?D = $(patsubst %/,%,$(dir $?))
+# environment
+WT_PROFILE_ID = {58ad8b0c-3ef8-5f4d-bc6f-13e4c00f2530}
+# automatic
+*F = $(notdir $*)
+# automatic
+<D = $(patsubst %/,%,$(dir $<))
+# environment
+P9K_TTY = old
+# environment
+VSCODE_NLS_CONFIG = {"locale":"en","availableLanguages":{}}
+# default
+MAKE_HOST := x86_64-pc-linux-gnu
+# makefile
+SHELL = /bin/sh
+# default
+MAKECMDGOALS := all
+# environment
+SHLVL = 1
+# environment
+MAKELEVEL := 0
+# default
+MAKE = $(MAKE_COMMAND)
+# environment
+PATH = /home/fnewell/.vscode-server/bin/dfd34e8260c270da74b5c2d86d61aee4b6d56977/bin/remote-cli:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/d/Program Files/VMware/VMware Workstation/bin/:/mnt/c/Program Files/Common Files/Oracle/Java/javapath:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/javapath:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0/:/mnt/c/Windows/System32/OpenSSH/:/mnt/c/Program Files/NVIDIA Corporation/NVIDIA NvDLISR:/mnt/c/Program Files/Git/cmd:/mnt/c/Program Files/Microsoft VS Code/bin:/mnt/c/Program Files/dotnet/:/mnt/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common:/mnt/c/Users/M0nsT/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/M0nsT/.dotnet/tools
+# default
+MAKEFILES := 
+# automatic
+^F = $(notdir $^)
+# environment
+WT_SESSION = 07896b5c-4687-4cb9-b063-9b06242caf26
+# environment
+VSCODE_LOG_NATIVE = false
+# automatic
+?F = $(notdir $?)
+# environment
+NAME = Code
+# environment
+HOSTTYPE = x86_64
+# environment
+LS_COLORS = rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:
+# automatic
++F = $(notdir $+)
+# environment
+LESS = -R
+# environment
+WSL_INTEROP = /run/WSL/8_interop
+# 'override' directive
+GNUMAKEFLAGS := 
+# environment
+LOGNAME = fnewell
+# environment
+VSCODE_WSL_EXT_LOCATION = /mnt/c/Users/M0nsT/.vscode/extensions/ms-vscode-remote.remote-wsl-0.66.2
+# makefile
+.DEFAULT_GOAL := all
+# environment
+DISPLAY = :0
+# environment
+USER = fnewell
+# default
+MAKE_VERSION := 4.3
+# environment
+VSCODE_EXTHOST_WILL_SEND_SOCKET = true
+# environment
+PAGER = less
+# environment
+_ = /mnt/c/Program Files/Microsoft VS Code/bin/code
+# environment
+XDG_RUNTIME_DIR = /mnt/wslg/runtime-dir
+# environment
+VSCODE_IPC_HOOK_CLI = /mnt/wslg/runtime-dir/vscode-ipc-57df88ac-ed2a-4ae1-881d-03acd4f561fe.sock
+# environment
+VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
+# environment
+HOME = /home/fnewell
+# environment
+TERM = xterm-256color
+# default
+.RECIPEPREFIX := 
+# automatic
+<F = $(notdir $<)
+# default
+SUFFIXES := 
+# makefile (from '/mnt/d/PROJECTS/VUT-FIT/4sem/semester/ICP/VUT-FIT-ICP/project/Makefile', line 1)
+TARGET = project
+# environment
+_P9K_TTY = /dev/pts/0
+# environment
+WSL_DISTRO_NAME = Debian
+# default
+.FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell nocomment grouped-target extra-prereqs archives jobserver output-sync check-symlink load
+# environment
+DIRHISTORY_SIZE = 30
+# variable set hash-table stats:
+# Load=80/1024=8%, Rehash=0, Collisions=2/118=2%
+
+# Pattern-specific Variable Values
+
+# No pattern-specific variable values.
+
+# Directories
+
+
+# No files, no impossibilities in 0 directories.
+
+# Implicit Rules
+
+# No implicit rules.
+
+# Files
+
+project: project.pro
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: ''
+#  File does not exist.
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# automatic
+# @ := project
+# automatic
+# * := 
+# automatic
+# < := project.pro
+# automatic
+# + := project.pro
+# automatic
+# % := 
+# automatic
+# ^ := project.pro
+# automatic
+# ? := project.pro
+# automatic
+# | := 
+# variable set hash-table stats:
+# Load=8/32=25%, Rehash=0, Collisions=1/13=8%
+#  recipe to execute (from '/mnt/d/PROJECTS/VUT-FIT/4sem/semester/ICP/VUT-FIT-ICP/project/Makefile', line 11):
+	qmake -o $(OUTPUT) $(TARGET).pro
+
+clean:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from '/mnt/d/PROJECTS/VUT-FIT/4sem/semester/ICP/VUT-FIT-ICP/project/Makefile', line 14):
+	rm -f editor_ui *.o ui_editor_ui.h moc_editor_ui.cpp qMakefile
+
+# Not a target:
+.DEFAULT:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+all: project
+#  Command line target.
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/5=0%
+#  recipe to execute (from '/mnt/d/PROJECTS/VUT-FIT/4sem/semester/ICP/VUT-FIT-ICP/project/Makefile', line 5):
+	make -f qMakefile
+
+run: all
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from '/mnt/d/PROJECTS/VUT-FIT/4sem/semester/ICP/VUT-FIT-ICP/project/Makefile', line 8):
+	./editor_ui
+
+# Not a target:
+project.pro:
+#  Implicit rule search has been done.
+#  Last modified 2022-04-27 01:49:48.3136979
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+/mnt/d/PROJECTS/VUT-FIT/4sem/semester/ICP/VUT-FIT-ICP/project/Makefile:
+#  Implicit rule search has been done.
+#  Last modified 2022-04-27 01:53:05.0368492
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+.SUFFIXES:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# files hash-table stats:
+# Load=8/1024=1%, Rehash=0, Collisions=0/24=0%
+# VPATH Search Paths
+
+# No 'vpath' search paths.
+
+# No general ('VPATH' variable) search path.
+
+# strcache buffers: 1 (0) / strings = 10 / storage = 156 B / avg = 15 B
+# current buf: size = 8162 B / used = 156 B / count = 10 / avg = 15 B
+
+# strcache performance: lookups = 21 / hit rate = 52%
+ 
+# hash-table stats:
+# Load=10/8192=0%, Rehash=0, Collisions=0/21=0%
+# Finished Make data base on Thu Apr 28 21:16:39 2022
+
+ 

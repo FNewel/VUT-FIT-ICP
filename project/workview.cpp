@@ -1,10 +1,13 @@
 #include "workview.h"
 #include "workscene.h"
+#include "classelement.h"
 #include <QGraphicsView>
 #include <QMenu>
 #include <QCursor>
 #include <QPointF>
 #include <QObject>
+#include <QDebug>
+
 
 WorkView::WorkView(QWidget *parent) : QGraphicsView(parent)
 {
@@ -39,6 +42,4 @@ void WorkView::workspaceViewCustomContextMenuRequested(const QPoint &pos)
         connect(newTextAction, &QAction::triggered, [=](){ this->activeScene->spawnNewText(mapToScene(pos));});
         menu.exec(this->mapToGlobal(pos));
     }
-
 }
-

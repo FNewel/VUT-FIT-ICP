@@ -1,0 +1,78 @@
+{
+    "class_diagram": {
+        "classes": [
+            {
+                "name": "$class_name",
+                "attributes": [
+                    {
+                        "name": "$attribute_name",
+                        "type": "$attribute_type"
+                    }
+                ],
+                "methods": [
+                    {
+                        "name": "$method_name",
+                        "parameters": [
+                            {
+                                "name": "$parameter_name",
+                                "type": "$parameter_type"
+                            }
+                        ]
+                    }
+                ],
+                "position": {
+                    "x": "$x",
+                    "y": "$y"
+                }
+            }
+        ],
+        "connections" : [
+            {
+                "source": "$class_id    //referencing .json file classes",
+                "target": "$class_id    //referencing .json file classes",
+                "source_arrow": "$arrow_number //0,1,2 - type of arrow end",
+                "target_arrow": "$arrow_number //0,1,2 - type of arrow end"
+            }
+        ]
+    },
+
+    "seq_diagram": {
+        "objects": [
+            {
+                "name": "$object_name",
+                "class": "$class_id     //referencing .json file classes",
+                "position": {
+                    "x": "$x",
+                    "y": "$y"
+                }
+            }
+        ],
+        "messages": [
+            {
+                "target_class": "$class_id     //referencing .json file classes",
+                "id_method": "method_id    //referencing .json file objects",
+                "number": "$message_number",
+                "source": {
+                    "id": "$object_id   //referencing .json file objects",
+                    "posion": "$y   //object position - $y"
+                },
+                "target": {
+                    "id": "$object_id   //referencing .json file objects",
+                    "posion": "$y   //object position - $y"
+                }
+            }
+        ],
+        "activations": [
+            {
+                "position": {
+                    "x": "$x",
+                    "y": "$y"
+                },
+                "dimensions": {
+                    "width": "$width",
+                    "height": "$height"
+                }
+            }
+        ]
+    }
+}

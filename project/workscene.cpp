@@ -7,6 +7,7 @@
 #include <QGraphicsProxyWidget>
 #include <QLabel>
 #include "testwidget.h"
+#include "classelement.h"
 
 WorkScene::WorkScene(QObject *parent) : QGraphicsScene(parent)
 {
