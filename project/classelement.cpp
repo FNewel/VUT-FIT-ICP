@@ -139,5 +139,5 @@ void ClassElement::on_attributeAddButton_clicked()
 void ClassElement::on_pushButton_clicked()
 {
     // TODO: tie čiary poriešiť
-    delete this;
+    ClassElement::~ClassElement();
 }
