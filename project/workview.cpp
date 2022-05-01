@@ -7,6 +7,7 @@
 #include <QPointF>
 #include <QObject>
 #include <QDebug>
+#include <QGraphicsLineItem>
 
 
 WorkView::WorkView(QWidget *parent) : QGraphicsView(parent)
@@ -18,6 +19,29 @@ WorkView::WorkView(QWidget *parent) : QGraphicsView(parent)
 
 void WorkView::workspaceViewCustomContextMenuRequested(const QPoint &pos)
 {
+    this->setRenderHint(QPainter::Antialiasing);    // Better lines
+
+    auto list = main_scene->selectedItems();
+    if(!list.empty()){
+        QMenu menu(this);
+
+        QMenu* subA = menu.addMenu("A");
+        QAction *newLineActionFirstArr = subA->addAction("Add first arrow");
+        connect(newLineActionFirstArr, &QAction::triggered, [=](){ this->activeScene->addLineSecondArrow(list.first());});
+
+        //QAction *newLineActionFirstArr = menu.addAction("Add first arrow");
+        //connect(newLineActionFirstArr, &QAction::triggered, [=](){ this->activeScene->addLineFirstArrow(list.first());});
+
+        QAction *newLineActionSecArr = menu.addAction("Add second arrow");
+        connect(newLineActionSecArr, &QAction::triggered, [=](){ this->activeScene->addLineSecondArrow(list.first());});
+
+        QAction *newLineActionDel = menu.addAction("Remove line");
+        connect(newLineActionDel, &QAction::triggered, [=](){ this->activeScene->removeLine(list.first());});
+
+        menu.exec(this->mapToGlobal(pos));
+        return;
+    }
+
     if(this->itemAt(pos))
         return;
 
@@ -42,4 +66,6 @@ void WorkView::workspaceViewCustomContextMenuRequested(const QPoint &pos)
         connect(newTextAction, &QAction::triggered, [=](){ this->activeScene->spawnNewText(mapToScene(pos));});
         menu.exec(this->mapToGlobal(pos));
     }
+
+    qDebug() << sender()->objectName();
 }

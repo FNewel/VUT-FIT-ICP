@@ -17,6 +17,7 @@ public:
 
 protected slots:
     void workspaceViewCustomContextMenuRequested(const QPoint &pos);
+
 signals:
     void spawnObject(int, int);
 };

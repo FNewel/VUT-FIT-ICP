@@ -4,19 +4,59 @@
 #include "classlines.h"
 #include "QDebug"
 #include <QPointer>
+#include <QLine>
+#include <QPainter>
+#include <QGraphicsLineItem>
+
+bool isClicked = false;
+QVector <ClassLines>lines;
 
 ClassElement::ClassElement(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ClassElement)
 {
     ui->setupUi(this);
-
-
 }
 
 ClassElement::~ClassElement()
 {
     delete ui;
+}
+
+void ClassElement::linePosCheck()
+{
+    int sPx = lines.last().sourcePos.x();
+    int sPy = lines.last().sourcePos.y();
+    int tPx = lines.last().targetPos.x();
+    int tPy = lines.last().targetPos.y();
+    int offset = 15;
+
+    if (abs(sPx - tPx) > abs(sPy - tPy)){
+        // Source X
+        if (sPx - tPx < 0)
+            lines.last().sourcePos = QPoint(sPx + (lines.last().source->width()/2) + offset, sPy);
+        else
+            lines.last().sourcePos = QPoint(sPx - (lines.last().source->width()/2) - offset, sPy);
+
+        //Source X
+        if (tPx - sPx < 0)
+            lines.last().targetPos = QPoint(tPx + (lines.last().target->width()/2) + offset, tPy);
+        else
+            lines.last().targetPos = QPoint(tPx - (lines.last().target->width()/2) - offset, tPy);
+    }
+    else {
+        // Source Y
+        if (sPy - tPy < 0)
+            lines.last().sourcePos = QPoint(sPx, sPy + (lines.last().source->height()/2) + offset);
+        else
+            lines.last().sourcePos = QPoint(sPx, sPy - (lines.last().source->height()/2) - offset);
+
+        // Target Y
+        if (tPy - sPy < 0)
+            lines.last().targetPos = QPoint(tPx, tPy + (lines.last().target->height()/2) + offset);
+        else
+            lines.last().targetPos = QPoint(tPx, tPy - (lines.last().target->height()/2) - offset);
+    }
 }
 
 void ClassElement::mousePressEvent(QMouseEvent *event)
@@ -26,25 +66,27 @@ void ClassElement::mousePressEvent(QMouseEvent *event)
     if(event->buttons() & Qt::RightButton && !isClicked) {
         ClassLines line;
         line.source = ui->frame;
-        line.sourcePos = event->pos();
+        line.sourcePos = QPoint(this->pos().x()+(this->width()/2), this->pos().y()+(this->height()/2));
         lines.append(line);
         isClicked = true;
     }
     else if (event->buttons() & Qt::RightButton && isClicked) {
         // TODO: asi nejaké checky čo vybral, úpravy súradníc a podobne
         lines.last().target = ui->frame;
-        lines.last().targetPos = event->pos();
-        // TODO: nejaké vykreslenie line
+        lines.last().targetPos = QPoint(this->pos().x()+(this->width()/2), this->pos().y()+(this->height()/2));
+
         isClicked = false;
+        linePosCheck();
 
-        qDebug() << "------------------";
-        qDebug() << lines.last().source;
-        qDebug() << lines.last().sourcePos;
-        qDebug() << lines.last().target;
-        qDebug() << lines.last().targetPos;
+        // draw line from source to target
+        auto line = main_scene->addLine(QLine(lines.last().sourcePos, lines.last().targetPos));
+        line->setPen(QPen((Qt::black),3));
+        line->setFlag(QGraphicsItem::ItemIsSelectable);     // TODO: dorobiť vymazávanie čiary
+        line->setZValue(-1);
+        line->setCursor(Qt::PointingHandCursor);
+
+        qDebug() << line;
     }
-
-
 }
 
 void ClassElement::mouseMoveEvent(QMouseEvent *event)
@@ -92,4 +134,10 @@ void ClassElement::on_attributeAddButton_clicked()
     ItemObject *newItem = new ItemObject();
 
     gridLayout->addWidget(newItem);
+}
+
+void ClassElement::on_pushButton_clicked()
+{
+    // TODO: tie čiary poriešiť
+    delete this;
 }

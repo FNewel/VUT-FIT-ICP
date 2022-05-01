@@ -4,10 +4,6 @@
 #include <QWidget>
 #include <QPointer>
 
-namespace Ui {
-class ClassElement;
-}
-
 class ClassLines {
 
 public:
@@ -18,8 +14,8 @@ public:
     QPoint targetPos;
 };
 
-bool isClicked = false;
-static QVector <ClassLines>lines;
+extern bool isClicked;
+extern QVector <ClassLines>lines;
 
 
 
