@@ -17,58 +17,51 @@ ClassElement::~ClassElement()
     delete ui;
 }
 
-void ClassElement::linePosCheck(ClassLines *cLines, bool update)
+void ClassElement::linePosCheck(ClassLines *cLine, bool update)
 {
-    int sPx = cLines->source->pos().x() + cLines->source->width()/2;
-    int sPy = cLines->source->pos().y() + cLines->source->height()/2;
-    int tPx = cLines->target->pos().x() + cLines->target->width()/2;
-    int tPy = cLines->target->pos().y() + cLines->target->height()/2;
-    int offset = 15;
+    int sPx = cLine->source->pos().x() + cLine->source->width()/2;
+    int sPy = cLine->source->pos().y() + cLine->source->height()/2;
+    int tPx = cLine->target->pos().x() + cLine->target->width()/2;
+    int tPy = cLine->target->pos().y() + cLine->target->height()/2;
+    int offset = 8;
 
     if (abs(sPx - tPx) > abs(sPy - tPy)){
         // Source X
         if (sPx - tPx < 0)
-            cLines->sourcePos = QPoint(sPx + (cLines->source->width()/2) + offset, sPy);
+            cLine->sourcePos = QPoint(sPx + (cLine->source->width()/2) + offset, sPy);
         else
-            cLines->sourcePos = QPoint(sPx - (cLines->source->width()/2) - offset, sPy);
+            cLine->sourcePos = QPoint(sPx - (cLine->source->width()/2) - offset, sPy);
 
         //Target X
         if (tPx - sPx < 0)
-            cLines->targetPos = QPoint(tPx + (cLines->target->width()/2) + offset, tPy);
+            cLine->targetPos = QPoint(tPx + (cLine->target->width()/2) + offset, tPy);
         else
-            cLines->targetPos = QPoint(tPx - (cLines->target->width()/2) - offset, tPy);
+            cLine->targetPos = QPoint(tPx - (cLine->target->width()/2) - offset, tPy);
     }
     else {
         // Source Y
         if (sPy - tPy < 0)
-            cLines->sourcePos = QPoint(sPx, sPy + (cLines->source->height()/2) + offset);
+            cLine->sourcePos = QPoint(sPx, sPy + (cLine->source->height()/2) + offset);
         else
-            cLines->sourcePos = QPoint(sPx, sPy - (cLines->source->height()/2) - offset);
+            cLine->sourcePos = QPoint(sPx, sPy - (cLine->source->height()/2) - offset);
 
         // Target Y
         if (tPy - sPy < 0)
-            cLines->targetPos = QPoint(tPx, tPy + (cLines->target->height()/2) + offset);
+            cLine->targetPos = QPoint(tPx, tPy + (cLine->target->height()/2) + offset);
         else
-            cLines->targetPos = QPoint(tPx, tPy - (cLines->target->height()/2) - offset);
+            cLine->targetPos = QPoint(tPx, tPy - (cLine->target->height()/2) - offset);
     }
 
     if(update){
-        //qDebug() << "-> " << sPx << "|" << sPy << "|" << tPx << "|" << tPy;
-        //qDebug() << "*> " << lines.last()->source->pos().x() << "|" << lines.last()->source->pos().y() ;
-
-
-        foreach(auto line, cLines->lineItems){
-            line->setLine(cLines->sourcePos.x(), cLines->sourcePos.y(), cLines->targetPos.x(), cLines->targetPos.y());
-            qDebug() << cLines->lineItems.size();
-        }
+        cLine->lineItem->setLine(cLine->sourcePos.x(), cLine->sourcePos.y(), cLine->targetPos.x(), cLine->targetPos.y());
     }
-
 }
 
 void ClassElement::mousePressEvent(QMouseEvent *event)
 {
     offset = event->pos();
 
+    // First object
     if(event->buttons() & Qt::RightButton && !isClicked) {
         ClassLines *line = new ClassLines();
         line->source = this;
@@ -76,20 +69,17 @@ void ClassElement::mousePressEvent(QMouseEvent *event)
         lines.append(line);
         isClicked = true;
 
-        //TODO--------
         // nájde ClassElement v zozname všetkých vytvorených klás, ktorý je rovnaký ako kliknutý element
         // uloží do line, ClassLines
         foreach(ClassElement *c_name, class_scene->classes){
-            // qDebug() << "[.....]" << c_name << "|" << ui->frame << "|" << this;
-
             if(c_name == this){
-                c_name->line = line;
+                c_name->lineItems.append(line);
             }
         }
 
     }
+    // Second object
     else if (event->buttons() & Qt::RightButton && isClicked) {
-        // TODO: asi nejaké checky čo vybral, úpravy súradníc a podobne
         lines.last()->target = this;
         lines.last()->targetPos = QPoint(this->pos().x()+(this->width()/2), this->pos().y()+(this->height()/2));
 
@@ -98,21 +88,17 @@ void ClassElement::mousePressEvent(QMouseEvent *event)
 
         // draw line from source to target
         auto line = class_scene->addLine(QLine(lines.last()->sourcePos, lines.last()->targetPos));
+        lines.last()->lineItem = line;
         line->setPen(QPen((Qt::black),3));
         line->setFlag(QGraphicsItem::ItemIsSelectable);
         line->setZValue(-1);
         line->setCursor(Qt::PointingHandCursor);
 
-        lines.last()->lineItems.append(line);
-
-        //TODO--------
         // nájde ClassElement v zozname všetkých vytvorených klás, ktorý je rovnaký ako kliknutý element
         // uloží do line, ClassLines
         foreach(ClassElement *c_name, class_scene->classes){
-            // qDebug() << "[.....]" << c_name << "|" << ui->frame << "|" << this;
-
             if(c_name == this){
-                c_name->line = lines.last();
+                c_name->lineItems.append(lines.last());
             }
         }
     }
@@ -122,13 +108,13 @@ void ClassElement::mouseMoveEvent(QMouseEvent *event)
 {
     if(event->buttons() & Qt::LeftButton) {
         this->move(mapToParent(event->pos() - offset));
-        // TODO --- Line update
 
-        if (!lines.empty()){    // && lines.last()->lineItem != nullptr
+        if (!lines.empty()){
             // nájde ClassElement v zozname všetkých vytvorených klás, ktorý je rovnaký ako kliknutý element
             foreach(ClassElement *c_name, class_scene->classes){
                 if(c_name == this){
-                    linePosCheck(c_name->line, true);
+                    foreach(auto *line, c_name->lineItems)
+                        linePosCheck(line, true);
                 }
             }
         }
@@ -175,8 +161,30 @@ void ClassElement::on_attributeAddButton_clicked()
     gridLayout->addWidget(newItem);
 }
 
+// remove class
 void ClassElement::on_pushButton_clicked()
 {
-    // TODO: tie čiary poriešiť
+    // nájde ClassElement v zozname všetkých vytvorených klás, ktorý je rovnaký ako kliknutý element
+    foreach(ClassElement *c_name, class_scene->classes){
+        if(c_name == this){
+            foreach(auto line, c_name->lineItems){
+                // Remove line from list in source element
+                for(int iSrc = 0; iSrc < line->source->lineItems.count(); iSrc++){
+                    if (line == line->source->lineItems.at(iSrc))
+                        line->source->lineItems.remove(iSrc);
+                }
+                // Remove line from list in target element
+                for(int iTrg = 0; iTrg < line->target->lineItems.count(); iTrg++){
+                    if (line == line->target->lineItems.at(iTrg))
+                        line->target->lineItems.remove(iTrg);
+                }
+                // Remove line and line class
+                delete line->lineItem;
+                delete line;
+            }
+        }
+    }
+
+
     this->deleteLater(); //Using this instead of delete solves crashing on some machines
 }

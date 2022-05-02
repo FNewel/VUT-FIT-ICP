@@ -30,6 +30,7 @@ public:
 
     QString name;
     ClassLines *line;
+    QVector <ClassLines*> lineItems; // všetky lines jemu patriace
 
 
 private slots:
