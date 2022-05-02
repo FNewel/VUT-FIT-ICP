@@ -1,12 +1,4 @@
 #include "classelement.h"
-#include "ui_classelement.h"
-#include "itemobject.h"
-#include "classlines.h"
-#include "QDebug"
-#include <QPointer>
-#include <QLine>
-#include <QPainter>
-#include <QGraphicsLineItem>
 
 bool isClicked = false;
 QVector <ClassLines*>lines;
@@ -25,40 +17,52 @@ ClassElement::~ClassElement()
     delete ui;
 }
 
-void ClassElement::linePosCheck()
+void ClassElement::linePosCheck(ClassLines *cLines, bool update)
 {
-    int sPx = lines.last()->sourcePos.x();
-    int sPy = lines.last()->sourcePos.y();
-    int tPx = lines.last()->targetPos.x();
-    int tPy = lines.last()->targetPos.y();
+    int sPx = cLines->source->pos().x() + cLines->source->width()/2;
+    int sPy = cLines->source->pos().y() + cLines->source->height()/2;
+    int tPx = cLines->target->pos().x() + cLines->target->width()/2;
+    int tPy = cLines->target->pos().y() + cLines->target->height()/2;
     int offset = 15;
 
     if (abs(sPx - tPx) > abs(sPy - tPy)){
         // Source X
         if (sPx - tPx < 0)
-            lines.last()->sourcePos = QPoint(sPx + (lines.last()->source->width()/2) + offset, sPy);
+            cLines->sourcePos = QPoint(sPx + (cLines->source->width()/2) + offset, sPy);
         else
-            lines.last()->sourcePos = QPoint(sPx - (lines.last()->source->width()/2) - offset, sPy);
+            cLines->sourcePos = QPoint(sPx - (cLines->source->width()/2) - offset, sPy);
 
-        //Source X
+        //Target X
         if (tPx - sPx < 0)
-            lines.last()->targetPos = QPoint(tPx + (lines.last()->target->width()/2) + offset, tPy);
+            cLines->targetPos = QPoint(tPx + (cLines->target->width()/2) + offset, tPy);
         else
-            lines.last()->targetPos = QPoint(tPx - (lines.last()->target->width()/2) - offset, tPy);
+            cLines->targetPos = QPoint(tPx - (cLines->target->width()/2) - offset, tPy);
     }
     else {
         // Source Y
         if (sPy - tPy < 0)
-            lines.last()->sourcePos = QPoint(sPx, sPy + (lines.last()->source->height()/2) + offset);
+            cLines->sourcePos = QPoint(sPx, sPy + (cLines->source->height()/2) + offset);
         else
-            lines.last()->sourcePos = QPoint(sPx, sPy - (lines.last()->source->height()/2) - offset);
+            cLines->sourcePos = QPoint(sPx, sPy - (cLines->source->height()/2) - offset);
 
         // Target Y
         if (tPy - sPy < 0)
-            lines.last()->targetPos = QPoint(tPx, tPy + (lines.last()->target->height()/2) + offset);
+            cLines->targetPos = QPoint(tPx, tPy + (cLines->target->height()/2) + offset);
         else
-            lines.last()->targetPos = QPoint(tPx, tPy - (lines.last()->target->height()/2) - offset);
+            cLines->targetPos = QPoint(tPx, tPy - (cLines->target->height()/2) - offset);
     }
+
+    if(update){
+        //qDebug() << "-> " << sPx << "|" << sPy << "|" << tPx << "|" << tPy;
+        //qDebug() << "*> " << lines.last()->source->pos().x() << "|" << lines.last()->source->pos().y() ;
+
+
+        foreach(auto line, cLines->lineItems){
+            line->setLine(cLines->sourcePos.x(), cLines->sourcePos.y(), cLines->targetPos.x(), cLines->targetPos.y());
+            qDebug() << cLines->lineItems.size();
+        }
+    }
+
 }
 
 void ClassElement::mousePressEvent(QMouseEvent *event)
@@ -67,28 +71,50 @@ void ClassElement::mousePressEvent(QMouseEvent *event)
 
     if(event->buttons() & Qt::RightButton && !isClicked) {
         ClassLines *line = new ClassLines();
-        line->source = ui->frame;
+        line->source = this;
         line->sourcePos = QPoint(this->pos().x()+(this->width()/2), this->pos().y()+(this->height()/2));
         lines.append(line);
         isClicked = true;
+
+        //TODO--------
+        // nájde ClassElement v zozname všetkých vytvorených klás, ktorý je rovnaký ako kliknutý element
+        // uloží do line, ClassLines
+        foreach(ClassElement *c_name, class_scene->classes){
+            // qDebug() << "[.....]" << c_name << "|" << ui->frame << "|" << this;
+
+            if(c_name == this){
+                c_name->line = line;
+            }
+        }
+
     }
     else if (event->buttons() & Qt::RightButton && isClicked) {
         // TODO: asi nejaké checky čo vybral, úpravy súradníc a podobne
-        lines.last()->target = ui->frame;
+        lines.last()->target = this;
         lines.last()->targetPos = QPoint(this->pos().x()+(this->width()/2), this->pos().y()+(this->height()/2));
 
         isClicked = false;
-        linePosCheck();
+        linePosCheck(lines.last(), false);
 
         // draw line from source to target
-        auto line = class_scene->addLine(QLine(lines.last().sourcePos, lines.last().targetPos));
+        auto line = class_scene->addLine(QLine(lines.last()->sourcePos, lines.last()->targetPos));
         line->setPen(QPen((Qt::black),3));
-        line->setFlag(QGraphicsItem::ItemIsSelectable);     // TODO: dorobiť vymazávanie čiary
+        line->setFlag(QGraphicsItem::ItemIsSelectable);
         line->setZValue(-1);
         line->setCursor(Qt::PointingHandCursor);
 
-        lines.last()->lineItem = line;
-        // qDebug() << line;
+        lines.last()->lineItems.append(line);
+
+        //TODO--------
+        // nájde ClassElement v zozname všetkých vytvorených klás, ktorý je rovnaký ako kliknutý element
+        // uloží do line, ClassLines
+        foreach(ClassElement *c_name, class_scene->classes){
+            // qDebug() << "[.....]" << c_name << "|" << ui->frame << "|" << this;
+
+            if(c_name == this){
+                c_name->line = lines.last();
+            }
+        }
     }
 }
 
@@ -96,6 +122,16 @@ void ClassElement::mouseMoveEvent(QMouseEvent *event)
 {
     if(event->buttons() & Qt::LeftButton) {
         this->move(mapToParent(event->pos() - offset));
+        // TODO --- Line update
+
+        if (!lines.empty()){    // && lines.last()->lineItem != nullptr
+            // nájde ClassElement v zozname všetkých vytvorených klás, ktorý je rovnaký ako kliknutý element
+            foreach(ClassElement *c_name, class_scene->classes){
+                if(c_name == this){
+                    linePosCheck(c_name->line, true);
+                }
+            }
+        }
     }
 }
 

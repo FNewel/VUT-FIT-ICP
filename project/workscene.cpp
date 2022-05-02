@@ -23,13 +23,18 @@ WorkScene::WorkScene(QObject *parent) : QGraphicsScene(parent)
         seq_scene = this;
 }
 
+WorkScene::~WorkScene(){
+    foreach(ClassElement *test, classes){
+        delete test;
+    }
+}
+
 void WorkScene::spawnNewClass(const QPointF local)
 {
-    ClassElement *classElement = new ClassElement();//TEST WIDGET
+    ClassElement *classElement = new ClassElement();
     QGraphicsProxyWidget* proxyWidget = this->addWidget(classElement);
     proxyWidget->setPos(local);
     classes.append(classElement);
-    qDebug() << classes;
 }
 
 void WorkScene::spawnNewObject(const QPointF local)
@@ -42,7 +47,6 @@ void WorkScene::spawnNewObject(const QPointF local)
     QGraphicsProxyWidget* proxyWidget = this->addWidget(objectElement);
     proxyWidget->setPos(local);
     objects.append(objectElement);
-    qDebug() << objects;
 }
 
 void WorkScene::spawnNewText(const QPointF local)
@@ -88,7 +92,6 @@ void WorkScene::addLineArrow(int where, QGraphicsItem *line, int type)
             continue;
 
         if (lines.value(i)->lineItem == line){
-            qDebug() << "ty si tá pravá";
             sPx = lines.value(i)->sourcePos.x();
             sPy = lines.value(i)->sourcePos.y();
             tPx = lines.value(i)->targetPos.x();

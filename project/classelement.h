@@ -4,7 +4,15 @@
 #include <QWidget>
 #include <QMouseEvent>
 #include <QVector>
+#include "QDebug"
+#include <QPointer>
+#include <QLine>
+#include <QPainter>
+#include <QGraphicsLineItem>
 #include "workscene.h"
+#include "classlines.h"
+#include "ui_classelement.h"
+#include "itemobject.h"
 #include "classlines.h"
 
 namespace Ui {
@@ -20,17 +28,19 @@ public:
     ~ClassElement();
     //WorkScene *main_scene;
 
+    QString name;
+    ClassLines *line;
+
+
 private slots:
     void on_operationAddButton_clicked();
-
     void on_attributeAddButton_clicked();
-
     void on_pushButton_clicked();
 
 protected:
     virtual void mousePressEvent(QMouseEvent *event);
     virtual void mouseMoveEvent(QMouseEvent *event);
-    virtual void linePosCheck();
+    virtual void linePosCheck(ClassLines *lines, bool update);
 
 private:
     Ui::ClassElement *ui;

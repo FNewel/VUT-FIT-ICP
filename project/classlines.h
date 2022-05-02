@@ -5,17 +5,19 @@
 #include <QPointer>
 #include <QGraphicsItem>
 #include <QLine>
+#include "classelement.h"
 
 class ClassLines {
 
 public:
-    QGraphicsLineItem *lineItem;
-
-    QPointer<QWidget> source;
-    QPointer<QWidget> target;
+    ClassElement *source;
+    ClassElement *target;
 
     QPoint sourcePos;
     QPoint targetPos;
+
+    QGraphicsLineItem *lineItem;    // niečo ako last
+    QVector <QGraphicsLineItem*> lineItems; // všetky lines
 };
 
 extern bool isClicked;
