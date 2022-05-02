@@ -9,7 +9,7 @@
 #include <QGraphicsLineItem>
 
 bool isClicked = false;
-QVector <ClassLines>lines;
+QVector <ClassLines*>lines;
 
 ClassElement::ClassElement(QWidget *parent) :
     QWidget(parent),
@@ -27,37 +27,37 @@ ClassElement::~ClassElement()
 
 void ClassElement::linePosCheck()
 {
-    int sPx = lines.last().sourcePos.x();
-    int sPy = lines.last().sourcePos.y();
-    int tPx = lines.last().targetPos.x();
-    int tPy = lines.last().targetPos.y();
+    int sPx = lines.last()->sourcePos.x();
+    int sPy = lines.last()->sourcePos.y();
+    int tPx = lines.last()->targetPos.x();
+    int tPy = lines.last()->targetPos.y();
     int offset = 15;
 
     if (abs(sPx - tPx) > abs(sPy - tPy)){
         // Source X
         if (sPx - tPx < 0)
-            lines.last().sourcePos = QPoint(sPx + (lines.last().source->width()/2) + offset, sPy);
+            lines.last()->sourcePos = QPoint(sPx + (lines.last()->source->width()/2) + offset, sPy);
         else
-            lines.last().sourcePos = QPoint(sPx - (lines.last().source->width()/2) - offset, sPy);
+            lines.last()->sourcePos = QPoint(sPx - (lines.last()->source->width()/2) - offset, sPy);
 
         //Source X
         if (tPx - sPx < 0)
-            lines.last().targetPos = QPoint(tPx + (lines.last().target->width()/2) + offset, tPy);
+            lines.last()->targetPos = QPoint(tPx + (lines.last()->target->width()/2) + offset, tPy);
         else
-            lines.last().targetPos = QPoint(tPx - (lines.last().target->width()/2) - offset, tPy);
+            lines.last()->targetPos = QPoint(tPx - (lines.last()->target->width()/2) - offset, tPy);
     }
     else {
         // Source Y
         if (sPy - tPy < 0)
-            lines.last().sourcePos = QPoint(sPx, sPy + (lines.last().source->height()/2) + offset);
+            lines.last()->sourcePos = QPoint(sPx, sPy + (lines.last()->source->height()/2) + offset);
         else
-            lines.last().sourcePos = QPoint(sPx, sPy - (lines.last().source->height()/2) - offset);
+            lines.last()->sourcePos = QPoint(sPx, sPy - (lines.last()->source->height()/2) - offset);
 
         // Target Y
         if (tPy - sPy < 0)
-            lines.last().targetPos = QPoint(tPx, tPy + (lines.last().target->height()/2) + offset);
+            lines.last()->targetPos = QPoint(tPx, tPy + (lines.last()->target->height()/2) + offset);
         else
-            lines.last().targetPos = QPoint(tPx, tPy - (lines.last().target->height()/2) - offset);
+            lines.last()->targetPos = QPoint(tPx, tPy - (lines.last()->target->height()/2) - offset);
     }
 }
 
@@ -66,16 +66,16 @@ void ClassElement::mousePressEvent(QMouseEvent *event)
     offset = event->pos();
 
     if(event->buttons() & Qt::RightButton && !isClicked) {
-        ClassLines line;
-        line.source = ui->frame;
-        line.sourcePos = QPoint(this->pos().x()+(this->width()/2), this->pos().y()+(this->height()/2));
+        ClassLines *line = new ClassLines();
+        line->source = ui->frame;
+        line->sourcePos = QPoint(this->pos().x()+(this->width()/2), this->pos().y()+(this->height()/2));
         lines.append(line);
         isClicked = true;
     }
     else if (event->buttons() & Qt::RightButton && isClicked) {
         // TODO: asi nejaké checky čo vybral, úpravy súradníc a podobne
-        lines.last().target = ui->frame;
-        lines.last().targetPos = QPoint(this->pos().x()+(this->width()/2), this->pos().y()+(this->height()/2));
+        lines.last()->target = ui->frame;
+        lines.last()->targetPos = QPoint(this->pos().x()+(this->width()/2), this->pos().y()+(this->height()/2));
 
         isClicked = false;
         linePosCheck();
@@ -87,7 +87,8 @@ void ClassElement::mousePressEvent(QMouseEvent *event)
         line->setZValue(-1);
         line->setCursor(Qt::PointingHandCursor);
 
-        qDebug() << line;
+        lines.last()->lineItem = line;
+        // qDebug() << line;
     }
 }
 

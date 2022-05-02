@@ -25,8 +25,7 @@ public slots:
     void spawnNewText(const QPointF local);
     void spawnNewActivation(const QPointF local);
     void removeLine(QGraphicsItem *line);
-    void addLineFirstArrow(QGraphicsItem *line);
-    void addLineSecondArrow(QGraphicsItem *line);
+    void addLineArrow(int where, QGraphicsItem *line, int type);
 
 signals:
 
