@@ -1,4 +1,5 @@
 #include "editor_ui.h"
+#include "projectmanager.h"
 
 #include <QApplication>
 

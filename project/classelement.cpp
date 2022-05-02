@@ -140,5 +140,5 @@ void ClassElement::on_attributeAddButton_clicked()
 void ClassElement::on_pushButton_clicked()
 {
     // TODO: tie čiary poriešiť
-    delete this;
+    this->deleteLater(); //Using this instead of delete solves crashing on some machines
 }
