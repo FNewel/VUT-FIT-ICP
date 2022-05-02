@@ -145,6 +145,7 @@ void ClassElement::mouseMoveEvent(QMouseEvent *event)
     }
 }
 
+// Add method
 void ClassElement::on_operationAddButton_clicked()
 {
     QFrame *opFrame = ui->operationFrame_operation;
@@ -162,9 +163,17 @@ void ClassElement::on_operationAddButton_clicked()
 
     ItemObject *newItem = new ItemObject();
 
+    // nájde ClassElement v zozname všetkých vytvorených klás, ktorý je rovnaký ako kliknutý element
+    foreach(ClassElement *c_name, class_scene->classes){
+        if(c_name == this){
+            c_name->methods.append(newItem);
+        }
+    }
+
     gridLayout->addWidget(newItem);
 }
 
+// Add attribute
 void ClassElement::on_attributeAddButton_clicked()
 {
     QFrame *opFrame = ui->operationFrame_attribute;
@@ -181,6 +190,13 @@ void ClassElement::on_attributeAddButton_clicked()
     op_popFrame->resize(op_popFrame->width(), op_popFrame->minimumHeight());
 
     ItemObject *newItem = new ItemObject();
+
+    // nájde ClassElement v zozname všetkých vytvorených klás, ktorý je rovnaký ako kliknutý element
+    foreach(ClassElement *c_name, class_scene->classes){
+        if(c_name == this){
+            c_name->attributes.append(newItem);
+        }
+    }
 
     gridLayout->addWidget(newItem);
 }
@@ -211,4 +227,13 @@ void ClassElement::on_pushButton_clicked()
 
 
     this->deleteLater(); //Using this instead of delete solves crashing on some machines
+}
+
+void ClassElement::on_name_input_textChanged(const QString &arg1)
+{
+    foreach(auto element, class_scene->classes){
+        if(element == this){
+            element->name = arg1;
+        }
+    }
 }

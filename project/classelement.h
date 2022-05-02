@@ -26,10 +26,10 @@ class ClassElement : public QWidget
 public:
     explicit ClassElement(QWidget *parent = nullptr);
     ~ClassElement();
-    //WorkScene *main_scene;
 
-    QString name;
-    //ClassLines *line;
+    QString name = "";
+    QVector <ItemObject*> attributes;
+    QVector <ItemObject*> methods;
     QVector <ClassLines*> lineItems; // všetky lines jemu patriace
 
 
@@ -37,6 +37,8 @@ private slots:
     void on_operationAddButton_clicked();
     void on_attributeAddButton_clicked();
     void on_pushButton_clicked();
+    void on_name_input_textChanged(const QString &arg1);
+
 
 protected:
     virtual void mousePressEvent(QMouseEvent *event);

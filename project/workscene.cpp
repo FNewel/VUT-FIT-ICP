@@ -96,7 +96,7 @@ void WorkScene::removeLine(QGraphicsItem *line)
 
 // where = 0 - source, 1 - target
 // type = 0 - generalization, 1 - composition, 2 - aggregation, 3 - association
-void WorkScene::addLineArrow(int where, QGraphicsItem *line, int type)
+void WorkScene::addLineArrow(int where, QGraphicsItem *line, int type)  // TODO: doriešiť pohyb šípiek plsssss :(
 {
     int posX = 0;
     int posY = 0;

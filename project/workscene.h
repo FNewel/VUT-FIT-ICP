@@ -5,8 +5,6 @@
 #include <QWidget>
 #include <QGraphicsScene>
 
-//#include "classelement.h"
-
 class ClassElement;
 class ObjectElement;
 

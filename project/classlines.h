@@ -17,7 +17,6 @@ public:
     QPoint targetPos;
 
     QGraphicsLineItem *lineItem;    // on samotný
-    //QVector <QGraphicsLineItem*> lineItems; // všetky lines
 };
 
 extern bool isClicked;
