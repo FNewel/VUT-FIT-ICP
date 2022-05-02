@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "projectmanager.h"
 #include "workscene.h"
 
 #include <QMainWindow>
@@ -17,11 +18,14 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    void InitWorkView(WorkView *workspaceView );
+
+    ProjectManager *projectManager;
 
 
 private:
     Ui::MainWindow *ui;
+    void InitWorkView(WorkView *workspaceView );
+    void bindSignals(ProjectManager *projectManager);
 };
 
 

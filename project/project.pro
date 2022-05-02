@@ -17,6 +17,7 @@ SOURCES += \
     itemobject.cpp \
     main.cpp \
     editor_ui.cpp \
+    projectmanager.cpp \
     testwidget.cpp \
     workscene.cpp \
     workview.cpp
@@ -26,6 +27,7 @@ HEADERS += \
     classlines.h \
     editor_ui.h \
     itemobject.h \
+    projectmanager.h \
     testwidget.h \
     workscene.h \
     workview.h
