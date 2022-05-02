@@ -3,10 +3,14 @@
 
 #include <QWidget>
 #include <QPointer>
+#include <QGraphicsItem>
+#include <QLine>
 
 class ClassLines {
 
 public:
+    QGraphicsLineItem *lineItem;
+
     QPointer<QWidget> source;
     QPointer<QWidget> target;
 
@@ -15,7 +19,7 @@ public:
 };
 
 extern bool isClicked;
-extern QVector <ClassLines>lines;
+extern QVector <ClassLines*>lines;
 
 
 
