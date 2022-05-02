@@ -80,6 +80,30 @@ void ClassElement::mousePressEvent(QMouseEvent *event)
     }
     // Second object
     else if (event->buttons() & Qt::RightButton && isClicked) {
+
+        // Check if target is same as source
+        // if so, remove it and delete
+        if(lines.last()->source == this){
+            lines.last()->source->lineItems.removeLast();
+            delete lines.last();
+            lines.removeLast();
+            isClicked = false;
+            return;
+        }
+
+        // Check if trying to create identical line
+        // if so, remove it and delete
+        foreach(auto linee, lines){
+            if((linee->source == lines.last()->source && linee->target == this) || (linee->target == lines.last()->source && linee->source == this)){
+                lines.last()->source->lineItems.removeLast();
+                delete lines.last();
+                lines.removeLast();
+                isClicked = false;
+                return;
+            }
+        }
+
+
         lines.last()->target = this;
         lines.last()->targetPos = QPoint(this->pos().x()+(this->width()/2), this->pos().y()+(this->height()/2));
 

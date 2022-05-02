@@ -29,7 +29,7 @@ public:
     //WorkScene *main_scene;
 
     QString name;
-    ClassLines *line;
+    //ClassLines *line;
     QVector <ClassLines*> lineItems; // všetky lines jemu patriace
 
 

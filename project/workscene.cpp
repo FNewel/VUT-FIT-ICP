@@ -67,6 +67,26 @@ void WorkScene::removeLine(QGraphicsItem *line)
 {
     for (int i=0; i < lines.size(); i++){
         if(line == lines.value(i)->lineItem){
+            foreach(ClassElement *c_name, class_scene->classes){
+                // Remove line from source list
+                if(c_name == lines.at(i)->source){
+                    for(int ids = 0; ids < c_name->lineItems.length(); ids++){
+                        if(c_name->lineItems.at(ids)->lineItem == line){
+                            c_name->lineItems.remove(ids);
+                        }
+                    }
+                }
+                // Remove line from target list
+                if(c_name == lines.at(i)->target){
+                    for(int idt = 0; idt < c_name->lineItems.length(); idt++){
+                        if(c_name->lineItems.at(idt)->lineItem == line){
+                            c_name->lineItems.remove(idt);
+                        }
+                    }
+                }
+            }
+
+            // Remove line from list
             lines.remove(i);
         }
     }
