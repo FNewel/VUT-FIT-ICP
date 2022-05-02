@@ -81,7 +81,7 @@ void ClassElement::mousePressEvent(QMouseEvent *event)
         linePosCheck();
 
         // draw line from source to target
-        auto line = class_scene->addLine(QLine(lines.last().sourcePos, lines.last().targetPos));
+        auto line = class_scene->addLine(QLine(lines.last()->sourcePos, lines.last()->targetPos));
         line->setPen(QPen((Qt::black),3));
         line->setFlag(QGraphicsItem::ItemIsSelectable);     // TODO: dorobiť vymazávanie čiary
         line->setZValue(-1);
