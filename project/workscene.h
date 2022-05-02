@@ -5,11 +5,18 @@
 #include <QWidget>
 #include <QGraphicsScene>
 
+//#include "classelement.h"
+
+class ClassElement;
+class ObjectElement;
+
 
 class WorkScene : public QGraphicsScene
 {
     Q_OBJECT
 public:
+    QVector <ClassElement *> classes;
+    QVector <ObjectElement *> objects;
     explicit WorkScene(QObject *parent = nullptr);
 
 public slots:

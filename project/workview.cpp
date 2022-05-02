@@ -21,7 +21,7 @@ void WorkView::workspaceViewCustomContextMenuRequested(const QPoint &pos)
 {
     this->setRenderHint(QPainter::Antialiasing);    // Better lines
 
-    auto list = main_scene->selectedItems();
+    auto list = class_scene->selectedItems();
     if(!list.empty()){
         QMenu menu(this);
 

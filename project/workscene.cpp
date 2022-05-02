@@ -8,14 +8,18 @@
 #include <QLabel>
 #include "testwidget.h"
 #include "classelement.h"
+#include "objectelement.h"
 #include <QDebug>
 
-WorkScene *main_scene;
+WorkScene *class_scene;
+WorkScene *seq_scene;
 
 WorkScene::WorkScene(QObject *parent) : QGraphicsScene(parent)
 {
-    if (main_scene == nullptr)  // TODO: sem pridať else a dať main_scene2 čo bude ten druhý graph
-        main_scene = this;
+    if (class_scene == nullptr)
+        class_scene = this;
+    else
+        seq_scene = this;
 }
 
 void WorkScene::spawnNewClass(const QPointF local)
@@ -25,9 +29,11 @@ void WorkScene::spawnNewClass(const QPointF local)
     QGraphicsProxyWidget* proxyWidget = this->addWidget(testWidgetObject);
     proxyWidget->setPos(local);*/
 
-    ClassElement *testWidgetObject = new ClassElement();//TEST WIDGET
-    QGraphicsProxyWidget* proxyWidget = this->addWidget(testWidgetObject);
+    ClassElement *classElement = new ClassElement();//TEST WIDGET
+    QGraphicsProxyWidget* proxyWidget = this->addWidget(classElement);
     proxyWidget->setPos(local);
+    classes.append(classElement);
+    qDebug() << classes;
 
     //testWidgetObject->main_scene = this;
     //main_scene = this;
@@ -36,9 +42,15 @@ void WorkScene::spawnNewClass(const QPointF local)
 
 void WorkScene::spawnNewObject(const QPointF local)
 {
-    QLabel *testWidgetObject = new QLabel("TestObject"); //TEST QLABEL
+    /*QLabel *testWidgetObject = new QLabel("TestObject"); //TEST QLABEL
     QGraphicsProxyWidget* proxyWidget = this->addWidget(testWidgetObject);
+    proxyWidget->setPos(local);*/
+
+    ObjectElement *objectElement = new ObjectElement();//TEST WIDGET
+    QGraphicsProxyWidget* proxyWidget = this->addWidget(objectElement);
     proxyWidget->setPos(local);
+    objects.append(objectElement);
+    qDebug() << objects;
 }
 
 void WorkScene::spawnNewText(const QPointF local)
