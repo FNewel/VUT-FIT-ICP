@@ -37,6 +37,6 @@ private:
     QPoint offset;
 };
 
-extern WorkScene *main_scene;
+extern WorkScene *class_scene;
 
 #endif // CLASSELEMENT_H

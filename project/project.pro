@@ -17,6 +17,7 @@ SOURCES += \
     itemobject.cpp \
     main.cpp \
     editor_ui.cpp \
+    objectelement.cpp \
     projectmanager.cpp \
     testwidget.cpp \
     workscene.cpp \
@@ -27,6 +28,7 @@ HEADERS += \
     classlines.h \
     editor_ui.h \
     itemobject.h \
+    objectelement.h \
     projectmanager.h \
     testwidget.h \
     workscene.h \
@@ -36,6 +38,7 @@ FORMS += \
     classelement.ui \
     editor_ui.ui \
     itemobject.ui \
+    objectelement.ui \
     testwidget.ui
 
 # Default rules for deployment.
