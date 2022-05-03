@@ -12,12 +12,7 @@
                 "methods": [
                     {
                         "name": "$method_name",
-                        "parameters": [
-                            {
-                                "name": "$parameter_name",
-                                "type": "$parameter_type"
-                            }
-                        ]
+                        "type": "$method_type"
                     }
                 ],
                 "position": {

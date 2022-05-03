@@ -5,8 +5,6 @@
 #include <QWidget>
 #include <QGraphicsScene>
 
-//#include "classelement.h"
-
 class ClassElement;
 class ObjectElement;
 
@@ -18,6 +16,7 @@ public:
     QVector <ClassElement *> classes;
     QVector <ObjectElement *> objects;
     explicit WorkScene(QObject *parent = nullptr);
+    ~WorkScene();
 
 public slots:
     void spawnNewClass(const QPointF local);

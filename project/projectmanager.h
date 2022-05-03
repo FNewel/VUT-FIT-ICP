@@ -9,15 +9,18 @@ class ProjectManager : public QObject
 public:
     explicit ProjectManager(QObject *parent = nullptr);
 
+    QString filename = "";
+
 public slots:
     void newProject();
     void openProject();
     void saveProject();
-    void saveProjectAs();
+    void saveProjectAs(bool save);
     void undoAction();
     void redoAction();
     void showDocs();
     void exitApp();
+    QByteArray createJson();
 };
 
 #endif // PROJECTMANAGER_H

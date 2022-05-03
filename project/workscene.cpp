@@ -22,13 +22,18 @@ WorkScene::WorkScene(QObject *parent) : QGraphicsScene(parent)
         seq_scene = this;
 }
 
+WorkScene::~WorkScene(){
+    foreach(ClassElement *test, classes){
+        delete test;
+    }
+}
+
 void WorkScene::spawnNewClass(const QPointF local)
 {
-    ClassElement *classElement = new ClassElement();//TEST WIDGET
+    ClassElement *classElement = new ClassElement();
     QGraphicsProxyWidget* proxyWidget = this->addWidget(classElement);
     proxyWidget->setPos(local);
     classes.append(classElement);
-    qDebug() << classes;
 }
 
 void WorkScene::spawnNewObject(const QPointF local)
@@ -41,7 +46,6 @@ void WorkScene::spawnNewObject(const QPointF local)
     QGraphicsProxyWidget* proxyWidget = this->addWidget(objectElement);
     proxyWidget->setPos(local);
     objects.append(objectElement);
-    qDebug() << objects;
 }
 
 void WorkScene::spawnNewText(const QPointF local)
@@ -62,6 +66,26 @@ void WorkScene::removeLine(QGraphicsItem *line)
 {
     for (int i=0; i < lines.size(); i++){
         if(line == lines.value(i)->lineItem){
+            foreach(ClassElement *c_name, class_scene->classes){
+                // Remove line from source list
+                if(c_name == lines.at(i)->source){
+                    for(int ids = 0; ids < c_name->lineItems.length(); ids++){
+                        if(c_name->lineItems.at(ids)->lineItem == line){
+                            c_name->lineItems.remove(ids);
+                        }
+                    }
+                }
+                // Remove line from target list
+                if(c_name == lines.at(i)->target){
+                    for(int idt = 0; idt < c_name->lineItems.length(); idt++){
+                        if(c_name->lineItems.at(idt)->lineItem == line){
+                            c_name->lineItems.remove(idt);
+                        }
+                    }
+                }
+            }
+
+            // Remove line from list
             lines.remove(i);
         }
     }
@@ -70,8 +94,8 @@ void WorkScene::removeLine(QGraphicsItem *line)
 
 
 // where = 0 - source, 1 - target
-// type = 0 - generalization, 1 - composition, 2 - aggregation, 3 - association
-void WorkScene::addLineArrow(int where, QGraphicsItem *line, int type)
+// type = 0 - association, 1- generalization, 2 - composition, 3 - aggregation
+void WorkScene::addLineArrow(int where, QGraphicsItem *line, int type)  // TODO: doriešiť pohyb šípiek plsssss :(
 {
     int posX = 0;
     int posY = 0;
@@ -87,7 +111,6 @@ void WorkScene::addLineArrow(int where, QGraphicsItem *line, int type)
             continue;
 
         if (lines.value(i)->lineItem == line){
-            qDebug() << "ty si tá pravá";
             sPx = lines.value(i)->sourcePos.x();
             sPy = lines.value(i)->sourcePos.y();
             tPx = lines.value(i)->targetPos.x();
@@ -97,9 +120,21 @@ void WorkScene::addLineArrow(int where, QGraphicsItem *line, int type)
         }
     }
 
+
+    // Check if only one arrow (connection) is used
+    if (lines.value(lineNum)->sourceConnection != 0 || lines.value(lineNum)->sourceConnection != 0)
+        return;
+
+    // Set arrow (connection) to proper side
+    if (where == 0)
+        lines.value(lineNum)->sourceConnection = type;
+    else
+        lines.value(lineNum)->targetConnection = type;
+
+
     int offset = 32;
 
-    if ((abs(sPx - tPx) > abs(sPy - tPy)) && type != 3){
+    if ((abs(sPx - tPx) > abs(sPy - tPy)) && type != 0){
         if (where == 0){
             // Source X - left
             if (sPx - tPx < 0){
@@ -138,7 +173,7 @@ void WorkScene::addLineArrow(int where, QGraphicsItem *line, int type)
             lines.value(lineNum)->targetPos.setY(posY);
         }
     }
-    else if (type != 3){
+    else if (type != 0){
         if (where == 0) {
             // Source Y - top
             if (sPy - tPy < 0){
@@ -184,26 +219,26 @@ void WorkScene::addLineArrow(int where, QGraphicsItem *line, int type)
     Com << QPoint(16, 16) << QPoint(32, 0) << QPoint(16, -16) << QPoint(0, 0);
     Agg << QPoint(16, 16) << QPoint(32, 0) << QPoint(16, -16) << QPoint(0, 0);
 
-    if (type == 0){
+    if (type == 1){
         QGraphicsPolygonItem *GenPoi = addPolygon(Gen, QPen(Qt::black), QBrush(Qt::white));
         GenPoi->setPos(posX, posY);
         GenPoi->setRotation(rotate);
         GenPoi->setParentItem(lines.value(lineNum)->lineItem);
     }
-    else if (type == 1) {
+    else if (type == 2) {
         QGraphicsPolygonItem *ComPoi = addPolygon(Com, QPen(Qt::black), QBrush(Qt::black));
         ComPoi->setPos(posX, posY);
         ComPoi->setRotation(rotate);
         ComPoi->setParentItem(lines.value(lineNum)->lineItem);
     }
-    else if (type == 2) {
+    else if (type == 3) {
         QGraphicsPolygonItem *AggPoi = addPolygon(Agg, QPen(Qt::black), QBrush(Qt::white));
         AggPoi->setPos(posX, posY);
         AggPoi->setRotation(rotate);
         AggPoi->setParentItem(lines.value(lineNum)->lineItem);
     }
     else {
-        qDebug() << "UH OH";
+        qDebug() << "UH OH";    // TODO: ak to nebude treba, vymazať
     }
 }
 

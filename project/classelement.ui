@@ -72,7 +72,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit"/>
+         <widget class="QLineEdit" name="name_input"/>
         </item>
         <item>
          <spacer name="horizontalSpacer_2">
@@ -195,7 +195,7 @@
         <item>
          <widget class="QPushButton" name="operationAddButton">
           <property name="text">
-           <string>Add operation</string>
+           <string>Add method</string>
           </property>
          </widget>
         </item>
