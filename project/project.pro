@@ -17,9 +17,10 @@ SOURCES += \
     itemobject.cpp \
     main.cpp \
     editor_ui.cpp \
+    messageanchor.cpp \
     objectelement.cpp \
     projectmanager.cpp \
-    testwidget.cpp \
+    seqmessage.cpp \
     workscene.cpp \
     workview.cpp
 
@@ -30,7 +31,6 @@ HEADERS += \
     itemobject.h \
     objectelement.h \
     projectmanager.h \
-    testwidget.h \
     workscene.h \
     workview.h
 
@@ -38,8 +38,8 @@ FORMS += \
     classelement.ui \
     editor_ui.ui \
     itemobject.ui \
-    objectelement.ui \
-    testwidget.ui
+    messageanchor.ui \
+    objectelement.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
