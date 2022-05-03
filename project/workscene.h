@@ -27,7 +27,10 @@ public slots:
     void removeLine(QGraphicsItem *line);
     void addLineArrow(int where, QGraphicsItem *line, int type);
 
-signals:
+    void removeMessage(QGraphicsItem *msgLine);
+
+
+
 
 };
 

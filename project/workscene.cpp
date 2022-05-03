@@ -6,7 +6,6 @@
 #include <QGroupBox>
 #include <QGraphicsProxyWidget>
 #include <QLabel>
-#include "testwidget.h"
 #include "classelement.h"
 #include "objectelement.h"
 #include <QDebug>
@@ -207,4 +206,15 @@ void WorkScene::addLineArrow(int where, QGraphicsItem *line, int type)
         qDebug() << "UH OH";
     }
 }
+
+void WorkScene::removeMessage(QGraphicsItem *msgLine)
+{
+    for (int i=0; i < __gl__messages.size(); i++){
+        if(msgLine == __gl__messages.value(i)->messageLine){
+            delete __gl__messages.value(i);
+            __gl__messages.remove(i);
+        }
+    }
+}
+
 

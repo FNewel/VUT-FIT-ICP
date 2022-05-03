@@ -17,8 +17,10 @@ SOURCES += \
     itemobject.cpp \
     main.cpp \
     editor_ui.cpp \
+    messageanchor.cpp \
     objectelement.cpp \
     projectmanager.cpp \
+    seqmessage.cpp \
     workscene.cpp \
     workview.cpp
 
@@ -36,6 +38,7 @@ FORMS += \
     classelement.ui \
     editor_ui.ui \
     itemobject.ui \
+    messageanchor.ui \
     objectelement.ui
 
 # Default rules for deployment.
