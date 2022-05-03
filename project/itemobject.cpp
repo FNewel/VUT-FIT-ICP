@@ -47,7 +47,7 @@ void ItemObject::on_removeButton_clicked()
         // nájde ClassElement v zozname všetkých vytvorených klás, ktorý je rovnaký ako kliknutý element
         foreach(auto *c_name, class_scene->classes){
             if(c_name == this->parent()->parent()->parent()){
-                for(int i = 0; i < c_name->attributes.length(); i++){
+                for(int i = 0; i < c_name->methods.length(); i++){
                     if(c_name->methods.at(i) == this){
                         c_name->methods.remove(i);
                         break;
@@ -60,7 +60,7 @@ void ItemObject::on_removeButton_clicked()
     delete this;
 }
 
-void ItemObject::on_comboBox_currentIndexChanged(const QString &arg1)
+void ItemObject::on_comboBox_currentIndexChanged(int index)
 {
     if (this->parent()->objectName() == "operationFrame_attribute"){
         // nájde ClassElement v zozname všetkých vytvorených klás, ktorý je rovnaký ako kliknutý element
@@ -68,7 +68,7 @@ void ItemObject::on_comboBox_currentIndexChanged(const QString &arg1)
             if(c_name == this->parent()->parent()->parent()){
                 foreach(auto *c_att, c_name->attributes){
                     if(c_att == this){
-                        c_att->type = arg1;
+                        c_att->type = index;
                     }
                 }
             }
@@ -80,7 +80,7 @@ void ItemObject::on_comboBox_currentIndexChanged(const QString &arg1)
             if(c_name == this->parent()->parent()->parent()){
                 foreach(auto *c_met, c_name->methods){
                     if(c_met == this){
-                        c_met->type = arg1;
+                        c_met->type = index;
                     }
                 }
             }

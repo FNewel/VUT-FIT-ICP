@@ -32,7 +32,6 @@ public:
     QVector <ItemObject*> methods;
     QVector <ClassLines*> lineItems; // všetky lines jemu patriace
 
-
 private slots:
     void on_operationAddButton_clicked();
     void on_attributeAddButton_clicked();

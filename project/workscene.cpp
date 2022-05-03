@@ -95,7 +95,7 @@ void WorkScene::removeLine(QGraphicsItem *line)
 
 
 // where = 0 - source, 1 - target
-// type = 0 - generalization, 1 - composition, 2 - aggregation, 3 - association
+// type = 0 - association, 1- generalization, 2 - composition, 3 - aggregation
 void WorkScene::addLineArrow(int where, QGraphicsItem *line, int type)  // TODO: doriešiť pohyb šípiek plsssss :(
 {
     int posX = 0;
@@ -121,9 +121,21 @@ void WorkScene::addLineArrow(int where, QGraphicsItem *line, int type)  // TODO:
         }
     }
 
+
+    // Check if only one arrow (connection) is used
+    if (lines.value(lineNum)->sourceConnection != 0 || lines.value(lineNum)->sourceConnection != 0)
+        return;
+
+    // Set arrow (connection) to proper side
+    if (where == 0)
+        lines.value(lineNum)->sourceConnection = type;
+    else
+        lines.value(lineNum)->targetConnection = type;
+
+
     int offset = 32;
 
-    if ((abs(sPx - tPx) > abs(sPy - tPy)) && type != 3){
+    if ((abs(sPx - tPx) > abs(sPy - tPy)) && type != 0){
         if (where == 0){
             // Source X - left
             if (sPx - tPx < 0){
@@ -162,7 +174,7 @@ void WorkScene::addLineArrow(int where, QGraphicsItem *line, int type)  // TODO:
             lines.value(lineNum)->targetPos.setY(posY);
         }
     }
-    else if (type != 3){
+    else if (type != 0){
         if (where == 0) {
             // Source Y - top
             if (sPy - tPy < 0){
@@ -208,26 +220,26 @@ void WorkScene::addLineArrow(int where, QGraphicsItem *line, int type)  // TODO:
     Com << QPoint(16, 16) << QPoint(32, 0) << QPoint(16, -16) << QPoint(0, 0);
     Agg << QPoint(16, 16) << QPoint(32, 0) << QPoint(16, -16) << QPoint(0, 0);
 
-    if (type == 0){
+    if (type == 1){
         QGraphicsPolygonItem *GenPoi = addPolygon(Gen, QPen(Qt::black), QBrush(Qt::white));
         GenPoi->setPos(posX, posY);
         GenPoi->setRotation(rotate);
         GenPoi->setParentItem(lines.value(lineNum)->lineItem);
     }
-    else if (type == 1) {
+    else if (type == 2) {
         QGraphicsPolygonItem *ComPoi = addPolygon(Com, QPen(Qt::black), QBrush(Qt::black));
         ComPoi->setPos(posX, posY);
         ComPoi->setRotation(rotate);
         ComPoi->setParentItem(lines.value(lineNum)->lineItem);
     }
-    else if (type == 2) {
+    else if (type == 3) {
         QGraphicsPolygonItem *AggPoi = addPolygon(Agg, QPen(Qt::black), QBrush(Qt::white));
         AggPoi->setPos(posX, posY);
         AggPoi->setRotation(rotate);
         AggPoi->setParentItem(lines.value(lineNum)->lineItem);
     }
     else {
-        qDebug() << "UH OH";
+        qDebug() << "UH OH";    // TODO: ak to nebude treba, vymazať
     }
 }
 

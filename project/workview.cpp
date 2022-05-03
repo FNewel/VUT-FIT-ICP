@@ -28,23 +28,23 @@ void WorkView::workspaceViewCustomContextMenuRequested(const QPoint &pos)
         QMenu* subFirst = menu.addMenu("First connection");
         QMenu* subSecond = menu.addMenu("Second conneciton");
 
-        QAction *firstLineGen = subFirst->addAction("Generalization");
-        connect(firstLineGen, &QAction::triggered, [=](){ this->activeScene->addLineArrow(0, list.first(), 0);});
-        QAction *firstLineCom = subFirst->addAction("Composition");
-        connect(firstLineCom, &QAction::triggered, [=](){ this->activeScene->addLineArrow(0, list.first(), 1);});
-        QAction *firstLineAgg = subFirst->addAction("Aggregation");
-        connect(firstLineAgg, &QAction::triggered, [=](){ this->activeScene->addLineArrow(0, list.first(), 2);});
         QAction *firstLineAss = subFirst->addAction("Association");
-        connect(firstLineAss, &QAction::triggered, [=](){ this->activeScene->addLineArrow(0, list.first(), 3);});
+        connect(firstLineAss, &QAction::triggered, [=](){ this->activeScene->addLineArrow(0, list.first(), 0);});
+        QAction *firstLineGen = subFirst->addAction("Generalization");
+        connect(firstLineGen, &QAction::triggered, [=](){ this->activeScene->addLineArrow(0, list.first(), 1);});
+        QAction *firstLineCom = subFirst->addAction("Composition");
+        connect(firstLineCom, &QAction::triggered, [=](){ this->activeScene->addLineArrow(0, list.first(), 2);});
+        QAction *firstLineAgg = subFirst->addAction("Aggregation");
+        connect(firstLineAgg, &QAction::triggered, [=](){ this->activeScene->addLineArrow(0, list.first(), 3);});
 
-        QAction *secondLineGen = subSecond->addAction("Generalization");
-        connect(secondLineGen, &QAction::triggered, [=](){ this->activeScene->addLineArrow(1, list.first(), 0);});
-        QAction *secondLineCom = subSecond->addAction("Composition");
-        connect(secondLineCom, &QAction::triggered, [=](){ this->activeScene->addLineArrow(1, list.first(), 1);});
-        QAction *secondLineAgg = subSecond->addAction("Aggregation");
-        connect(secondLineAgg, &QAction::triggered, [=](){ this->activeScene->addLineArrow(1, list.first(), 2);});
         QAction *secondLineAss = subSecond->addAction("Association");
-        connect(secondLineAss, &QAction::triggered, [=](){ this->activeScene->addLineArrow(1, list.first(), 3);});
+        connect(secondLineAss, &QAction::triggered, [=](){ this->activeScene->addLineArrow(1, list.first(), 0);});
+        QAction *secondLineGen = subSecond->addAction("Generalization");
+        connect(secondLineGen, &QAction::triggered, [=](){ this->activeScene->addLineArrow(1, list.first(), 1);});
+        QAction *secondLineCom = subSecond->addAction("Composition");
+        connect(secondLineCom, &QAction::triggered, [=](){ this->activeScene->addLineArrow(1, list.first(), 2);});
+        QAction *secondLineAgg = subSecond->addAction("Aggregation");
+        connect(secondLineAgg, &QAction::triggered, [=](){ this->activeScene->addLineArrow(1, list.first(), 3);});
 
         QAction *newLineActionDel = menu.addAction("Remove line");
         connect(newLineActionDel, &QAction::triggered, [=](){ this->activeScene->removeLine(list.first());});
