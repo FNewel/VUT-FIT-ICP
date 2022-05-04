@@ -71,13 +71,14 @@ class MessageAnchor : public QWidget
     Q_OBJECT
 
 public:
-    explicit MessageAnchor(ObjectElement *parent = nullptr);
+    explicit MessageAnchor(QWidget *parent = nullptr);
     ~MessageAnchor();
     QGraphicsProxyWidget * proxy = nullptr;
     SeqMessage *message = nullptr;
 
 private:
     Ui::MessageAnchor *ui;
+    QGraphicsItem* destructionIcon = nullptr;
 
 
 
@@ -106,7 +107,7 @@ public:
 
     QComboBox *messageName = nullptr;
     QGraphicsProxyWidget *messageNameProxy = nullptr;
-    QGraphicsPolygonItem *arrowHeadProxy = nullptr;
+    QGraphicsItem *arrowHeadProxy = nullptr;
 
     MessageAnchor *sourceAnchor = nullptr;
     MessageAnchor *destAnchor = nullptr;

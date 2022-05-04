@@ -6,14 +6,11 @@
 #include <QGroupBox>
 #include <QGraphicsProxyWidget>
 #include <QLabel>
+#include "actorelement.h"
 #include "classelement.h"
 #include "objectelement.h"
 #include <QDebug>
 #include <QGraphicsLineItem>
-
-#define SYNC_ARROW 0
-#define ASYNC_ARROW 1
-#define RETURN_ARROW 2
 
 WorkScene *class_scene;
 WorkScene *seq_scene;
@@ -64,6 +61,17 @@ void WorkScene::spawnNewActivation(const QPointF local)
     QLabel *testActivation = new QLabel("TestActivation");//TEST WLABEL
     QGraphicsProxyWidget* proxyWidget = this->addWidget(testActivation);
     proxyWidget->setPos(local);
+}
+
+void WorkScene::spawnNewActor(const QPointF local)
+{
+
+    ActorElement *actorElement = new ActorElement();
+    QGraphicsProxyWidget* proxyWidget = this->addWidget(actorElement);
+    proxyWidget->setPos(local);
+    actors.append(actorElement);
+
+
 }
 
 void WorkScene::removeLine(QGraphicsItem *line)
@@ -255,18 +263,8 @@ void WorkScene::setArrow(QGraphicsItem *msgLine, int arrowType)
             break;
         }
     }
-
     if(message){
-        switch (arrowType) {
-            case SYNC_ARROW:
-                message->setArrow(SYNC_ARROW);
-            case ASYNC_ARROW:
-                message->setArrow(ASYNC_ARROW);
-            case RETURN_ARROW:
-                message->setArrow(RETURN_ARROW);
-            default:
-            return;
-        }
+        message->setArrow(arrowType);
     }
 
 }

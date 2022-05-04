@@ -94,6 +94,8 @@ void WorkView::workspaceViewCustomContextMenuRequested(const QPoint &pos)
     //Context menu for sequence diagram
     if (sender()->objectName() == "seqView"){
         QMenu menu(this);
+        QAction *newActorAction = menu.addAction("New Actor");
+        connect(newActorAction, &QAction::triggered, [=](){ this->activeScene->spawnNewActor(mapToScene(pos));});
         QAction *newObjectAction = menu.addAction("New Object");
         connect(newObjectAction, &QAction::triggered, [=](){ this->activeScene->spawnNewObject(mapToScene(pos));});
         QAction *newActivationAction = menu.addAction("New Activation");

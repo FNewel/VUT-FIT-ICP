@@ -7,6 +7,7 @@
 
 class ClassElement;
 class ObjectElement;
+class ActorElement;
 
 
 class WorkScene : public QGraphicsScene
@@ -15,6 +16,7 @@ class WorkScene : public QGraphicsScene
 public:
     QVector <ClassElement *> classes;
     QVector <ObjectElement *> objects;
+    QVector <ActorElement *> actors;
     explicit WorkScene(QObject *parent = nullptr);
     ~WorkScene();
 
@@ -23,6 +25,7 @@ public slots:
     void spawnNewObject(const QPointF local);
     void spawnNewText(const QPointF local);
     void spawnNewActivation(const QPointF local);
+    void spawnNewActor(const QPointF local);
     void removeLine(QGraphicsItem *line);
     void addLineArrow(int where, QGraphicsItem *line, int type);
 

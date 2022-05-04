@@ -13,6 +13,7 @@ TEMPLATE = app
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    actorelement.cpp \
     classelement.cpp \
     itemobject.cpp \
     main.cpp \
@@ -25,6 +26,7 @@ SOURCES += \
     workview.cpp
 
 HEADERS += \
+    actorelement.h \
     classelement.h \
     classlines.h \
     editor_ui.h \
@@ -35,6 +37,7 @@ HEADERS += \
     workview.h
 
 FORMS += \
+    actorelement.ui \
     classelement.ui \
     editor_ui.ui \
     itemobject.ui \
