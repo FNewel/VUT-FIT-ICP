@@ -8,6 +8,9 @@
 class ClassElement;
 class ObjectElement;
 class ActorElement;
+class SeqMessage;
+class MessageAnchor;
+class ActivationElement;
 
 
 class WorkScene : public QGraphicsScene
@@ -17,6 +20,11 @@ public:
     QVector <ClassElement *> classes;
     QVector <ObjectElement *> objects;
     QVector <ActorElement *> actors;
+    QVector <SeqMessage *> messages;
+    QVector <ActivationElement *> activations;
+
+    bool msgClicked = false;
+    bool actClicked = false;
     explicit WorkScene(QObject *parent = nullptr);
     ~WorkScene();
 

@@ -18,6 +18,12 @@ public:
     explicit ActorElement(QWidget *parent = nullptr);
     ~ActorElement();
     QGraphicsLineItem * createLifeLine(ActorElement *actorPtr);
+    //Dictionary of proxy widgets and message anchors
+    QMap<QGraphicsProxyWidget*, MessageAnchor*> anchors;
+
+    //Vector of proxies (keys) -> needed to find last added in dictionary
+    QVector<QGraphicsProxyWidget *> proxyList;
+
 
 private:
     Ui::ActorElement *ui;
@@ -25,11 +31,6 @@ private:
     QGraphicsLineItem * lifeLine = nullptr;
 
 
-    //Dictionary of proxy widgets and message anchors
-    QMap<QGraphicsProxyWidget*, MessageAnchor*> anchors;
-
-    //Vector of proxies (keys) -> needed to find last added in dictionary
-    QVector<QGraphicsProxyWidget *> proxyList;
 
 private slots:
 
