@@ -12,6 +12,9 @@ ItemObject::ItemObject(QWidget *parent) :
 
 ItemObject::~ItemObject()
 {
+    foreach(SeqMessage *message, __gl__messages){
+        message->updateMessages();
+    }
     delete ui;
 }
 
@@ -113,5 +116,8 @@ void ItemObject::on_lineEdit_textChanged(const QString &arg1)
                 }
             }
         }
+    }
+    foreach(SeqMessage *message, __gl__messages){
+        message->updateMessages();
     }
 }
