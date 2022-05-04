@@ -10,6 +10,10 @@
 #include <QDebug>
 #include <QGraphicsLineItem>
 
+#define SYNC_ARROW 0
+#define ASYNC_ARROW 1
+#define RETURN_ARROW 2
+
 
 WorkView::WorkView(QWidget *parent) : QGraphicsView(parent)
 {
@@ -60,6 +64,12 @@ void WorkView::workspaceViewCustomContextMenuRequested(const QPoint &pos)
         if(message != nullptr){
             QMenu menu(this);
 
+            QAction *syncArrowAction = menu.addAction("Sync Arrow");
+            connect(syncArrowAction, &QAction::triggered, [=](){ this->activeScene->setArrow(message, SYNC_ARROW);});
+            QAction *asyncArrowAction = menu.addAction("Async Arrow");
+            connect(asyncArrowAction, &QAction::triggered, [=](){ this->activeScene->setArrow(message, ASYNC_ARROW);});
+            QAction *returnArrowAction = menu.addAction("Return Arrow");
+            connect(returnArrowAction, &QAction::triggered, [=](){ this->activeScene->setArrow(message, RETURN_ARROW);});
             QAction *removeMessageAction = menu.addAction("Remove Message");
             connect(removeMessageAction, &QAction::triggered, [=](){ this->activeScene->removeMessage(message);});
 

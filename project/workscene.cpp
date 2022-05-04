@@ -11,6 +11,10 @@
 #include <QDebug>
 #include <QGraphicsLineItem>
 
+#define SYNC_ARROW 0
+#define ASYNC_ARROW 1
+#define RETURN_ARROW 2
+
 WorkScene *class_scene;
 WorkScene *seq_scene;
 
@@ -242,12 +246,39 @@ void WorkScene::addLineArrow(int where, QGraphicsItem *line, int type)  // TODO:
     }
 }
 
+void WorkScene::setArrow(QGraphicsItem *msgLine, int arrowType)
+{
+    SeqMessage *message = nullptr;
+    for (int i=0; i < __gl__messages.size(); i++){
+        if(msgLine == __gl__messages.value(i)->messageLine){
+            message = __gl__messages.value(i);
+            break;
+        }
+    }
+
+    if(message){
+        switch (arrowType) {
+            case SYNC_ARROW:
+                message->setArrow(SYNC_ARROW);
+            case ASYNC_ARROW:
+                message->setArrow(ASYNC_ARROW);
+            case RETURN_ARROW:
+                message->setArrow(RETURN_ARROW);
+            default:
+            return;
+        }
+    }
+
+}
+
+
 void WorkScene::removeMessage(QGraphicsItem *msgLine)
 {
     for (int i=0; i < __gl__messages.size(); i++){
         if(msgLine == __gl__messages.value(i)->messageLine){
             delete __gl__messages.value(i);
             __gl__messages.remove(i);
+            break;
         }
     }
 }

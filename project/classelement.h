@@ -14,6 +14,7 @@
 #include "ui_classelement.h"
 #include "itemobject.h"
 #include "classlines.h"
+#include "objectelement.h"
 
 namespace Ui {
 class ClassElement;
@@ -51,5 +52,6 @@ private:
 };
 
 extern WorkScene *class_scene;
+extern WorkScene *seq_scene;
 
 #endif // CLASSELEMENT_H
