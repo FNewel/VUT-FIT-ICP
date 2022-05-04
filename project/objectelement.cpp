@@ -18,10 +18,11 @@ ObjectElement::ObjectElement(QWidget *parent) :
     ui->lineEdit->setPlaceholderText("Object Name");
 
 
-
+    // TODO: idk prečo je tu toto, dám do komentáru
+    /*
     foreach(ClassElement *classElement, class_scene->classes){
         qDebug() << classElement;
-    }
+    }*/
 
     connect(ui->plusLineButton, &QPushButton::clicked, this, &ObjectElement::increaseLifeLine);
     connect(ui->minusLineButton, &QPushButton::clicked, this, &ObjectElement::decreaseLifeLine);

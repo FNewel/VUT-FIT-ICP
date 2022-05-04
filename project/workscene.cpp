@@ -120,9 +120,8 @@ void WorkScene::addLineArrow(int where, QGraphicsItem *line, int type)  // TODO:
         }
     }
 
-
     // Check if only one arrow (connection) is used
-    if (lines.value(lineNum)->sourceConnection != 0 || lines.value(lineNum)->sourceConnection != 0)
+    if (lines.value(lineNum)->sourceConnection != 0 || lines.value(lineNum)->targetConnection != 0)
         return;
 
     // Set arrow (connection) to proper side

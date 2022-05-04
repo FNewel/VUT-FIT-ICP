@@ -31,7 +31,6 @@ void ProjectManager::newProject()
 
 void ProjectManager::openProject()
 {
-    qDebug() << "Open Project";
     // Try create new empty project
     newProject();
 
@@ -46,6 +45,9 @@ void ProjectManager::openProject()
         QMessageBox(QMessageBox::Warning, "Error!", "Wrong input file!", QMessageBox::Ok).exec();
         return;
     }
+
+    // Save .json file path with name
+    filename = inputFilename;
 
     // Load .json file
     QFile inFile(inputFilename);
@@ -65,6 +67,7 @@ void ProjectManager::openProject()
     QJsonObject rootObj = doc.object();
     QJsonObject classDiagram = rootObj.value("class_diagram").toObject();
     QJsonArray cClasses = classDiagram.value("classes").toArray();
+    QJsonArray cConnections = classDiagram.value("connections").toArray();
 
     // Iteration through all classes
     foreach(auto fClass, cClasses){
@@ -74,7 +77,7 @@ void ProjectManager::openProject()
         int tempSy = tempClass.value("position").toObject().value("y").toInt();
 
         QJsonArray tempAtt = tempClass.value("attributes").toArray();   // attributes -> arr (name, type)
-        QJsonArray tempMet = tempClass.value("methods").toArray();   // methods -> arr (name, type)
+        QJsonArray tempMet = tempClass.value("methods").toArray();      // methods -> arr (name, type)
 
 
         // Create new Class element at position with proper name
@@ -96,16 +99,32 @@ void ProjectManager::openProject()
         }
     }
 
-    // TODO: chýbaju lines a šípočky
+    // TODO: chýbaju lines a šípočky - done
+    foreach(auto fConn, cConnections){
+        auto sourcePos = class_scene->classes.at(fConn.toObject().value("source").toInt())->pos();
+        auto targetPos = class_scene->classes.at(fConn.toObject().value("target").toInt())->pos();
+
+        QMouseEvent event(QMouseEvent(QEvent::MouseButtonPress, sourcePos, Qt::RightButton, Qt::RightButton, Qt::NoModifier));
+        QApplication::sendEvent(class_scene->classes.at(fConn.toObject().value("source").toInt()), &event);
+        QMouseEvent event2(QMouseEvent(QEvent::MouseButtonPress, targetPos, Qt::RightButton, Qt::RightButton, Qt::NoModifier));
+        QApplication::sendEvent(class_scene->classes.at(fConn.toObject().value("target").toInt()), &event2);
+
+        // Add source arrow
+        class_scene->addLineArrow(0, class_scene->classes.at(fConn.toObject().value("source").toInt())->lineItems.last()->lineItem, fConn.toObject().value("source_arrow").toInt());
+        // Add target arrow
+        class_scene->addLineArrow(1, class_scene->classes.at(fConn.toObject().value("source").toInt())->lineItems.last()->lineItem, fConn.toObject().value("target_arrow").toInt());
+    }
+
 }
 
 QByteArray ProjectManager::createJson()
 {
     // Create json arrays to save data
-    QJsonArray attArr, metArr, cData, cCon;
-
+    QJsonArray cData, cCon;
 
     foreach(auto fClass, class_scene->classes){
+        QJsonArray attArr, metArr;
+
         // Append attributes to array
         foreach(auto fAtt, fClass->attributes){
             attArr.append(QJsonObject({
@@ -163,7 +182,7 @@ QByteArray ProjectManager::createJson()
 void ProjectManager::saveProject()
 {
     if (filename == "")
-        saveProjectAs(false);
+        saveProjectAs(true);
 
     QFile f(filename);
     f.open(QIODevice::WriteOnly);

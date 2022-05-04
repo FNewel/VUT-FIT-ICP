@@ -19,6 +19,9 @@ ClassElement::~ClassElement()
 
 void ClassElement::linePosCheck(ClassLines *cLine, bool update)
 {
+    if(cLine->target == nullptr)
+        return;
+
     int sPx = cLine->source->pos().x() + cLine->source->width()/2;
     int sPy = cLine->source->pos().y() + cLine->source->height()/2;
     int tPx = cLine->target->pos().x() + cLine->target->width()/2;
@@ -207,7 +210,7 @@ void ClassElement::on_pushButton_clicked()
     // nájde ClassElement v zozname všetkých vytvorených klás, ktorý je rovnaký ako kliknutý element
     foreach(ClassElement *c_name, class_scene->classes){
         if(c_name == this){
-            foreach(auto line, c_name->lineItems){
+            foreach(auto *line, c_name->lineItems){
                 // Remove line from list in source element
                 for(int iSrc = 0; iSrc < line->source->lineItems.count(); iSrc++){
                     if (line == line->source->lineItems.at(iSrc))
@@ -221,6 +224,7 @@ void ClassElement::on_pushButton_clicked()
                 // Remove line and line class
                 delete line->lineItem;
                 delete line;
+                lines.remove(lines.indexOf(line));
             }
         }
     }
