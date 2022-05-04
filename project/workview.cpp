@@ -1,6 +1,7 @@
 #include "workview.h"
 #include "workscene.h"
 #include "classelement.h"
+#include "objectelement.h"
 #include <QGraphicsView>
 #include <QMenu>
 #include <QCursor>
@@ -53,6 +54,20 @@ void WorkView::workspaceViewCustomContextMenuRequested(const QPoint &pos)
         return;
     }
 
+    //Context menu for selected message
+    if (!seq_scene->selectedItems().isEmpty()){
+        auto message = seq_scene->selectedItems().last();
+        if(message != nullptr){
+            QMenu menu(this);
+
+            QAction *removeMessageAction = menu.addAction("Remove Message");
+            connect(removeMessageAction, &QAction::triggered, [=](){ this->activeScene->removeMessage(message);});
+
+            menu.exec(this->mapToGlobal(pos));
+        }
+        return;
+    }
+
     if(this->itemAt(pos))
         return;
 
@@ -78,5 +93,8 @@ void WorkView::workspaceViewCustomContextMenuRequested(const QPoint &pos)
         menu.exec(this->mapToGlobal(pos));
     }
 
+
+
     qDebug() << sender()->objectName();
 }
+

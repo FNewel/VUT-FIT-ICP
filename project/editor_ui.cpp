@@ -31,6 +31,9 @@ MainWindow::MainWindow(QWidget *parent)
     InitWorkView(ui->classView);
     InitWorkView(ui->seqView);
 
+    //Set Class Diagram tab as the default
+    ui->tabWidget->setCurrentIndex(0);
+
 }
 
 
