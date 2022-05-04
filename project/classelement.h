@@ -31,7 +31,7 @@ public:
     QString name = "";
     QVector <ItemObject*> attributes;
     QVector <ItemObject*> methods;
-    QVector <ClassLines*> lineItems; // všetky lines jemu patriace
+    QVector <ClassLines*> lineItems; // všetky lines jemu patriace heh
 
 private slots:
     void on_operationAddButton_clicked();
