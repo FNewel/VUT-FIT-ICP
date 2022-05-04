@@ -8,11 +8,10 @@
 
 class MessageAnchor;
 class SeqMessage;
+class ActivationElement;
 
 extern WorkScene *class_scene;
 extern WorkScene *seq_scene;
-extern bool __gl__msgClicked;
-extern QVector <SeqMessage *>__gl__messages;
 
 
 
@@ -32,6 +31,11 @@ public:
     ~ObjectElement();
 
     Ui::ObjectElement *ui; //ui is public in this case so that message names can find current class of object
+    //Dictionary of proxy widgets and message anchors
+    QMap<QGraphicsProxyWidget*, MessageAnchor*> anchors;
+
+    //Vector of proxies (keys) -> needed to find last added in dictionary
+    QVector<QGraphicsProxyWidget *> proxyList;
 
 private:
     QPoint offset;
@@ -41,11 +45,7 @@ private:
     MessageAnchor *rightAnchor = nullptr;
     QGraphicsProxyWidget *rightAnchorProxy = nullptr;
 
-    //Dictionary of proxy widgets and message anchors
-    QMap<QGraphicsProxyWidget*, MessageAnchor*> anchors;
 
-    //Vector of proxies (keys) -> needed to find last added in dictionary
-    QVector<QGraphicsProxyWidget *> proxyList;
 
 protected:
     virtual void mousePressEvent(QMouseEvent *event);
@@ -71,24 +71,28 @@ class MessageAnchor : public QWidget
     Q_OBJECT
 
 public:
-    explicit MessageAnchor(ObjectElement *parent = nullptr);
+    explicit MessageAnchor(QWidget *parent = nullptr);
     ~MessageAnchor();
     QGraphicsProxyWidget * proxy = nullptr;
     SeqMessage *message = nullptr;
+    ActivationElement *activation = nullptr;
 
 private:
     Ui::MessageAnchor *ui;
+    QGraphicsItem* destructionIcon = nullptr;
+
 
 
 
 protected:
+    virtual void mouseDoubleClickEvent(QMouseEvent *event);
     virtual void mousePressEvent(QMouseEvent *event);
     virtual void moveEvent(QMoveEvent *event);
 };
 
 
 
-//Mssage Class
+//Message Class
 class SeqMessage : public QWidget
 {
     Q_OBJECT
@@ -106,7 +110,27 @@ public:
 
     QComboBox *messageName = nullptr;
     QGraphicsProxyWidget *messageNameProxy = nullptr;
-    QGraphicsPolygonItem *arrowHeadProxy = nullptr;
+    QGraphicsItem *arrowHeadProxy = nullptr;
+
+    MessageAnchor *sourceAnchor = nullptr;
+    MessageAnchor *destAnchor = nullptr;
+
+    QPoint sourcePos;
+    QPoint destPos;
+
+signals:
+
+};
+
+//Activation Class
+class ActivationElement : public QWidget
+{
+    Q_OBJECT
+public:
+    explicit ActivationElement(QWidget *parent = nullptr);
+    ~ActivationElement();
+
+    QGraphicsRectItem *actRect = nullptr;
 
     MessageAnchor *sourceAnchor = nullptr;
     MessageAnchor *destAnchor = nullptr;

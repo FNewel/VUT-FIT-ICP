@@ -8,8 +8,8 @@
 #include <QMap>
 #include <classelement.h>
 
-bool __gl__msgClicked = false;
-QVector <SeqMessage *>__gl__messages;
+bool __gl__msgClicked = false; //First-Second click bool for messages in seq diagram
+bool __gl__actClicked = false; //First-Second click bool for activation in seq diagram
 
 ObjectElement::ObjectElement(QWidget *parent) :
     QWidget(parent),
@@ -172,7 +172,7 @@ QGraphicsLineItem * ObjectElement::createLifeLine(ObjectElement* objectPtr){
 
 void ObjectElement::on_comboBox_currentTextChanged(const QString &arg1)
 {
-    foreach(SeqMessage *message, __gl__messages){
+    foreach(SeqMessage *message, seq_scene->messages){
         message->updateMessages();
     }
 }
