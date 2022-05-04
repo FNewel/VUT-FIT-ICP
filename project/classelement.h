@@ -27,6 +27,8 @@ public:
     explicit ClassElement(QWidget *parent = nullptr);
     ~ClassElement();
 
+    Ui::ClassElement *ui;
+
     QString name = "";
     QVector <ItemObject*> attributes;
     QVector <ItemObject*> methods;
@@ -45,7 +47,6 @@ protected:
     virtual void linePosCheck(ClassLines *lines, bool update);
 
 private:
-    Ui::ClassElement *ui;
     QPoint offset;
 };
 
