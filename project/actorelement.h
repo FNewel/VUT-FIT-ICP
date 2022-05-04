@@ -24,6 +24,8 @@ public:
     //Vector of proxies (keys) -> needed to find last added in dictionary
     QVector<QGraphicsProxyWidget *> proxyList;
 
+    QString name = "";
+
 
 private:
     Ui::ActorElement *ui;
@@ -37,6 +39,8 @@ private slots:
     void increaseLifeLine();
     void decreaseLifeLine();
     void deleteActor();
+
+    void on_lineEdit_textChanged(const QString &arg1);
 
 protected:
     virtual void mousePressEvent(QMouseEvent *event);

@@ -130,3 +130,8 @@ void ActorElement::mouseMoveEvent(QMouseEvent *event)
 
     }
 }
+
+void ActorElement::on_lineEdit_textChanged(const QString &arg1)
+{
+    this->name = arg1;
+}
