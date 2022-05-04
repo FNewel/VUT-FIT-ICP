@@ -27,10 +27,13 @@ class ObjectElement : public QWidget
 public:
     explicit ObjectElement(QWidget *parent = nullptr);
     QGraphicsLineItem * createLifeLine(ObjectElement *objectPtr);
+
+    void updateClasses();
     ~ObjectElement();
 
+    Ui::ObjectElement *ui; //ui is public in this case so that message names can find current class of object
+
 private:
-    Ui::ObjectElement *ui;
     QPoint offset;
     QGraphicsLineItem * lifeLine = nullptr;
     MessageAnchor *leftAnchor = nullptr;
@@ -53,6 +56,8 @@ private slots:
     void increaseLifeLine();
     void decreaseLifeLine();
     void deleteObject();
+
+    void on_comboBox_currentTextChanged(const QString &arg1);
 };
 
 
@@ -66,7 +71,7 @@ class MessageAnchor : public QWidget
     Q_OBJECT
 
 public:
-    explicit MessageAnchor(QWidget *parent = nullptr);
+    explicit MessageAnchor(ObjectElement *parent = nullptr);
     ~MessageAnchor();
     QGraphicsProxyWidget * proxy = nullptr;
     SeqMessage *message = nullptr;
@@ -91,9 +96,17 @@ public:
     explicit SeqMessage(QWidget *parent = nullptr);
     ~SeqMessage();
 
+    void addComboBox();
+    void updateMessages();
+    void updateCBoxLoc();
+    void updateArrowHead();
+    void setArrow(int arrowType);
+
     QGraphicsLineItem *messageLine = nullptr;
 
     QComboBox *messageName = nullptr;
+    QGraphicsProxyWidget *messageNameProxy = nullptr;
+    QGraphicsPolygonItem *arrowHeadProxy = nullptr;
 
     MessageAnchor *sourceAnchor = nullptr;
     MessageAnchor *destAnchor = nullptr;

@@ -46,18 +46,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QComboBox" name="comboBox">
-      <item>
-       <property name="text">
-        <string>Test tem</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Test Item 2</string>
-       </property>
-      </item>
-     </widget>
+     <widget class="QComboBox" name="comboBox"/>
     </item>
     <item>
      <widget class="QFrame" name="frame_2">

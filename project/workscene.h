@@ -25,6 +25,7 @@ public slots:
     void spawnNewActivation(const QPointF local);
     void removeLine(QGraphicsItem *line);
     void addLineArrow(int where, QGraphicsItem *line, int type);
+    void setArrow(QGraphicsItem *msgLine, int arrowType);
     void removeMessage(QGraphicsItem *msgLine);
 };
 

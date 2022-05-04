@@ -14,6 +14,7 @@
 #include "ui_classelement.h"
 #include "itemobject.h"
 #include "classlines.h"
+#include "objectelement.h"
 
 namespace Ui {
 class ClassElement;
@@ -32,7 +33,7 @@ public:
     QString name = "";
     QVector <ItemObject*> attributes;
     QVector <ItemObject*> methods;
-    QVector <ClassLines*> lineItems; // všetky lines jemu patriace
+    QVector <ClassLines*> lineItems; // všetky lines jemu patriace heh
 
 private slots:
     void on_operationAddButton_clicked();
@@ -51,5 +52,6 @@ private:
 };
 
 extern WorkScene *class_scene;
+extern WorkScene *seq_scene;
 
 #endif // CLASSELEMENT_H

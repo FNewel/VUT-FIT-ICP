@@ -7,7 +7,7 @@
 
 
 
-MessageAnchor::MessageAnchor(QWidget *parent) :
+MessageAnchor::MessageAnchor(ObjectElement *parent) :
     QWidget(parent),
     ui(new Ui::MessageAnchor)
 {
@@ -42,10 +42,10 @@ void MessageAnchor::mousePressEvent(QMouseEvent *event)
             msg->destPos = this->pos()+QPoint(8,8);
 
             QBrush brush = QBrush(Qt::black);
-            QPen pen = QPen(brush, 6);
+            QPen pen = QPen(brush, 3);
             QGraphicsLineItem *newLine = seq_scene->addLine(msg->sourcePos.x(), msg->sourcePos.y(), msg->destPos.x(), msg->destPos.y(), pen);
             msg->messageLine = newLine;
-            msg->messageName = new QComboBox();
+            msg->addComboBox();
             this->message = msg;
             msg->sourceAnchor->message = msg;
             msg->messageLine->setFlag(QGraphicsItem::ItemIsSelectable);
@@ -62,9 +62,15 @@ void MessageAnchor::moveEvent(QMoveEvent *event)
         QLineF newMsgLine;
         if (this->message->sourceAnchor == this){
             newMsgLine = QLineF(event->pos()+QPoint(8,8), this->message->messageLine->line().p2());
+            this->message->sourcePos = event->pos()+QPoint(8,8);
+            this->message->updateCBoxLoc();
+            this->message->updateArrowHead();
         }
         if (this->message->destAnchor == this){
             newMsgLine = QLineF(this->message->messageLine->line().p1(), event->pos()+QPoint(8,8));
+            this->message->destPos = event->pos()+QPoint(8,8);
+            this->message->updateCBoxLoc();
+            this->message->updateArrowHead();
         }
         message->messageLine->setLine(newMsgLine);
     }

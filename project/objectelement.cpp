@@ -6,6 +6,7 @@
 #include <QMouseEvent>
 #include <QPushButton>
 #include <QMap>
+#include <classelement.h>
 
 bool __gl__msgClicked = false;
 QVector <SeqMessage *>__gl__messages;
@@ -18,11 +19,9 @@ ObjectElement::ObjectElement(QWidget *parent) :
     ui->lineEdit->setPlaceholderText("Object Name");
 
 
-    // TODO: idk prečo je tu toto, dám do komentáru
-    /*
     foreach(ClassElement *classElement, class_scene->classes){
-        qDebug() << classElement;
-    }*/
+        ui->comboBox->addItem(classElement->name);
+    }
 
     connect(ui->plusLineButton, &QPushButton::clicked, this, &ObjectElement::increaseLifeLine);
     connect(ui->minusLineButton, &QPushButton::clicked, this, &ObjectElement::decreaseLifeLine);
@@ -73,11 +72,11 @@ void ObjectElement::increaseLifeLine()
 
         this->leftAnchor = new MessageAnchor(this);
         this->leftAnchorProxy = seq_scene->addWidget(this->leftAnchor);
-        this->leftAnchorProxy->setPos(QPointF(this->pos().x()-8, this->pos().y()+(this->height()/2)));
+        this->leftAnchorProxy->setPos(QPointF(this->pos().x()-8, this->pos().y()+(this->height()-50)));
 
         this->rightAnchor = new MessageAnchor(this);
         this->rightAnchorProxy = seq_scene->addWidget(this->rightAnchor);
-        this->rightAnchorProxy->setPos(QPointF(this->pos().x()+this->width()-7, this->pos().y()+(this->height()/2)));
+        this->rightAnchorProxy->setPos(QPointF(this->pos().x()+this->width()-7, this->pos().y()+(this->height()-50)));
         return;
     }
 
@@ -122,6 +121,38 @@ void ObjectElement::deleteObject()
     this->deleteLater();
 }
 
+void ObjectElement::updateClasses(){
+
+    //If not yet in comboBox, add
+    foreach(ClassElement* classElement, class_scene->classes){
+        if(ui->comboBox->findText(classElement->name) == -1)
+            ui->comboBox->addItem(classElement->name);
+
+    }
+    //Remove all items from comboBox that are no longer valid classes
+    //If objects class no longer exists empty the combo box
+    bool deletedLastItem = false;
+    for(int i = 0; i < ui->comboBox->count(); i++){
+        if(deletedLastItem)
+            i--;
+        bool validClass = false;
+        foreach(ClassElement* classElement, class_scene->classes){
+            if(ui->comboBox->itemText((i)) == classElement->name)
+                validClass = true;
+        }
+
+        if (!validClass){
+            if(ui->comboBox->currentText() == ui->comboBox->itemText(i))
+                ui->comboBox->setCurrentIndex(-1);
+            ui->comboBox->removeItem(i);
+            deletedLastItem = true;
+        }else{
+            deletedLastItem = false;
+        }
+        qDebug() << "Infinite Loop Check: " << i;
+    }
+}
+
 QGraphicsLineItem * ObjectElement::createLifeLine(ObjectElement* objectPtr){
     QPoint p1 = QPoint(objectPtr->pos().x()+(objectPtr->width()/2), objectPtr->pos().y()+(objectPtr->height()));
     QPoint p2 = QPoint(objectPtr->pos().x()+(objectPtr->width()/2), objectPtr->pos().y()+(objectPtr->height()) + 50);
@@ -137,4 +168,11 @@ QGraphicsLineItem * ObjectElement::createLifeLine(ObjectElement* objectPtr){
     this->proxyList.append(newProxy);
 
     return lifeLinePtr;
+}
+
+void ObjectElement::on_comboBox_currentTextChanged(const QString &arg1)
+{
+    foreach(SeqMessage *message, __gl__messages){
+        message->updateMessages();
+    }
 }
