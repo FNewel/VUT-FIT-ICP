@@ -11,6 +11,7 @@
 #include "objectelement.h"
 #include <QDebug>
 #include <QGraphicsLineItem>
+#include "editor_ui.h"
 
 WorkScene *class_scene;
 WorkScene *seq_scene;
@@ -22,7 +23,8 @@ WorkScene::WorkScene(QObject *parent) : QGraphicsScene(parent)
     else
         seq_scene = this;
 
-    qDebug() << this->parent()->parent()->parent();
+    MainWindow* mainWindow = dynamic_cast<MainWindow*>(this->parent()->parent()->parent()->parent()->parent());
+    this->projectManager = mainWindow->projectManager;
 }
 
 WorkScene::~WorkScene(){
@@ -33,13 +35,12 @@ WorkScene::~WorkScene(){
 
 void WorkScene::spawnNewClass(const QPointF local)
 {
+    projectManager->saveProjectNow(true);   // SAVE
+
     ClassElement *classElement = new ClassElement();
     QGraphicsProxyWidget* proxyWidget = this->addWidget(classElement);
     proxyWidget->setPos(local);
     classes.append(classElement);
-
-    //ProjectManager::saveProjectNow(true);
-
 }
 
 void WorkScene::spawnNewObject(const QPointF local)

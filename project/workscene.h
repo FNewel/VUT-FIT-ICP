@@ -11,6 +11,7 @@ class ActorElement;
 class SeqMessage;
 class MessageAnchor;
 class ActivationElement;
+class ProjectManager;
 
 
 class WorkScene : public QGraphicsScene
@@ -22,6 +23,8 @@ public:
     QVector <ActorElement *> actors;
     QVector <SeqMessage *> messages;
     QVector <ActivationElement *> activations;
+
+    ProjectManager* projectManager = nullptr;
 
     bool msgClicked = false;
     bool actClicked = false;

@@ -30,20 +30,12 @@ void ProjectManager::saveProjectNow(bool save)
 
     // Save path for later use
     undoPath = tempPath;
+    qDebug() << undoPath;
 
-    // Create path to file, if undo or operation is used
     if (save)
-        saveFile = tempPath + "/temp_undo.json";
+        saveProject(2);
     else
-        saveFile = tempPath + "/temp_redo.json";
-
-    // Create save
-    QByteArray jsonFile = createJson();
-
-    QFile f(saveFile);
-    f.open(QIODevice::WriteOnly);
-    f.write(jsonFile);
-    f.close();
+        saveProject(1);
 }
 
 void ProjectManager::newProject(int value)
@@ -54,30 +46,30 @@ void ProjectManager::newProject(int value)
         if(value == 0){
             // Prompt to save project
             int reply = QMessageBox(QMessageBox::Information, "Save file", "Do you want to save this file?", QMessageBox::Yes|QMessageBox::No).exec();
-            if (reply == 16384){    // Yes button clicked
+            if (reply == 16384) // Yes button clicked
                 saveProject(0);
-            }
         }
         else
             saveProject(value);
 
-        // Delete everything    // TODO :(
-
         // Delete class diagram
-        foreach(auto fClass, class_scene->classes){
+        foreach(auto *fClass, class_scene->classes){
+            qDebug() << "oiiiii";
             // Remove all attributes
-            foreach(auto fAtt, fClass->attributes){
+            foreach(auto *fAtt, fClass->attributes){
                 fClass->attributes.remove(fClass->attributes.indexOf(fAtt));
                 delete fAtt;
             }
 
             // Remove all methods
-            foreach(auto fMeth, fClass->methods){
+            foreach(auto *fMeth, fClass->methods){
                 fClass->methods.remove(fClass->methods.indexOf(fMeth));
                 delete fMeth;
             }
 
             class_scene->classes.remove(class_scene->classes.indexOf(fClass));
+            qDebug() << fClass;
+            fClass->ui->name_input->setText("ahoj");
             delete fClass;
         }
 
@@ -120,7 +112,8 @@ void ProjectManager::openProject(int value)
     }
 
     // Save .json file path with name
-    filename = inputFilename;
+    if (value == 0)
+        filename = inputFilename;
 
     // Load .json file
     QFile inFile(inputFilename);
@@ -172,7 +165,6 @@ void ProjectManager::openProject(int value)
         }
     }
 
-    // TODO: chýbaju lines a šípočky - done
     foreach(auto fConn, cConnections){
         auto sourcePos = class_scene->classes.at(fConn.toObject().value("source").toInt())->pos();
         auto targetPos = class_scene->classes.at(fConn.toObject().value("target").toInt())->pos();
@@ -583,9 +575,6 @@ void ProjectManager::redoAction()
             }
             i++;
         }
-
-
-
     }
 
     // Check if temp file exist, else return

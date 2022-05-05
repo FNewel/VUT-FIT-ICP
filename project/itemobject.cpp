@@ -2,6 +2,7 @@
 #include "ui_itemobject.h"
 #include "classelement.h"
 #include <QDebug>
+#include "projectmanager.h"
 
 ItemObject::ItemObject(QWidget *parent) :
     QWidget(parent),
@@ -20,6 +21,8 @@ ItemObject::~ItemObject()
 
 void ItemObject::on_removeButton_clicked()
 {
+    class_scene->projectManager->saveProjectNow(true);  // SAVE
+
     auto *opFrame = ui->horizontalLayout;
     auto *popFrame = opFrame->parentWidget()->parentWidget()->parentWidget();
     auto *op_popFrame = opFrame->parentWidget()->parentWidget()->parentWidget()->parentWidget();

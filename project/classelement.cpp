@@ -1,4 +1,5 @@
 #include "classelement.h"
+#include "projectmanager.h"
 
 bool isClicked = false;
 QVector <ClassLines*>lines;
@@ -12,6 +13,9 @@ ClassElement::ClassElement(QWidget *parent) :
 
 ClassElement::~ClassElement()
 {
+    qDebug() << "ahoj";
+    qDebug() << class_scene->classes.length();
+
     //Remove pointer to this class element on destruction
     class_scene->classes.removeOne(this);
     //Update objects
@@ -130,6 +134,7 @@ void ClassElement::mousePressEvent(QMouseEvent *event)
 
     // First object
     if(event->buttons() & Qt::RightButton && !isClicked) {
+        class_scene->projectManager->saveProjectNow(true);  // SAVE
         ClassLines *line = new ClassLines();
         line->source = this;
         line->sourcePos = QPoint(this->pos().x()+(this->width()/2), this->pos().y()+(this->height()/2));
@@ -216,6 +221,8 @@ void ClassElement::mouseMoveEvent(QMouseEvent *event)
 // Add method
 void ClassElement::on_operationAddButton_clicked()
 {
+    class_scene->projectManager->saveProjectNow(true);  // SAVE
+
     QFrame *opFrame = ui->operationFrame_operation;
     auto gridLayout = dynamic_cast<QGridLayout*>(opFrame->layout());
     auto *popFrame = opFrame->parentWidget();
@@ -244,6 +251,8 @@ void ClassElement::on_operationAddButton_clicked()
 // Add attribute
 void ClassElement::on_attributeAddButton_clicked()
 {
+    class_scene->projectManager->saveProjectNow(true);  // SAVE
+
     QFrame *opFrame = ui->operationFrame_attribute;
     auto gridLayout = dynamic_cast<QGridLayout*>(opFrame->layout());
     auto *popFrame = opFrame->parentWidget();
@@ -272,6 +281,8 @@ void ClassElement::on_attributeAddButton_clicked()
 // remove class
 void ClassElement::on_pushButton_clicked()
 {
+    class_scene->projectManager->saveProjectNow(true);  // SAVE
+
     // nájde ClassElement v zozname všetkých vytvorených klás, ktorý je rovnaký ako kliknutý element
     foreach(ClassElement *c_name, class_scene->classes){
         if(c_name == this){
@@ -304,7 +315,6 @@ void ClassElement::on_name_input_textChanged(const QString &arg1)
             element->name = arg1;
         }
     }
-
 
     foreach(auto object, seq_scene->objects){
         object->updateClasses();
