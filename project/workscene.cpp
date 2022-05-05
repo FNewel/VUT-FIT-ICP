@@ -61,16 +61,6 @@ void WorkScene::spawnNewText(const QPointF local)
     proxyWidget->setPos(local);
 }
 
-void WorkScene::spawnNewActivation(const QPointF local)
-{
-    /*QLabel *testActivation = new QLabel("TestActivation");//TEST WLABEL
-    QGraphicsProxyWidget* proxyWidget = this->addWidget(testActivation);
-    proxyWidget->setPos(local);*/
-
-    QGraphicsRectItem *activation = seq_scene->addRect(local.x(), local.y(), 20,20);
-    activation->setFlags(QGraphicsItem::ItemIsMovable);
-}
-
 void WorkScene::spawnNewActor(const QPointF local)
 {
 

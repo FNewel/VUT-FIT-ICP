@@ -90,6 +90,7 @@ void ObjectElement::increaseLifeLine()
     //Attach anchor to the end of the line
     MessageAnchor * newAnchor = new MessageAnchor(this);
     QGraphicsProxyWidget * newProxy = seq_scene->addWidget(newAnchor);
+    newProxy->setZValue(2);
     newAnchor->proxy = newProxy;
     newProxy->setPos(this->lifeLine->pos()+p2Point-QPoint(7,0));
     this->anchors.insert(newProxy, newAnchor);
@@ -159,9 +160,11 @@ QGraphicsLineItem * ObjectElement::createLifeLine(ObjectElement* objectPtr){
     QLine lifeLine = QLine(p1, p2);
     QPen dashLine = QPen(Qt::DashLine);
     QGraphicsLineItem *lifeLinePtr = seq_scene->addLine(lifeLine, dashLine);
+    lifeLinePtr->setZValue(0);
 
     MessageAnchor * newAnchor = new MessageAnchor(this);
     QGraphicsProxyWidget * newProxy = seq_scene->addWidget(newAnchor);
+    newProxy ->setZValue(2);
     newAnchor->proxy = newProxy;
     newProxy->setPos(p2-QPoint(7,0));
     this->anchors.insert(newProxy, newAnchor);

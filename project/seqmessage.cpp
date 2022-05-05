@@ -18,10 +18,15 @@ SeqMessage::SeqMessage(QWidget *parent) : QWidget(parent)
 
 SeqMessage::~SeqMessage()
 {
-    this->sourceAnchor->message = nullptr;
-    this->destAnchor->message = nullptr;
+    if(this->sourceAnchor)
+        this->sourceAnchor->message = nullptr;
+
+    if(this->destAnchor)
+          this->destAnchor->message = nullptr;
+
     if(this->messageLine)
         delete this->messageLine;
+
     if(this->messageName)
         delete this->messageName;
 }
@@ -130,6 +135,7 @@ void SeqMessage::setArrow(int arrowType)
         QPolygon arrowHead;
         arrowHead << QPoint(-10,-10) << QPoint(-10,10) << QPoint(0,0);
         QGraphicsPolygonItem *polygonProxy = seq_scene->addPolygon(arrowHead, penSolid, brush);
+        polygonProxy->setZValue(3);
         this->arrowHeadProxy = polygonProxy;
         this->arrowHeadProxy->setParentItem(this->messageLine);
         this->updateArrowHead();
@@ -139,6 +145,8 @@ void SeqMessage::setArrow(int arrowType)
         QLine line2 = QLine(-10,10,0,0);
         QGraphicsLineItem *line1Proxy = seq_scene->addLine(line1, penSolid);
         QGraphicsLineItem *line2Proxy = seq_scene->addLine(line2, penSolid);
+        line1Proxy->setZValue(3);
+        line2Proxy->setZValue(3);
         line2Proxy->setParentItem(line1Proxy);
         line1Proxy->setPos(this->destPos);
         this->arrowHeadProxy = line1Proxy;
@@ -149,4 +157,5 @@ void SeqMessage::setArrow(int arrowType)
         this->setArrow(ASYNC_ARROW);
         this->messageLine->setPen(penDashed);
     }
+    this->messageType = arrowType;
 }

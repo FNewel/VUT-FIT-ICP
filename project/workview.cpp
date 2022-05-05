@@ -96,8 +96,6 @@ void WorkView::workspaceViewCustomContextMenuRequested(const QPoint &pos)
         connect(newActorAction, &QAction::triggered, [=](){ this->activeScene->spawnNewActor(mapToScene(pos));});
         QAction *newObjectAction = menu.addAction("New Object");
         connect(newObjectAction, &QAction::triggered, [=](){ this->activeScene->spawnNewObject(mapToScene(pos));});
-        QAction *newActivationAction = menu.addAction("New Activation");
-        connect(newActivationAction, &QAction::triggered, [=](){ this->activeScene->spawnNewActivation(mapToScene(pos));});
         QAction *newTextAction = menu.addAction("New Text");
         connect(newTextAction, &QAction::triggered, [=](){ this->activeScene->spawnNewText(mapToScene(pos));});
         menu.exec(this->mapToGlobal(pos));

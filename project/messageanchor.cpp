@@ -6,6 +6,7 @@
 #include <QMoveEvent>
 #include <QDebug>
 #include <QGraphicsProxyWidget>
+#include <QPainter>
 
 
 
@@ -41,6 +42,10 @@ MessageAnchor::~MessageAnchor()
     if(this->activation)
         delete this->activation;
 
+    if(this->destructionIcon){
+        delete this->destructionIcon;
+    }
+
 
     delete ui;
 }
@@ -54,6 +59,8 @@ void MessageAnchor::mouseDoubleClickEvent(QMouseEvent *event)
         QLine line2 = QLine(-20,20,20,-20);
         QGraphicsLineItem * line1Proxy = seq_scene->addLine(line1, pen);
         QGraphicsLineItem * line2Proxy = seq_scene->addLine(line2, pen);
+        line1Proxy->setZValue(3);
+        line2Proxy->setZValue(3);
         line2Proxy->setParentItem(line1Proxy);
         this->destructionIcon = line1Proxy;
         this->destructionIcon->setPos(this->pos()+QPoint(this->width()/2,this->height()/2));
@@ -84,6 +91,7 @@ void MessageAnchor::mousePressEvent(QMouseEvent *event)
 
                 QGraphicsLineItem *newLine = seq_scene->addLine(msg->sourcePos.x(), msg->sourcePos.y(), msg->destPos.x(), msg->destPos.y());
                 msg->messageLine = newLine;
+                newLine->setZValue(3);
                 msg->messageLine->setFlag(QGraphicsItem::ItemIsSelectable);
                 msg->setArrow(0);
 
@@ -129,7 +137,7 @@ void MessageAnchor::mousePressEvent(QMouseEvent *event)
                 ActivationElement *newAct = new ActivationElement(this);
                 seq_scene->activations.append(newAct);
                 newAct->sourceAnchor = this;
-                newAct->sourcePos = this->pos();
+                newAct->sourcePos = this->pos() - QPoint(1,1);//Move by 1px so the border loks better with anchors
 
                 seq_scene->actClicked = true;
             }
@@ -148,22 +156,25 @@ void MessageAnchor::mousePressEvent(QMouseEvent *event)
                 if(act != nullptr && this->parent() == act->sourceAnchor->parent()){
 
                     act->destAnchor = this;
-                    act->destPos = this->pos()+QPoint(this->width(),this->height());
+                    act->destPos = this->pos()+QPoint(this->width()+1,this->height()+1);
 
                     //If source anchor is lower than destination anchor, swap them
                     if(act->destPos.y() < act->sourcePos.y()){
                         act->destAnchor = act->sourceAnchor;
                         act->sourceAnchor = this;
 
-                        act->sourcePos = act->sourceAnchor->pos();
-                        act->destPos = act->destAnchor->pos()+QPoint(this->width(),this->height());;
+                        act->sourcePos = act->sourceAnchor->pos()- QPoint(1,1);
+                        act->destPos = act->destAnchor->pos()+QPoint(this->width()+1,this->height()+1);;
 
                         this->activation = act;
                         act->destAnchor->activation = act;
                     }
 
                     //Draw the rectangle
-                    QGraphicsRectItem *newRect = seq_scene->addRect(act->sourcePos.x(), act->sourcePos.y(), act->destPos.x() - act->sourcePos.x(), act->destPos.y() - act->sourcePos.y());
+                    QRect activationRect = QRect(act->sourcePos.x(), act->sourcePos.y(), act->destPos.x() - act->sourcePos.x(), act->destPos.y() - act->sourcePos.y());
+                    QGraphicsRectItem *newRect = seq_scene->addRect(activationRect);
+                    newRect->setBrush(Qt::white);
+                    newRect->setZValue(1);
                     act->actRect = newRect;
                     act->actRect->setFlag(QGraphicsItem::ItemIsSelectable);
 
@@ -207,11 +218,11 @@ void MessageAnchor::moveEvent(QMoveEvent *event)
     if(this->activation){
 
         if (this->activation->sourceAnchor == this){
-            this->activation->sourcePos = event->pos();
+            this->activation->sourcePos = event->pos()- QPoint(1,1);
 
         }
         if (this->activation->destAnchor == this){
-            this->activation->destPos = event->pos()+QPoint(this->width(),this->height());
+            this->activation->destPos = event->pos()+QPoint(this->width()+1,this->height()+1);
         }
 
 
