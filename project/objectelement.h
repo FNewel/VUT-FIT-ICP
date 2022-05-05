@@ -27,6 +27,8 @@ public:
     explicit ObjectElement(QWidget *parent = nullptr);
     QGraphicsLineItem * createLifeLine(ObjectElement *objectPtr);
 
+    QString name = "";
+
     void updateClasses();
     ~ObjectElement();
 
@@ -37,12 +39,16 @@ public:
     //Vector of proxies (keys) -> needed to find last added in dictionary
     QVector<QGraphicsProxyWidget *> proxyList;
 
+    MessageAnchor *leftAnchor = nullptr;
+
+    MessageAnchor *rightAnchor = nullptr;
+
 private:
     QPoint offset;
     QGraphicsLineItem * lifeLine = nullptr;
-    MessageAnchor *leftAnchor = nullptr;
+
     QGraphicsProxyWidget *leftAnchorProxy = nullptr;
-    MessageAnchor *rightAnchor = nullptr;
+
     QGraphicsProxyWidget *rightAnchorProxy = nullptr;
 
 
@@ -58,6 +64,7 @@ private slots:
     void deleteObject();
 
     void on_comboBox_currentTextChanged(const QString &arg1);
+    void on_lineEdit_textChanged(const QString &arg1);
 };
 
 

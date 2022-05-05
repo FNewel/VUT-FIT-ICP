@@ -176,3 +176,8 @@ void ObjectElement::on_comboBox_currentTextChanged(const QString &arg1)
         message->updateMessages();
     }
 }
+
+void ObjectElement::on_lineEdit_textChanged(const QString &arg1)
+{
+    this->name = arg1;
+}
