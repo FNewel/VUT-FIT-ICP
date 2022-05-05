@@ -14,50 +14,109 @@ ClassElement::~ClassElement()
 {
     //Remove pointer to this class element on destruction
     class_scene->classes.removeOne(this);
-    //Update objects
-    foreach(auto object, seq_scene->objects){
-        object->updateClasses();
-    }
     delete ui;
 }
 
 void ClassElement::linePosCheck(ClassLines *cLine, bool update)
 {
+    if(cLine->target == nullptr)
+        return;
+
     int sPx = cLine->source->pos().x() + cLine->source->width()/2;
     int sPy = cLine->source->pos().y() + cLine->source->height()/2;
     int tPx = cLine->target->pos().x() + cLine->target->width()/2;
     int tPy = cLine->target->pos().y() + cLine->target->height()/2;
     int offset = 8;
+    int arrAngle = 0;
+    int arrSouOffsetx = 0;
+    int arrSouOffsety = 0;
+    int arrTarOffsetx = 0;
+    int arrTarOffsety = 0;
+
+    // If arrow is used, set offsets
+    if (cLine->sourceConnection != 0){
+        arrSouOffsetx = 30;
+        arrSouOffsety = 30;
+    }
+    else if(cLine->targetConnection != 0){
+        arrTarOffsetx = 30;
+        arrTarOffsety = 30;
+    }
+
 
     if (abs(sPx - tPx) > abs(sPy - tPy)){
         // Source X
-        if (sPx - tPx < 0)
-            cLine->sourcePos = QPoint(sPx + (cLine->source->width()/2) + offset, sPy);
-        else
-            cLine->sourcePos = QPoint(sPx - (cLine->source->width()/2) - offset, sPy);
+        if (sPx - tPx < 0){ // Source is on left
+            // Set arrow angle and offset
+            if(cLine->sourceConnection != 0)
+                arrAngle = 180;
+            cLine->sourcePos = QPoint(sPx + (cLine->source->width()/2) + offset + arrSouOffsetx, sPy);
+        }
+        else{   // Source is on right
+            // Set arrow angle and offset
+            if(cLine->sourceConnection != 0)
+                arrAngle = 0;
+            cLine->sourcePos = QPoint(sPx - (cLine->source->width()/2) - offset - arrSouOffsetx, sPy);
+        }
 
         //Target X
-        if (tPx - sPx < 0)
-            cLine->targetPos = QPoint(tPx + (cLine->target->width()/2) + offset, tPy);
-        else
-            cLine->targetPos = QPoint(tPx - (cLine->target->width()/2) - offset, tPy);
+        if (tPx - sPx < 0){ // Target is on left
+            // Set arrow angle and offset
+            if(cLine->targetConnection != 0)
+                arrAngle = 180;
+            cLine->targetPos = QPoint(tPx + (cLine->target->width()/2) + offset + arrTarOffsetx, tPy);
+        }
+        else{   // Target is on right
+            // Set arrow angle and offset
+            if(cLine->targetConnection != 0)
+                arrAngle = 0;
+            cLine->targetPos = QPoint(tPx - (cLine->target->width()/2) - offset - arrTarOffsetx, tPy);
+        }
     }
     else {
         // Source Y
-        if (sPy - tPy < 0)
-            cLine->sourcePos = QPoint(sPx, sPy + (cLine->source->height()/2) + offset);
-        else
-            cLine->sourcePos = QPoint(sPx, sPy - (cLine->source->height()/2) - offset);
+        if (sPy - tPy < 0){ // Source is on top
+            // Set arrow angle and offset
+            if(cLine->sourceConnection != 0)
+                arrAngle = 270;
+            cLine->sourcePos = QPoint(sPx, sPy + (cLine->source->height()/2) + offset + arrSouOffsety);
+        }
+        else{   // Source is on bottom
+            if(cLine->sourceConnection != 0)
+                arrAngle = 90;
+            cLine->sourcePos = QPoint(sPx, sPy - (cLine->source->height()/2) - offset - arrSouOffsety);
+        }
 
         // Target Y
-        if (tPy - sPy < 0)
-            cLine->targetPos = QPoint(tPx, tPy + (cLine->target->height()/2) + offset);
-        else
-            cLine->targetPos = QPoint(tPx, tPy - (cLine->target->height()/2) - offset);
+        if (tPy - sPy < 0) {    // Target is on top
+            // Set arrow angle and offset
+            if(cLine->targetConnection != 0){
+                arrAngle = 270;
+            }
+            cLine->targetPos = QPoint(tPx, tPy + (cLine->target->height()/2) + offset + arrTarOffsety);
+        }
+        else{   // Target is on bottom
+            // Set arrow angle and offset
+            if(cLine->targetConnection != 0){
+                arrAngle = 90;
+            }
+            cLine->targetPos = QPoint(tPx, tPy - (cLine->target->height()/2) - offset - arrTarOffsety);
+        }
     }
 
     if(update){
         cLine->lineItem->setLine(cLine->sourcePos.x(), cLine->sourcePos.y(), cLine->targetPos.x(), cLine->targetPos.y());
+
+        foreach(auto child, cLine->lineItem->childItems()){
+            if(cLine->sourceConnection != 0){
+                child->setPos(cLine->sourcePos.x(), cLine->sourcePos.y());
+                child->setRotation(arrAngle);
+            }
+            else{
+                child->setPos(cLine->targetPos.x(), cLine->targetPos.y());
+                child->setRotation(arrAngle);
+            }
+        }
     }
 }
 
@@ -142,7 +201,8 @@ void ClassElement::mouseMoveEvent(QMouseEvent *event)
             foreach(ClassElement *c_name, class_scene->classes){
                 if(c_name == this){
                     foreach(auto *line, c_name->lineItems)
-                        linePosCheck(line, true);
+                        if (line->lineItem != nullptr)
+                            linePosCheck(line, true);
                 }
             }
         }
@@ -211,7 +271,7 @@ void ClassElement::on_pushButton_clicked()
     // nájde ClassElement v zozname všetkých vytvorených klás, ktorý je rovnaký ako kliknutý element
     foreach(ClassElement *c_name, class_scene->classes){
         if(c_name == this){
-            foreach(auto line, c_name->lineItems){
+            foreach(auto *line, c_name->lineItems){
                 // Remove line from list in source element
                 for(int iSrc = 0; iSrc < line->source->lineItems.count(); iSrc++){
                     if (line == line->source->lineItems.at(iSrc))
@@ -225,10 +285,10 @@ void ClassElement::on_pushButton_clicked()
                 // Remove line and line class
                 delete line->lineItem;
                 delete line;
+                lines.remove(lines.indexOf(line));
             }
         }
     }
-
 
     this->deleteLater(); //Using this instead of delete solves crashing on some machines
 }
@@ -239,10 +299,5 @@ void ClassElement::on_name_input_textChanged(const QString &arg1)
         if(element == this){
             element->name = arg1;
         }
-    }
-
-
-    foreach(auto object, seq_scene->objects){
-        object->updateClasses();
     }
 }

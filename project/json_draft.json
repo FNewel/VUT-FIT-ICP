@@ -39,34 +39,39 @@
                 "position": {
                     "x": "$x",
                     "y": "$y"
-                }
+                },
+                "anchors": "$anchors_number"
+            }
+        ],
+        "actors": [
+            {
+                "name": "$actor_name",
+                "position": {
+                    "x": "$x",
+                    "y": "$y"
+                },
+                "anchors": "$anchors_number"
             }
         ],
         "messages": [
             {
                 "target_class": "$class_id     //referencing .json file classes",
                 "id_method": "method_id    //referencing .json file objects",
-                "number": "$message_number",
                 "source": {
                     "id": "$object_id   //referencing .json file objects",
-                    "posion": "$y   //object position - $y"
+                    "position": "$num   //-1 left, -2 right"
                 },
                 "target": {
                     "id": "$object_id   //referencing .json file objects",
-                    "posion": "$y   //object position - $y"
+                    "position": "$num   //-1 left, -2 right"
                 }
             }
         ],
         "activations": [
             {
-                "position": {
-                    "x": "$x",
-                    "y": "$y"
-                },
-                "dimensions": {
-                    "width": "$width",
-                    "height": "$height"
-                }
+                "item": "$object_id   //referencing .json file objects",
+                "source_position": "$num",
+                "target_position": "$num"
             }
         ]
     }

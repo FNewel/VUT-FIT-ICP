@@ -18,14 +18,12 @@
 WorkView::WorkView(QWidget *parent) : QGraphicsView(parent)
 {
     connect(this ,SIGNAL(customContextMenuRequested(const QPoint &)),this,SLOT(workspaceViewCustomContextMenuRequested(const QPoint &)));
-
+    this->setRenderHint(QPainter::Antialiasing);    // Better lines
 }
 
 
 void WorkView::workspaceViewCustomContextMenuRequested(const QPoint &pos)
 {
-    this->setRenderHint(QPainter::Antialiasing);    // Better lines
-
     auto list = class_scene->selectedItems();
     if(!list.empty()){
         QMenu menu(this);
@@ -104,9 +102,5 @@ void WorkView::workspaceViewCustomContextMenuRequested(const QPoint &pos)
         connect(newTextAction, &QAction::triggered, [=](){ this->activeScene->spawnNewText(mapToScene(pos));});
         menu.exec(this->mapToGlobal(pos));
     }
-
-
-
-    qDebug() << sender()->objectName();
 }
 

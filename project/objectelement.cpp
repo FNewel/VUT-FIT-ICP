@@ -19,7 +19,6 @@ ObjectElement::ObjectElement(QWidget *parent) :
     ui->lineEdit->setPlaceholderText("Object Name");
 
 
-
     foreach(ClassElement *classElement, class_scene->classes){
         ui->comboBox->addItem(classElement->name);
     }

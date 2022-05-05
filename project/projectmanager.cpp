@@ -17,27 +17,97 @@ ProjectManager::ProjectManager(QObject *parent) : QObject(parent)
 
 }
 
-void ProjectManager::newProject()
+// save = true - keď sa vykoná nejaká vec
+// save = false - keď klikne ctrlz, uloží kvôli redo
+void ProjectManager::saveProjectNow(bool save)
+{
+    auto tempPath = QDir::currentPath() + "/temp";
+    QString saveFile = "";
+
+    // Check if temp file exist, else create one
+    if (!QDir(tempPath).exists())
+        QDir().mkdir(tempPath);
+
+    // Save path for later use
+    undoPath = tempPath;
+
+    // Create path to file, if undo or operation is used
+    if (save)
+        saveFile = tempPath + "/temp_undo.json";
+    else
+        saveFile = tempPath + "/temp_redo.json";
+
+    // Create save
+    QByteArray jsonFile = createJson();
+
+    QFile f(saveFile);
+    f.open(QIODevice::WriteOnly);
+    f.write(jsonFile);
+    f.close();
+}
+
+void ProjectManager::newProject(int value)
 {
     // Check if project is empty (clean)
     if(!class_scene->classes.empty()){
-        // Prompt to save project
-        int reply = QMessageBox(QMessageBox::Information, "Save file", "Do you want to save this file?", QMessageBox::Yes|QMessageBox::No).exec();
-        if (reply == 16384){    // Yes button clicked
-            saveProject();
+
+        if(value == 0){
+            // Prompt to save project
+            int reply = QMessageBox(QMessageBox::Information, "Save file", "Do you want to save this file?", QMessageBox::Yes|QMessageBox::No).exec();
+            if (reply == 16384){    // Yes button clicked
+                saveProject(0);
+            }
         }
+        else
+            saveProject(value);
 
         // Delete everything    // TODO :(
+
+        // Delete class diagram
+        foreach(auto fClass, class_scene->classes){
+            // Remove all attributes
+            foreach(auto fAtt, fClass->attributes){
+                fClass->attributes.remove(fClass->attributes.indexOf(fAtt));
+                delete fAtt;
+            }
+
+            // Remove all methods
+            foreach(auto fMeth, fClass->methods){
+                fClass->methods.remove(fClass->methods.indexOf(fMeth));
+                delete fMeth;
+            }
+
+            class_scene->classes.remove(class_scene->classes.indexOf(fClass));
+            delete fClass;
+        }
+
+        // Remove all lines
+        foreach(auto *line, lines){
+            lines.remove(lines.indexOf(line));
+            delete line->lineItem;
+            delete line;
+        }
     }
 }
 
-void ProjectManager::openProject()
+// flag = 0 - basic open project
+// 1 - undo open
+// 2 - redo open
+void ProjectManager::openProject(int value)
 {
-    qDebug() << "Open Project";
-    // Try create new empty project
-    newProject();
+    qDebug() << value;
 
-    auto inputFilename =QFileDialog::getOpenFileName();
+    // Try create new empty project
+    newProject(value);
+
+    QString inputFilename = "";
+
+    if (value == 0)
+        inputFilename = QFileDialog::getOpenFileName();
+    else if(value == 1)
+        inputFilename = undoPath + "/temp_undo.json";
+    else
+        inputFilename = undoPath + "/temp_redo.json";
 
     // If no file is selected
     if(inputFilename.isEmpty())
@@ -48,6 +118,9 @@ void ProjectManager::openProject()
         QMessageBox(QMessageBox::Warning, "Error!", "Wrong input file!", QMessageBox::Ok).exec();
         return;
     }
+
+    // Save .json file path with name
+    filename = inputFilename;
 
     // Load .json file
     QFile inFile(inputFilename);
@@ -67,6 +140,7 @@ void ProjectManager::openProject()
     QJsonObject rootObj = doc.object();
     QJsonObject classDiagram = rootObj.value("class_diagram").toObject();
     QJsonArray cClasses = classDiagram.value("classes").toArray();
+    QJsonArray cConnections = classDiagram.value("connections").toArray();
 
     // Iteration through all classes
     foreach(auto fClass, cClasses){
@@ -76,7 +150,7 @@ void ProjectManager::openProject()
         int tempSy = tempClass.value("position").toObject().value("y").toInt();
 
         QJsonArray tempAtt = tempClass.value("attributes").toArray();   // attributes -> arr (name, type)
-        QJsonArray tempMet = tempClass.value("methods").toArray();   // methods -> arr (name, type)
+        QJsonArray tempMet = tempClass.value("methods").toArray();      // methods -> arr (name, type)
 
 
         // Create new Class element at position with proper name
@@ -98,16 +172,32 @@ void ProjectManager::openProject()
         }
     }
 
-    // TODO: chýbaju lines a šípočky
+    // TODO: chýbaju lines a šípočky - done
+    foreach(auto fConn, cConnections){
+        auto sourcePos = class_scene->classes.at(fConn.toObject().value("source").toInt())->pos();
+        auto targetPos = class_scene->classes.at(fConn.toObject().value("target").toInt())->pos();
+
+        QMouseEvent event(QMouseEvent(QEvent::MouseButtonPress, sourcePos, Qt::RightButton, Qt::RightButton, Qt::NoModifier));
+        QApplication::sendEvent(class_scene->classes.at(fConn.toObject().value("source").toInt()), &event);
+        QMouseEvent event2(QMouseEvent(QEvent::MouseButtonPress, targetPos, Qt::RightButton, Qt::RightButton, Qt::NoModifier));
+        QApplication::sendEvent(class_scene->classes.at(fConn.toObject().value("target").toInt()), &event2);
+
+        // Add source arrow
+        class_scene->addLineArrow(0, class_scene->classes.at(fConn.toObject().value("source").toInt())->lineItems.last()->lineItem, fConn.toObject().value("source_arrow").toInt());
+        // Add target arrow
+        class_scene->addLineArrow(1, class_scene->classes.at(fConn.toObject().value("source").toInt())->lineItems.last()->lineItem, fConn.toObject().value("target_arrow").toInt());
+    }
+
 }
 
 QByteArray ProjectManager::createJson()
 {
     // Create json arrays to save data
-    QJsonArray attArr, metArr, cData, cCon;
-
+    QJsonArray cData, cCon;
 
     foreach(auto fClass, class_scene->classes){
+        QJsonArray attArr, metArr;
+
         // Append attributes to array
         foreach(auto fAtt, fClass->attributes){
             attArr.append(QJsonObject({
@@ -162,14 +252,25 @@ QByteArray ProjectManager::createJson()
     return doc.toJson();
 }
 
-void ProjectManager::saveProject()
+void ProjectManager::saveProject(int value)
 {
-    if (filename == "")
-        saveProjectAs(false);
+    QString filen = "";
 
-    QFile f(filename);
+    if(value == 0){
+        if (filename == "")
+            saveProjectAs(true);
+        filen = filename;
+    }
+    else if (value == 1)
+        filen = undoPath + "/temp_redo.json";
+    else
+        filen = undoPath + "/temp_undo.json";
+
+    QByteArray jsonFile = createJson();
+
+    QFile f(filen);
     f.open(QIODevice::WriteOnly);
-    f.write(createJson());
+    f.write(jsonFile);
     f.close();
 }
 
@@ -184,12 +285,21 @@ void ProjectManager::saveProjectAs(bool save)
     if(save)
         return;
 
-    saveProject();
+    saveProject(0);
 }
 
 void ProjectManager::undoAction()
 {
     qDebug() << "Undo action";
+
+    // Check if temp file exist, else return
+    if (!QDir(undoPath).exists())
+        return;
+    auto saveFile = undoPath + "/temp_undo.json";
+    if (!QFileInfo::exists(saveFile))
+        return;
+
+    openProject(1);
 }
 
 void ProjectManager::redoAction()
@@ -477,6 +587,15 @@ void ProjectManager::redoAction()
 
 
     }
+
+    // Check if temp file exist, else return
+    if (!QDir(undoPath).exists())
+        return;
+    auto saveFile = undoPath + "/temp_redo.json";
+    if (!QFileInfo::exists(saveFile))
+        return;
+
+    openProject(2);
 }
 
 void ProjectManager::showDocs()
@@ -491,7 +610,7 @@ void ProjectManager::exitApp()
         // Prompt to save project
         int reply = QMessageBox(QMessageBox::Information, "Save file", "Do you want to save this file?", QMessageBox::Yes|QMessageBox::No).exec();
         if (reply == 16384){    // Yes button clicked
-            saveProject();
+            saveProject(0);
         }
     }
 

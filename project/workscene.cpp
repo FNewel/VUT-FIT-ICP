@@ -6,11 +6,12 @@
 #include <QGroupBox>
 #include <QGraphicsProxyWidget>
 #include <QLabel>
-#include "actorelement.h"
 #include "classelement.h"
 #include "objectelement.h"
 #include <QDebug>
 #include <QGraphicsLineItem>
+#include "projectmanager.h"
+#include "editor_ui.h"
 
 WorkScene *class_scene;
 WorkScene *seq_scene;
@@ -21,6 +22,8 @@ WorkScene::WorkScene(QObject *parent) : QGraphicsScene(parent)
         class_scene = this;
     else
         seq_scene = this;
+
+    qDebug() << this->parent()->parent()->parent();
 }
 
 WorkScene::~WorkScene(){
@@ -35,6 +38,9 @@ void WorkScene::spawnNewClass(const QPointF local)
     QGraphicsProxyWidget* proxyWidget = this->addWidget(classElement);
     proxyWidget->setPos(local);
     classes.append(classElement);
+
+    //ProjectManager::saveProjectNow(true);
+
 }
 
 void WorkScene::spawnNewObject(const QPointF local)
@@ -58,23 +64,9 @@ void WorkScene::spawnNewText(const QPointF local)
 
 void WorkScene::spawnNewActivation(const QPointF local)
 {
-    /*QLabel *testActivation = new QLabel("TestActivation");//TEST WLABEL
+    QLabel *testActivation = new QLabel("TestActivation");//TEST WLABEL
     QGraphicsProxyWidget* proxyWidget = this->addWidget(testActivation);
-    proxyWidget->setPos(local);*/
-
-    QGraphicsRectItem *activation = seq_scene->addRect(local.x(), local.y(), 20,20);
-    activation->setFlags(QGraphicsItem::ItemIsMovable);
-}
-
-void WorkScene::spawnNewActor(const QPointF local)
-{
-
-    ActorElement *actorElement = new ActorElement();
-    QGraphicsProxyWidget* proxyWidget = this->addWidget(actorElement);
     proxyWidget->setPos(local);
-    actors.append(actorElement);
-
-
 }
 
 void WorkScene::removeLine(QGraphicsItem *line)
@@ -135,9 +127,8 @@ void WorkScene::addLineArrow(int where, QGraphicsItem *line, int type)  // TODO:
         }
     }
 
-
     // Check if only one arrow (connection) is used
-    if (lines.value(lineNum)->sourceConnection != 0 || lines.value(lineNum)->sourceConnection != 0)
+    if (lines.value(lineNum)->sourceConnection != 0 || lines.value(lineNum)->targetConnection != 0)
         return;
 
     // Set arrow (connection) to proper side
@@ -147,7 +138,7 @@ void WorkScene::addLineArrow(int where, QGraphicsItem *line, int type)  // TODO:
         lines.value(lineNum)->targetConnection = type;
 
 
-    int offset = 32;
+    int offset = 30;
 
     if ((abs(sPx - tPx) > abs(sPy - tPy)) && type != 0){
         if (where == 0){
@@ -257,31 +248,14 @@ void WorkScene::addLineArrow(int where, QGraphicsItem *line, int type)  // TODO:
     }
 }
 
-void WorkScene::setArrow(QGraphicsItem *msgLine, int arrowType)
-{
-    SeqMessage *message = nullptr;
-    for (int i=0; i < seq_scene->messages.size(); i++){
-        if(msgLine == seq_scene->messages.value(i)->messageLine){
-            message = seq_scene->messages.value(i);
-            break;
-        }
-    }
-    if(message){
-        message->setArrow(arrowType);
-    }
-
-}
-
-
 void WorkScene::removeMessage(QGraphicsItem *msgLine)
 {
-    for (int i=0; i < seq_scene->messages.size(); i++){
-        if(msgLine == seq_scene->messages.value(i)->messageLine){
-            delete seq_scene->messages.value(i);
-            seq_scene->messages.remove(i);
-            break;
+    /*for (int i=0; i < __gl__messages.size(); i++){
+        if(msgLine == __gl__messages.value(i)->messageLine){
+            delete __gl__messages.value(i);
+            __gl__messages.remove(i);
         }
-    }
+    }*/
 }
 
 
