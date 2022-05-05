@@ -11,7 +11,7 @@
 
 #define MAX_WORKSPACE_SCALE 10
 
-
+ProjectManager* __gl__projectManager;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -20,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     this->projectManager = new ProjectManager();
+    __gl__projectManager = this->projectManager;
 
     bindSignals(projectManager);
 

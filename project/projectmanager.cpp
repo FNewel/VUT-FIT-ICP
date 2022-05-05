@@ -15,26 +15,97 @@ ProjectManager::ProjectManager(QObject *parent) : QObject(parent)
 
 }
 
-void ProjectManager::newProject()
+// save = true - keď sa vykoná nejaká vec
+// save = false - keď klikne ctrlz, uloží kvôli redo
+void ProjectManager::saveProjectNow(bool save)
+{
+    auto tempPath = QDir::currentPath() + "/temp";
+    QString saveFile = "";
+
+    // Check if temp file exist, else create one
+    if (!QDir(tempPath).exists())
+        QDir().mkdir(tempPath);
+
+    // Save path for later use
+    undoPath = tempPath;
+
+    // Create path to file, if undo or operation is used
+    if (save)
+        saveFile = tempPath + "/temp_undo.json";
+    else
+        saveFile = tempPath + "/temp_redo.json";
+
+    // Create save
+    QByteArray jsonFile = createJson();
+
+    QFile f(saveFile);
+    f.open(QIODevice::WriteOnly);
+    f.write(jsonFile);
+    f.close();
+}
+
+void ProjectManager::newProject(int value)
 {
     // Check if project is empty (clean)
     if(!class_scene->classes.empty()){
-        // Prompt to save project
-        int reply = QMessageBox(QMessageBox::Information, "Save file", "Do you want to save this file?", QMessageBox::Yes|QMessageBox::No).exec();
-        if (reply == 16384){    // Yes button clicked
-            saveProject();
+
+        if(value == 0){
+            // Prompt to save project
+            int reply = QMessageBox(QMessageBox::Information, "Save file", "Do you want to save this file?", QMessageBox::Yes|QMessageBox::No).exec();
+            if (reply == 16384){    // Yes button clicked
+                saveProject(0);
+            }
         }
+        else
+            saveProject(value);
 
         // Delete everything    // TODO :(
+
+        // Delete class diagram
+        foreach(auto fClass, class_scene->classes){
+            // Remove all attributes
+            foreach(auto fAtt, fClass->attributes){
+                fClass->attributes.remove(fClass->attributes.indexOf(fAtt));
+                delete fAtt;
+            }
+
+            // Remove all methods
+            foreach(auto fMeth, fClass->methods){
+                fClass->methods.remove(fClass->methods.indexOf(fMeth));
+                delete fMeth;
+            }
+
+            class_scene->classes.remove(class_scene->classes.indexOf(fClass));
+            delete fClass;
+        }
+
+        // Remove all lines
+        foreach(auto *line, lines){
+            lines.remove(lines.indexOf(line));
+            delete line->lineItem;
+            delete line;
+        }
     }
 }
 
-void ProjectManager::openProject()
+// flag = 0 - basic open project
+// 1 - undo open
+// 2 - redo open
+void ProjectManager::openProject(int value)
 {
-    // Try create new empty project
-    newProject();
+    qDebug() << value;
 
-    auto inputFilename =QFileDialog::getOpenFileName();
+    // Try create new empty project
+    newProject(value);
+
+    QString inputFilename = "";
+
+    if (value == 0)
+        inputFilename = QFileDialog::getOpenFileName();
+    else if(value == 1)
+        inputFilename = undoPath + "/temp_undo.json";
+    else
+        inputFilename = undoPath + "/temp_redo.json";
 
     // If no file is selected
     if(inputFilename.isEmpty())
@@ -179,14 +250,25 @@ QByteArray ProjectManager::createJson()
     return doc.toJson();
 }
 
-void ProjectManager::saveProject()
+void ProjectManager::saveProject(int value)
 {
-    if (filename == "")
-        saveProjectAs(true);
+    QString filen = "";
 
-    QFile f(filename);
+    if(value == 0){
+        if (filename == "")
+            saveProjectAs(true);
+        filen = filename;
+    }
+    else if (value == 1)
+        filen = undoPath + "/temp_redo.json";
+    else
+        filen = undoPath + "/temp_undo.json";
+
+    QByteArray jsonFile = createJson();
+
+    QFile f(filen);
     f.open(QIODevice::WriteOnly);
-    f.write(createJson());
+    f.write(jsonFile);
     f.close();
 }
 
@@ -201,17 +283,35 @@ void ProjectManager::saveProjectAs(bool save)
     if(save)
         return;
 
-    saveProject();
+    saveProject(0);
 }
 
 void ProjectManager::undoAction()
 {
     qDebug() << "Undo action";
+
+    // Check if temp file exist, else return
+    if (!QDir(undoPath).exists())
+        return;
+    auto saveFile = undoPath + "/temp_undo.json";
+    if (!QFileInfo::exists(saveFile))
+        return;
+
+    openProject(1);
 }
 
 void ProjectManager::redoAction()
 {
     qDebug() << "Redo action";
+
+    // Check if temp file exist, else return
+    if (!QDir(undoPath).exists())
+        return;
+    auto saveFile = undoPath + "/temp_redo.json";
+    if (!QFileInfo::exists(saveFile))
+        return;
+
+    openProject(2);
 }
 
 void ProjectManager::showDocs()
@@ -226,7 +326,7 @@ void ProjectManager::exitApp()
         // Prompt to save project
         int reply = QMessageBox(QMessageBox::Information, "Save file", "Do you want to save this file?", QMessageBox::Yes|QMessageBox::No).exec();
         if (reply == 16384){    // Yes button clicked
-            saveProject();
+            saveProject(0);
         }
     }
 
