@@ -14,6 +14,10 @@ ClassElement::~ClassElement()
 {
     //Remove pointer to this class element on destruction
     class_scene->classes.removeOne(this);
+    //Update objects
+    foreach(auto object, seq_scene->objects){
+        object->updateClasses();
+    }
     delete ui;
 }
 
@@ -299,5 +303,10 @@ void ClassElement::on_name_input_textChanged(const QString &arg1)
         if(element == this){
             element->name = arg1;
         }
+    }
+
+
+    foreach(auto object, seq_scene->objects){
+        object->updateClasses();
     }
 }
