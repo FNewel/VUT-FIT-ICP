@@ -83,10 +83,11 @@ public:
     QGraphicsProxyWidget * proxy = nullptr;
     SeqMessage *message = nullptr;
     ActivationElement *activation = nullptr;
+    QGraphicsItem* destructionIcon = nullptr;
 
 private:
     Ui::MessageAnchor *ui;
-    QGraphicsItem* destructionIcon = nullptr;
+
 
 
 
@@ -112,6 +113,8 @@ public:
     void updateCBoxLoc();
     void updateArrowHead();
     void setArrow(int arrowType);
+
+    int messageType = 0;
 
     QGraphicsLineItem *messageLine = nullptr;
 
