@@ -1,17 +1,25 @@
-#include "workscene.h"
-#include <QDebug>
+/**
+ * UML Editor - ICP Project 2022
+ * @file workscene.cpp
+ * @brief popis TODO
+ * @author Ondrej Kováč (xkovac57)
+ * @author Martin Talajka (xtalaj00)
+ */
+
+#include "headers/workscene.h"
+#include "headers/actorelement.h"
+#include "headers/classelement.h"
+#include "headers/objectelement.h"
+#include "headers/editor_ui.h"
+
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsScene>
 #include <QCursor>
 #include <QGroupBox>
 #include <QGraphicsProxyWidget>
 #include <QLabel>
-#include "actorelement.h"
-#include "classelement.h"
-#include "objectelement.h"
-#include <QDebug>
 #include <QGraphicsLineItem>
-#include "editor_ui.h"
+
 
 WorkScene *class_scene;
 WorkScene *seq_scene;
@@ -260,9 +268,6 @@ void WorkScene::addLineArrow(int where, QGraphicsItem *line, int type)  // TODO:
         AggPoi->setPos(posX, posY);
         AggPoi->setRotation(rotate);
         AggPoi->setParentItem(lines.value(lineNum)->lineItem);
-    }
-    else {
-        qDebug() << "UH OH";    // TODO: ak to nebude treba, vymazať
     }
 }
 

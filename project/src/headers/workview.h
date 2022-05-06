@@ -1,10 +1,19 @@
+/**
+ * UML Editor - ICP Project 2022
+ * @file workview.h
+ * @brief popis TODO
+ * @author Ondrej Kováč (xkovac57)
+ * @author Martin Talajka (xtalaj00)
+ */
+
 #ifndef WORKVIEW_H
 #define WORKVIEW_H
+
+#include "workscene.h"
 
 #include <QGraphicsView>
 #include <QObject>
 
-#include <workscene.h>
 
 class WorkView : public QGraphicsView
 {

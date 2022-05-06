@@ -1,12 +1,21 @@
-#include "objectelement.h"
+/**
+ * UML Editor - ICP Project 2022
+ * @file objectelement.cpp
+ * @brief popis TODO
+ * @author Ondrej Kováč (xkovac57)
+ * @author Martin Talajka (xtalaj00)
+ */
+
+#include "headers/objectelement.h"
+#include "headers/classelement.h"
 #include "ui_objectelement.h"
-#include <QDebug>
+
 #include <QGraphicsLineItem>
 #include <QGraphicsProxyWidget>
 #include <QMouseEvent>
 #include <QPushButton>
 #include <QMap>
-#include <classelement.h>
+
 
 bool __gl__msgClicked = false; //First-Second click bool for messages in seq diagram
 bool __gl__actClicked = false; //First-Second click bool for activation in seq diagram
@@ -155,7 +164,6 @@ void ObjectElement::updateClasses(){
         }else{
             deletedLastItem = false;
         }
-        qDebug() << "Infinite Loop Check: " << i;
     }
 }
 

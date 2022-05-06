@@ -1,20 +1,29 @@
+/**
+ * UML Editor - ICP Project 2022
+ * @file classelement.h
+ * @brief popis TODO
+ * @author Ondrej Kováč (xkovac57)
+ * @author Martin Talajka (xtalaj00)
+ */
+
 #ifndef CLASSELEMENT_H
 #define CLASSELEMENT_H
+
+#include "workscene.h"
+#include "classlines.h"
+#include "itemobject.h"
+#include "classlines.h"
+#include "objectelement.h"
+#include "ui_classelement.h"
 
 #include <QWidget>
 #include <QMouseEvent>
 #include <QVector>
-#include "QDebug"
 #include <QPointer>
 #include <QLine>
 #include <QPainter>
 #include <QGraphicsLineItem>
-#include "workscene.h"
-#include "classlines.h"
-#include "ui_classelement.h"
-#include "itemobject.h"
-#include "classlines.h"
-#include "objectelement.h"
+
 
 namespace Ui {
 class ClassElement;

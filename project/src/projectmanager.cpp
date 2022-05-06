@@ -1,17 +1,26 @@
-#include "projectmanager.h"
+/**
+ * UML Editor - ICP Project 2022
+ * @file projectmanager.cpp
+ * @brief popis TODO
+ * @author Ondrej Kováč (xkovac57)
+ * @author Martin Talajka (xtalaj00)
+ */
+
+#include "headers/projectmanager.h"
+#include "headers/workscene.h"
+#include "headers/actorelement.h"
+#include "headers/classelement.h"
+#include "ui_itemobject.h"
+#include "ui_objectelement.h"
+#include "ui_actorelement.h"
+
 #include <QApplication>
-#include <QDebug>
-#include "classelement.h"
 #include <QFileDialog>
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QMessageBox>
-#include "workscene.h"
-#include "ui_itemobject.h"
-#include "ui_objectelement.h"
-#include "ui_actorelement.h"
-#include "actorelement.h"
+
 
 ProjectManager::ProjectManager(QObject *parent) : QObject(parent)
 {
@@ -31,7 +40,6 @@ void ProjectManager::saveProjectNow(bool save)
 
     // Save path for later use
     undoPath = tempPath;
-    qDebug() << undoPath;
 
     if (save)
         saveProject(2);
@@ -55,7 +63,6 @@ void ProjectManager::newProject(int value)
 
         // Delete class diagram
         foreach(auto *fClass, class_scene->classes){
-            qDebug() << "oiiiii";
             // Remove all attributes
             foreach(auto *fAtt, fClass->attributes){
                 fClass->attributes.remove(fClass->attributes.indexOf(fAtt));
@@ -69,7 +76,6 @@ void ProjectManager::newProject(int value)
             }
 
             class_scene->classes.remove(class_scene->classes.indexOf(fClass));
-            qDebug() << fClass;
             fClass->ui->name_input->setText("ahoj");
             delete fClass;
         }
@@ -106,8 +112,6 @@ void ProjectManager::newProject(int value)
 // 2 - redo open
 void ProjectManager::openProject(int value)
 {
-    qDebug() << value;
-
     // Try create new empty project
     newProject(value);
 
@@ -377,8 +381,6 @@ void ProjectManager::openProject(int value)
                     QMouseEvent event(QMouseEvent(QEvent::MouseButtonPress, sourceAnchorPos, Qt::LeftButton, Qt::LeftButton, Qt::NoModifier));
                     QApplication::sendEvent(srcObjectPtr->rightAnchor,&event);
                 }
-            }else{
-                qDebug() << "Not supposed to happen";
             }
 
         }else if(src_object_type == 1){
@@ -415,9 +417,8 @@ void ProjectManager::openProject(int value)
                     QMouseEvent event(QMouseEvent(QEvent::MouseButtonPress, destAnchorPos, Qt::LeftButton, Qt::LeftButton, Qt::NoModifier));
                     QApplication::sendEvent(dstObjectPtr->rightAnchor,&event);
                 }
-            }else{
-                qDebug() << "Not supposed to happen";
             }
+
         }else if(dst_object_type == 1){
             ActorElement *dstActorPtr = nullptr;
             dstActorPtr = seq_scene->actors[dst_object_id];
@@ -845,8 +846,6 @@ void ProjectManager::saveProjectAs(bool save)
 
 void ProjectManager::undoAction()
 {
-    qDebug() << "Undo action";
-
     // Check if temp file exist, else return
     if (!QDir(undoPath).exists())
         return;
@@ -859,9 +858,6 @@ void ProjectManager::undoAction()
 
 void ProjectManager::redoAction()
 {
-    qDebug() << "Redo action";
-
-
     // Check if temp file exist, else return
     if (!QDir(undoPath).exists())
         return;
@@ -874,7 +870,7 @@ void ProjectManager::redoAction()
 
 void ProjectManager::showDocs()
 {
-    qDebug() << "Show Documentation";
+    //qDebug() << "Show Documentation";
 }
 
 void ProjectManager::exitApp()

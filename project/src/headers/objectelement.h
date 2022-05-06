@@ -1,10 +1,20 @@
+/**
+ * UML Editor - ICP Project 2022
+ * @file objectelement.h
+ * @brief popis TODO
+ * @author Ondrej Kováč (xkovac57)
+ * @author Martin Talajka (xtalaj00)
+ */
+
 #ifndef OBJECTELEMENT_H
 #define OBJECTELEMENT_H
+
+#include "workscene.h"
 
 #include <QComboBox>
 #include <QMap>
 #include <QWidget>
-#include "workscene.h"
+
 
 class MessageAnchor;
 class SeqMessage;
@@ -12,7 +22,6 @@ class ActivationElement;
 
 extern WorkScene *class_scene;
 extern WorkScene *seq_scene;
-
 
 
 namespace Ui {

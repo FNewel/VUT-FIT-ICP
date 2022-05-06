@@ -1,13 +1,19 @@
-#include "objectelement.h"
-#include "actorelement.h"
+/**
+ * UML Editor - ICP Project 2022
+ * @file messageanchor.cpp
+ * @brief popis TODO
+ * @author Ondrej Kováč (xkovac57)
+ * @author Martin Talajka (xtalaj00)
+ */
+
+#include "headers/objectelement.h"
+#include "headers/actorelement.h"
 #include "ui_messageanchor.h"
+
 #include <QGraphicsLineItem>
 #include <QMoveEvent>
-#include <QDebug>
 #include <QGraphicsProxyWidget>
 #include <QPainter>
-
-
 
 
 MessageAnchor::MessageAnchor(QWidget *parent) :

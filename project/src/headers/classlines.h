@@ -1,11 +1,21 @@
+/**
+ * UML Editor - ICP Project 2022
+ * @file classlines.h
+ * @brief popis TODO
+ * @author Ondrej Kováč (xkovac57)
+ * @author Martin Talajka (xtalaj00)
+ */
+
 #ifndef CLASSLINES_H
 #define CLASSLINES_H
+
+#include "classelement.h"
 
 #include <QWidget>
 #include <QPointer>
 #include <QGraphicsItem>
 #include <QLine>
-#include "classelement.h"
+
 
 class ClassLines {
 

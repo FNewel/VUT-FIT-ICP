@@ -197,7 +197,7 @@
   <customwidget>
    <class>WorkView</class>
    <extends>QGraphicsView</extends>
-   <header>workview.h</header>
+   <header>src/headers/workview.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

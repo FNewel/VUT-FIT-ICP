@@ -6,12 +6,10 @@ make all -f /mnt/d/PROJECTS/VUT-FIT/4sem/semester/ICP/VUT-FIT-ICP/project/Makefi
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Thu Apr 28 21:16:39 2022
+# Make data base, printed on Fri May  6 18:06:52 2022
 
 # Variables
 
-# makefile (from '/mnt/d/PROJECTS/VUT-FIT/4sem/semester/ICP/VUT-FIT-ICP/project/Makefile', line 2)
-OUTPUT = qMakefile
 # environment
 LC_ALL = C
 # environment
@@ -107,7 +105,7 @@ MAKEFILES :=
 # automatic
 ^F = $(notdir $^)
 # environment
-WT_SESSION = 07896b5c-4687-4cb9-b063-9b06242caf26
+WT_SESSION = 06d7c92e-3e57-4022-9c21-dcbf4e03c5c1
 # environment
 VSCODE_LOG_NATIVE = false
 # automatic
@@ -123,7 +121,7 @@ LS_COLORS = rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:
 # environment
 LESS = -R
 # environment
-WSL_INTEROP = /run/WSL/8_interop
+WSL_INTEROP = /run/WSL/25867_interop
 # 'override' directive
 GNUMAKEFLAGS := 
 # environment
@@ -147,7 +145,7 @@ _ = /mnt/c/Program Files/Microsoft VS Code/bin/code
 # environment
 XDG_RUNTIME_DIR = /mnt/wslg/runtime-dir
 # environment
-VSCODE_IPC_HOOK_CLI = /mnt/wslg/runtime-dir/vscode-ipc-57df88ac-ed2a-4ae1-881d-03acd4f561fe.sock
+VSCODE_IPC_HOOK_CLI = /mnt/wslg/runtime-dir/vscode-ipc-8a4196e4-3bff-4428-a8b3-c9e2065097da.sock
 # environment
 VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
 # environment
@@ -160,8 +158,6 @@ TERM = xterm-256color
 <F = $(notdir $<)
 # default
 SUFFIXES := 
-# makefile (from '/mnt/d/PROJECTS/VUT-FIT/4sem/semester/ICP/VUT-FIT-ICP/project/Makefile', line 1)
-TARGET = project
 # environment
 _P9K_TTY = /dev/pts/0
 # environment
@@ -171,7 +167,7 @@ WSL_DISTRO_NAME = Debian
 # environment
 DIRHISTORY_SIZE = 30
 # variable set hash-table stats:
-# Load=80/1024=8%, Rehash=0, Collisions=2/118=2%
+# Load=78/1024=8%, Rehash=0, Collisions=2/111=2%
 
 # Pattern-specific Variable Values
 
@@ -188,14 +184,14 @@ DIRHISTORY_SIZE = 30
 
 # Files
 
-project: project.pro
+update: project.pro
 #  Implicit rule search has not been done.
 #  Implicit/static pattern stem: ''
 #  File does not exist.
 #  File has been updated.
 #  Needs to be updated (-q is set).
 # automatic
-# @ := project
+# @ := update
 # automatic
 # * := 
 # automatic
@@ -211,16 +207,26 @@ project: project.pro
 # automatic
 # | := 
 # variable set hash-table stats:
-# Load=8/32=25%, Rehash=0, Collisions=1/13=8%
-#  recipe to execute (from '/mnt/d/PROJECTS/VUT-FIT/4sem/semester/ICP/VUT-FIT-ICP/project/Makefile', line 11):
-	qmake -o $(OUTPUT) $(TARGET).pro
+# Load=8/32=25%, Rehash=0, Collisions=1/11=9%
+#  recipe to execute (from '/mnt/d/PROJECTS/VUT-FIT/4sem/semester/ICP/VUT-FIT-ICP/project/Makefile', line 17):
+	qmake -o qMakefile project.pro
 
 clean:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  recipe to execute (from '/mnt/d/PROJECTS/VUT-FIT/4sem/semester/ICP/VUT-FIT-ICP/project/Makefile', line 14):
-	rm -f editor_ui *.o ui_editor_ui.h moc_editor_ui.cpp qMakefile
+#  recipe to execute (from '/mnt/d/PROJECTS/VUT-FIT/4sem/semester/ICP/VUT-FIT-ICP/project/Makefile', line 23):
+	rm -f editor *.o ui_*.h moc_*.cpp moc_*.h .qmake.stash qMakefile
+	rm -rf temp
+	rm -rf doc/html
+	rm -rf 1-xtalaj00-xkovac57.tar.gz
+
+doxygen:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from '/mnt/d/PROJECTS/VUT-FIT/4sem/semester/ICP/VUT-FIT-ICP/project/Makefile', line 20):
+	doxygen doc/Doxyfile
 
 # Not a target:
 .DEFAULT:
@@ -228,35 +234,42 @@ clean:
 #  Modification time never checked.
 #  File has not been updated.
 
-all: project
+all: update
 #  Command line target.
 #  Implicit rule search has not been done.
 #  File does not exist.
 #  File has been updated.
 #  Needs to be updated (-q is set).
 # variable set hash-table stats:
-# Load=0/32=0%, Rehash=0, Collisions=0/5=0%
-#  recipe to execute (from '/mnt/d/PROJECTS/VUT-FIT/4sem/semester/ICP/VUT-FIT-ICP/project/Makefile', line 5):
+# Load=0/32=0%, Rehash=0, Collisions=0/3=0%
+#  recipe to execute (from '/mnt/d/PROJECTS/VUT-FIT/4sem/semester/ICP/VUT-FIT-ICP/project/Makefile', line 11):
 	make -f qMakefile
 
 run: all
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  recipe to execute (from '/mnt/d/PROJECTS/VUT-FIT/4sem/semester/ICP/VUT-FIT-ICP/project/Makefile', line 8):
-	./editor_ui
+#  recipe to execute (from '/mnt/d/PROJECTS/VUT-FIT/4sem/semester/ICP/VUT-FIT-ICP/project/Makefile', line 14):
+	./editor
+
+pack:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from '/mnt/d/PROJECTS/VUT-FIT/4sem/semester/ICP/VUT-FIT-ICP/project/Makefile', line 29):
+	tar -czf 1-xtalaj00-xkovac57.tar.gz doc/Doxyfile examples src README.txt Makefile project.pro
 
 # Not a target:
 project.pro:
 #  Implicit rule search has been done.
-#  Last modified 2022-04-27 01:49:48.3136979
+#  Last modified 2022-05-06 17:21:20.796527
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 /mnt/d/PROJECTS/VUT-FIT/4sem/semester/ICP/VUT-FIT-ICP/project/Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-04-27 01:53:05.0368492
+#  Last modified 2022-05-06 17:53:15.3048114
 #  File has been updated.
 #  Successfully updated.
 
@@ -267,20 +280,20 @@ project.pro:
 #  File has not been updated.
 
 # files hash-table stats:
-# Load=8/1024=1%, Rehash=0, Collisions=0/24=0%
+ 
+# Load=10/1024=1%, Rehash=0, Collisions=0/26=0%
 # VPATH Search Paths
 
 # No 'vpath' search paths.
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 10 / storage = 156 B / avg = 15 B
-# current buf: size = 8162 B / used = 156 B / count = 10 / avg = 15 B
+# strcache buffers: 1 (0) / strings = 12 / storage = 168 B / avg = 14 B
+# current buf: size = 8162 B / used = 168 B / count = 12 / avg = 14 B
 
-# strcache performance: lookups = 21 / hit rate = 52%
- 
+# strcache performance: lookups = 25 / hit rate = 52%
 # hash-table stats:
-# Load=10/8192=0%, Rehash=0, Collisions=0/21=0%
-# Finished Make data base on Thu Apr 28 21:16:39 2022
+# Load=12/8192=0%, Rehash=0, Collisions=0/25=0%
+# Finished Make data base on Fri May  6 18:06:52 2022
 
  
