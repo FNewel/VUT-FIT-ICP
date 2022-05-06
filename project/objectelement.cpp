@@ -33,6 +33,10 @@ ObjectElement::ObjectElement(QWidget *parent) :
 ObjectElement::~ObjectElement()
 {
     //Remove pointer to this object element on destruction
+
+
+
+
     seq_scene->objects.removeOne(this);
     if(this->lifeLine)
         delete this->lifeLine;

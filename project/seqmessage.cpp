@@ -24,6 +24,8 @@ SeqMessage::~SeqMessage()
     if(this->destAnchor)
           this->destAnchor->message = nullptr;
 
+    seq_scene->messages.removeOne(this);
+
     if(this->messageLine)
         delete this->messageLine;
 

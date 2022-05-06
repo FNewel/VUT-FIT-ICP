@@ -10,6 +10,7 @@
 #include "workscene.h"
 #include "ui_itemobject.h"
 #include "ui_objectelement.h"
+#include "ui_actorelement.h"
 #include "actorelement.h"
 
 ProjectManager::ProjectManager(QObject *parent) : QObject(parent)
@@ -138,6 +139,8 @@ void ProjectManager::openProject(int value)
 
     // Process .json file
     QJsonObject rootObj = doc.object();
+
+    //Class Diagram
     QJsonObject classDiagram = rootObj.value("class_diagram").toObject();
     QJsonArray cClasses = classDiagram.value("classes").toArray();
     QJsonArray cConnections = classDiagram.value("connections").toArray();
@@ -187,6 +190,269 @@ void ProjectManager::openProject(int value)
         // Add target arrow
         class_scene->addLineArrow(1, class_scene->classes.at(fConn.toObject().value("source").toInt())->lineItems.last()->lineItem, fConn.toObject().value("target_arrow").toInt());
     }
+
+    //Sequence Diagram
+    QJsonObject seqDiagram = rootObj.value("seq_diagram").toObject();
+    QJsonArray sObjects = seqDiagram.value("objects").toArray();
+    QJsonArray sActors = seqDiagram.value("actors").toArray();
+    QJsonArray sMessages = seqDiagram.value("messages").toArray();
+    QJsonArray sActivations = seqDiagram.value("activations").toArray();
+
+    foreach(auto sObject, sObjects){
+        QJsonObject tempObject = sObject.toObject();
+        QJsonArray tempDestructions = tempObject.value("destructions").toArray();
+        QString tempName = tempObject.value("name").toString();  // name -> str
+        QString tempClassName = tempObject.value("class").toString();  // class -> str
+        int tempSx = tempObject.value("position").toObject().value("x").toInt();
+        int tempSy = tempObject.value("position").toObject().value("y").toInt();
+        int anchors = tempObject.value("anchors").toInt();
+
+
+        // Create new Object element at position with proper name
+        seq_scene->spawnNewObject(QPointF(tempSx, tempSy));
+        seq_scene->objects.last()->ui->lineEdit->setText(tempName);
+
+        //Make sure Class Still Exists (the name was not changed in json)
+        bool class_ok = false;
+        int classIndex = 0;
+        foreach(ClassElement *classElement, class_scene->classes){
+            if(classElement->name == tempClassName){
+                seq_scene->objects.last()->ui->comboBox->setCurrentIndex(classIndex);
+                class_ok = true;
+            }
+            classIndex++;
+        }
+
+        if(!class_ok){
+            seq_scene->objects.last()->ui->comboBox->setCurrentText("///MISSING CLASS///");
+        }
+
+
+        // Add Anchors
+        for(int i = 0; i < anchors; i++){
+            QMetaObject::invokeMethod(seq_scene->objects.last()->ui->plusLineButton, "clicked");
+        }
+
+        foreach(auto sDestruction, tempDestructions){
+            int anchor_id = sDestruction.toInt();
+            QPoint anchorPos = QPoint(seq_scene->objects.last()->pos().x()/2,
+                                      seq_scene->objects.last()->pos().y()+seq_scene->objects.last()->height()+(anchor_id+1)*50);
+            QMouseEvent event(QMouseEvent(QEvent::MouseButtonDblClick, anchorPos, Qt::RightButton, Qt::RightButton, Qt::NoModifier));
+            //DoubleClick
+            QApplication::sendEvent(seq_scene->objects.last()->anchors[seq_scene->objects.last()->proxyList[anchor_id]],&event);
+        }
+
+
+
+    }
+
+    foreach(auto sActor, sActors){
+        QJsonObject tempActor = sActor.toObject();
+        QJsonArray tempDestructions = tempActor.value("destructions").toArray();
+        QString tempName = tempActor.value("name").toString();  // name -> str
+        int tempSx = tempActor.value("position").toObject().value("x").toInt();
+        int tempSy = tempActor.value("position").toObject().value("y").toInt();
+        int anchors = tempActor.value("anchors").toInt();
+
+
+        // Create new Actor element at position with proper name
+        seq_scene->spawnNewActor(QPointF(tempSx, tempSy));
+        seq_scene->actors.last()->ui->lineEdit->setText(tempName);
+
+        // Add Anchors
+
+        for(int i = 0; i < anchors; i++){
+
+            QMetaObject::invokeMethod(seq_scene->actors.last()->ui->plusLineButton, "clicked");
+
+        }
+
+        //Add destruction Icons
+        foreach(auto sDestruction, tempDestructions){
+            int anchor_id = sDestruction.toInt();
+
+            QPoint anchorPos = QPoint(seq_scene->actors.last()->pos().x()/2,
+                                      seq_scene->actors.last()->pos().y()+seq_scene->actors.last()->height()+(anchor_id+1)*50);
+            QMouseEvent event(QMouseEvent(QEvent::MouseButtonDblClick, anchorPos, Qt::RightButton, Qt::RightButton, Qt::NoModifier));
+            //DoubleClick
+            QApplication::sendEvent(seq_scene->actors.last()->anchors[seq_scene->actors.last()->proxyList[anchor_id]],&event);
+        }
+
+    }
+
+    //Activations
+    foreach(auto sActivation, sActivations){
+        QJsonObject tempActivation = sActivation.toObject();
+        int item = tempActivation.value("item").toInt();
+        int item_type = tempActivation.value("item_type").toInt();
+        int source = tempActivation.value("source").toInt();
+        int target = tempActivation.value("target").toInt();
+
+        if(item_type == 0){
+            ObjectElement *srcObjectPtr = nullptr;
+            srcObjectPtr = seq_scene->objects[item];
+
+            //First Click
+            QPoint sourceAnchorPos = srcObjectPtr->anchors[srcObjectPtr->proxyList[source]]->pos() + QPoint(8,8);
+
+            QMouseEvent event(QMouseEvent(QEvent::MouseButtonPress, sourceAnchorPos, Qt::RightButton, Qt::RightButton, Qt::NoModifier));
+            QApplication::sendEvent(srcObjectPtr->anchors[srcObjectPtr->proxyList[source]],&event);
+
+            //Second Click
+            QPoint destAnchorPos = srcObjectPtr->anchors[srcObjectPtr->proxyList[target]]->pos() + QPoint(8,8);
+
+            event = (QMouseEvent(QEvent::MouseButtonPress, destAnchorPos, Qt::RightButton, Qt::RightButton, Qt::NoModifier));
+            QApplication::sendEvent(srcObjectPtr->anchors[srcObjectPtr->proxyList[target]],&event);
+
+
+        }else if(item_type == 1){
+            ActorElement *srcActorPtr = nullptr;
+            srcActorPtr = seq_scene->actors[item];
+
+            //First Click
+            QPoint sourceAnchorPos = srcActorPtr->anchors[srcActorPtr->proxyList[source]]->pos() + QPoint(8,8);
+
+            QMouseEvent event(QMouseEvent(QEvent::MouseButtonPress, sourceAnchorPos, Qt::RightButton, Qt::RightButton, Qt::NoModifier));
+            QApplication::sendEvent(srcActorPtr->anchors[srcActorPtr->proxyList[source]],&event);
+
+            //Second Click
+            QPoint destAnchorPos = srcActorPtr->anchors[srcActorPtr->proxyList[target]]->pos() + QPoint(8,8);
+
+            event = (QMouseEvent(QEvent::MouseButtonPress, destAnchorPos, Qt::RightButton, Qt::RightButton, Qt::NoModifier));
+            QApplication::sendEvent(srcActorPtr->anchors[srcActorPtr->proxyList[target]],&event);
+
+        }
+    }
+
+    //Messages
+    foreach(auto sMessage, sMessages){
+
+        QJsonObject tempMessage = sMessage.toObject();
+        int target_class = tempMessage.value("target_class").toInt(); //TODO possibly not needed
+        int target_method = tempMessage.value("id_method").toInt();
+        int msg_type = tempMessage.value("msg_type").toInt();
+        int src_object_id = tempMessage.value("source").toObject().value("id").toInt();
+        int src_object_type = tempMessage.value("source").toObject().value("type").toInt();
+        int src_position = tempMessage.value("source").toObject().value("position").toInt();
+        int dst_object_id = tempMessage.value("target").toObject().value("id").toInt();
+        int dst_object_type = tempMessage.value("target").toObject().value("type").toInt();
+        int dst_position = tempMessage.value("target").toObject().value("position").toInt();
+
+
+
+        // Create new Message from source to destination, set type
+
+
+        //Get position of source anchor + click
+        QPoint sourceAnchorPos;
+        if(src_object_type == 0){
+            ObjectElement *srcObjectPtr = nullptr;
+            srcObjectPtr = seq_scene->objects[src_object_id];
+            if(src_position >= 0){
+                sourceAnchorPos = srcObjectPtr->anchors[srcObjectPtr->proxyList[src_position]]->pos() + QPoint(8,8);
+
+                QMouseEvent event(QMouseEvent(QEvent::MouseButtonPress, sourceAnchorPos, Qt::LeftButton, Qt::LeftButton, Qt::NoModifier));
+                QApplication::sendEvent(srcObjectPtr->anchors[srcObjectPtr->proxyList[src_position]],&event);
+            }else if (src_position > -3){
+                if(src_position == -1){
+
+                    sourceAnchorPos = srcObjectPtr->leftAnchor->pos()+QPoint(8,8);
+
+                    QMouseEvent event(QMouseEvent(QEvent::MouseButtonPress, sourceAnchorPos, Qt::LeftButton, Qt::LeftButton, Qt::NoModifier));
+                    QApplication::sendEvent(srcObjectPtr->leftAnchor,&event);
+                }else{
+
+                    sourceAnchorPos = srcObjectPtr->rightAnchor->pos()+QPoint(8,8);
+
+                    QMouseEvent event(QMouseEvent(QEvent::MouseButtonPress, sourceAnchorPos, Qt::LeftButton, Qt::LeftButton, Qt::NoModifier));
+                    QApplication::sendEvent(srcObjectPtr->rightAnchor,&event);
+                }
+            }else{
+                qDebug() << "Not supposed to happen";
+            }
+
+        }else if(src_object_type == 1){
+            ActorElement *srcActorPtr = nullptr;
+            srcActorPtr = seq_scene->actors[src_object_id];
+            if(src_position >= 0){
+                sourceAnchorPos = srcActorPtr->anchors[srcActorPtr->proxyList[src_position]]->pos() + QPoint(8,8);
+
+                QMouseEvent event(QMouseEvent(QEvent::MouseButtonPress, sourceAnchorPos, Qt::LeftButton, Qt::LeftButton, Qt::NoModifier));
+                QApplication::sendEvent(srcActorPtr->anchors[srcActorPtr->proxyList[src_position]],&event);
+            }
+        }
+
+        //Get position of destination anchor + click
+        QPoint destAnchorPos;
+        if(dst_object_type == 0){
+            ObjectElement *dstObjectPtr = nullptr;
+            dstObjectPtr = seq_scene->objects[dst_object_id];
+            if(dst_position >= 0){
+                destAnchorPos = dstObjectPtr->anchors[dstObjectPtr->proxyList[dst_position]]->pos() + QPoint(8,8);
+
+                QMouseEvent event(QMouseEvent(QEvent::MouseButtonPress, destAnchorPos, Qt::LeftButton, Qt::LeftButton, Qt::NoModifier));
+                QApplication::sendEvent(dstObjectPtr->anchors[dstObjectPtr->proxyList[dst_position]],&event);
+            }else if (dst_position > -3){
+                if(dst_position == -1){
+
+                    destAnchorPos = dstObjectPtr->leftAnchor->pos()+QPoint(8,8);
+
+                    QMouseEvent event(QMouseEvent(QEvent::MouseButtonPress, destAnchorPos, Qt::LeftButton, Qt::LeftButton, Qt::NoModifier));
+                    QApplication::sendEvent(dstObjectPtr->leftAnchor,&event);
+                }else{
+                    destAnchorPos = dstObjectPtr->rightAnchor->pos()+QPoint(8,8);
+
+                    QMouseEvent event(QMouseEvent(QEvent::MouseButtonPress, destAnchorPos, Qt::LeftButton, Qt::LeftButton, Qt::NoModifier));
+                    QApplication::sendEvent(dstObjectPtr->rightAnchor,&event);
+                }
+            }else{
+                qDebug() << "Not supposed to happen";
+            }
+        }else if(dst_object_type == 1){
+            ActorElement *dstActorPtr = nullptr;
+            dstActorPtr = seq_scene->actors[dst_object_id];
+            if(dst_position >= 0){
+                destAnchorPos = dstActorPtr->anchors[dstActorPtr->proxyList[dst_position]]->pos() + QPoint(8,8);
+                QMouseEvent event(QMouseEvent(QEvent::MouseButtonPress, destAnchorPos, Qt::LeftButton, Qt::LeftButton, Qt::NoModifier));
+                QApplication::sendEvent(dstActorPtr->anchors[dstActorPtr->proxyList[dst_position]],&event);
+            }
+        }
+
+        //Curretnly created message
+        SeqMessage *createdMsg = seq_scene->messages.last();
+
+        //Set message type
+        createdMsg->setArrow(msg_type);
+
+        //if target is an object, set method
+        if(dst_object_type == 0){
+            ClassElement *targetClass = nullptr;
+            ObjectElement *dstObjectPtr = seq_scene->objects[dst_object_id];
+            QString className = dstObjectPtr->ui->comboBox->currentText();
+
+            foreach(ClassElement *classElement, class_scene->classes){
+                if (classElement->name == className){
+                    targetClass = classElement;
+                }
+            }
+            //Check if class still exists
+            if(targetClass){
+                if(targetClass->methods.count() > target_method){
+                    createdMsg->messageName->setCurrentIndex(target_method);
+                }else{
+                    createdMsg->messageName->setCurrentIndex(-1); //If class was found, but does not have enough methods, no index of method
+                }
+
+            }else{
+                createdMsg->messageName->setCurrentIndex(-1); //If no class was found, no index of method
+            }
+        }
+
+
+
+
+    }
+
 
 }
 
@@ -240,17 +506,28 @@ QByteArray ProjectManager::createJson()
         {"connections", cCon}
     };
 
+
+    //Clean unfinished activations and messages from vectors
+    if(!seq_scene->activations.empty() && seq_scene->activations.last()->destAnchor == nullptr){
+        delete seq_scene->activations.last();
+        seq_scene->actClicked = false;
+    }
+    if(!seq_scene->messages.empty() && seq_scene->messages.last()->destAnchor == nullptr){
+        delete seq_scene->messages.last();
+        seq_scene->msgClicked = false;
+    }
+
     QJsonArray sObjects, sActors, sMessages, sActivations;
     //Each Object
-    foreach(auto fObject, seq_scene->objects){
+    foreach(ObjectElement* fObject, seq_scene->objects){
 
         QJsonArray oDestructions;
         QVector<int> destructions;
         int anchorAmount = 0;
         //For each anchor add to counter
         //For each desturction anchor, append to list of destructions
-        foreach(MessageAnchor *anchor, fObject->anchors){
-            if(anchor->destructionIcon)
+        foreach(QGraphicsProxyWidget *anchorProxy, fObject->proxyList){
+            if(fObject->anchors[anchorProxy]->destructionIcon)
                 destructions.append(anchorAmount);
             anchorAmount++;
         }
@@ -270,7 +547,7 @@ QByteArray ProjectManager::createJson()
         }));
     }
 
-    foreach(auto fActor, seq_scene->actors){
+    foreach(ActorElement* fActor, seq_scene->actors){
 
         QJsonArray oDestructions;
         QVector<int> destructions;
@@ -297,7 +574,7 @@ QByteArray ProjectManager::createJson()
         }));
     }
 
-    foreach(auto fMessage, seq_scene->messages){
+    foreach(SeqMessage* fMessage, seq_scene->messages){
 
         //If no class was found, -1 will be saved and therefore the message will have no method as well
         int classIndex = -1;
@@ -360,14 +637,10 @@ QByteArray ProjectManager::createJson()
             }else{
                 MessageAnchor *anchorPtr = nullptr;
                 foreach(MessageAnchor* anchor, objectElement->anchors){
-                    qDebug() << "cnt";
-                    qDebug() << anchor->proxy;
-                    qDebug() << fMessage->sourceAnchor->proxy;
                     if(anchor->proxy == fMessage->destAnchor->proxy)
                         anchorPtr = anchor;
                 }
                 if(anchorPtr){
-                    qDebug() << "WUT";
                     dstAnchorIndex = objectElement->proxyList.indexOf(anchorPtr->proxy);
                 }
 
@@ -447,7 +720,7 @@ QByteArray ProjectManager::createJson()
         }));
     }
 
-    foreach(auto fActivation, seq_scene->activations){
+    foreach(ActivationElement *fActivation, seq_scene->activations){
 
         int objectIndex = -1; //Index of Actor/object
         int objectType = -1; // Actor/object

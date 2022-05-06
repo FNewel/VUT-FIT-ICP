@@ -11,6 +11,7 @@ ActivationElement::~ActivationElement()
         this->sourceAnchor->activation = nullptr;
     if(this->destAnchor)
         this->destAnchor->activation = nullptr;
+    seq_scene->activations.removeOne(this);
     if(this->actRect)
         delete this->actRect;
 }

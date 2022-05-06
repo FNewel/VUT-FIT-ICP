@@ -23,12 +23,12 @@ public:
 
     //Vector of proxies (keys) -> needed to find last added in dictionary
     QVector<QGraphicsProxyWidget *> proxyList;
-
+    Ui::ActorElement *ui;
     QString name = "";
 
 
 private:
-    Ui::ActorElement *ui;
+
     QPoint offset;
     QGraphicsLineItem * lifeLine = nullptr;
 

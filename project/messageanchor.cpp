@@ -36,6 +36,23 @@ MessageAnchor::~MessageAnchor()
     }
 
 
+    if(!seq_scene->activations.empty()){
+        if(seq_scene->activations.last()->sourceAnchor == this){
+            ActivationElement *actPtr = seq_scene->activations.last();
+            seq_scene->activations.removeLast();
+            delete actPtr;
+        }
+
+    }
+
+    if(!seq_scene->messages.empty()){
+        if(seq_scene->messages.last()->sourceAnchor == this){
+            SeqMessage *msgPtr = seq_scene->messages.last();
+            seq_scene->messages.removeLast();
+            delete msgPtr;
+        }
+
+    }
     if (this->message){
         delete this->message;
     }
@@ -52,21 +69,31 @@ MessageAnchor::~MessageAnchor()
 
 void MessageAnchor::mouseDoubleClickEvent(QMouseEvent *event)
 {
-    if(!this->destructionIcon){
-        QBrush brush = QBrush(Qt::black);
-        QPen pen = QPen(brush, 3);
-        QLine line1 = QLine(20,20,-20,-20);
-        QLine line2 = QLine(-20,20,20,-20);
-        QGraphicsLineItem * line1Proxy = seq_scene->addLine(line1, pen);
-        QGraphicsLineItem * line2Proxy = seq_scene->addLine(line2, pen);
-        line1Proxy->setZValue(3);
-        line2Proxy->setZValue(3);
-        line2Proxy->setParentItem(line1Proxy);
-        this->destructionIcon = line1Proxy;
-        this->destructionIcon->setPos(this->pos()+QPoint(this->width()/2,this->height()/2));
-    }else{
-        delete this->destructionIcon;
-        this->destructionIcon = nullptr;
+    //side anchor check
+    ObjectElement *objectElement = nullptr;
+    bool isSideAnchor = false;
+    if(QString::fromUtf8(this->parent()->metaObject()->className()) == "ObjectElement"){
+        objectElement = dynamic_cast<ObjectElement*>(this->parent());
+        if(this == objectElement->leftAnchor || this == objectElement->rightAnchor)
+            isSideAnchor = true;
+    }
+    if(!isSideAnchor){
+        if(!this->destructionIcon){
+            QBrush brush = QBrush(Qt::black);
+            QPen pen = QPen(brush, 3);
+            QLine line1 = QLine(20,20,-20,-20);
+            QLine line2 = QLine(-20,20,20,-20);
+            QGraphicsLineItem * line1Proxy = seq_scene->addLine(line1, pen);
+            QGraphicsLineItem * line2Proxy = seq_scene->addLine(line2, pen);
+            line1Proxy->setZValue(3);
+            line2Proxy->setZValue(3);
+            line2Proxy->setParentItem(line1Proxy);
+            this->destructionIcon = line1Proxy;
+            this->destructionIcon->setPos(this->pos()+QPoint(this->width()/2,this->height()/2));
+        }else{
+            delete this->destructionIcon;
+            this->destructionIcon = nullptr;
+        }
     }
 }
 
@@ -84,7 +111,7 @@ void MessageAnchor::mousePressEvent(QMouseEvent *event)
             }
         }else{
 
-            if(this->message == nullptr && seq_scene->messages.last()->sourceAnchor != this){
+            if(this->message == nullptr && !seq_scene->messages.empty() && seq_scene->messages.last()->sourceAnchor != this){
                 SeqMessage *msg = seq_scene->messages.last();
                 msg->destAnchor = this;
                 msg->destPos = this->pos()+QPoint(this->width()/2,this->height()/2);
@@ -143,53 +170,73 @@ void MessageAnchor::mousePressEvent(QMouseEvent *event)
             }
         //Second Click
         }else{
-            if(this->activation == nullptr && seq_scene->activations.last()->sourceAnchor != this){
+            bool success = false;
+            if(!seq_scene->activations.empty()){
 
                 //Find last activation in list of activations
                 ActivationElement *act = nullptr;
-                if(!seq_scene->activations.empty())
-                    act = seq_scene->activations.last();
+                act = seq_scene->activations.last();
 
 
 
-                //If activation has been found AND this anchor is on the same element as source anchor
-                if(act != nullptr && this->parent() == act->sourceAnchor->parent()){
+                //If There is no activation on this anchor
+                //AND an activation was found
+                //AND this anchor has the same parent object as the source anchor
+                //AND this is not the source anchor
+                if(this->activation == nullptr && act != nullptr && act->sourceAnchor != nullptr && this->parent() == act->sourceAnchor->parent() && act->sourceAnchor != this){
 
-                    act->destAnchor = this;
-                    act->destPos = this->pos()+QPoint(this->width()+1,this->height()+1);
+                    //side anchor check
+                    ObjectElement *objectElement = nullptr;
+                    bool isSideAnchor = false;
+                    if(QString::fromUtf8(this->parent()->metaObject()->className()) == "ObjectElement"){
+                        objectElement = dynamic_cast<ObjectElement*>(this->parent());
+                        if(this == objectElement->leftAnchor || this == objectElement->rightAnchor)
+                            isSideAnchor = true;
+                    }
+                    //AND this is not a side anchor
+                    if(!isSideAnchor){
+                        act->destAnchor = this;
+                        act->destPos = this->pos()+QPoint(this->width()+1,this->height()+1);
 
-                    //If source anchor is lower than destination anchor, swap them
-                    if(act->destPos.y() < act->sourcePos.y()){
-                        act->destAnchor = act->sourceAnchor;
-                        act->sourceAnchor = this;
+                        //If source anchor is lower than destination anchor, swap them
+                        if(act->destPos.y() < act->sourcePos.y()){
+                            act->destAnchor = act->sourceAnchor;
+                            act->sourceAnchor = this;
 
-                        act->sourcePos = act->sourceAnchor->pos()- QPoint(1,1);
-                        act->destPos = act->destAnchor->pos()+QPoint(this->width()+1,this->height()+1);;
+                            act->sourcePos = act->sourceAnchor->pos()- QPoint(1,1);
+                            act->destPos = act->destAnchor->pos()+QPoint(this->width()+1,this->height()+1);;
+
+                            this->activation = act;
+                            act->destAnchor->activation = act;
+                        }
+
+                        //Draw the rectangle
+                        QRect activationRect = QRect(act->sourcePos.x(), act->sourcePos.y(), act->destPos.x() - act->sourcePos.x(), act->destPos.y() - act->sourcePos.y());
+                        QGraphicsRectItem *newRect = seq_scene->addRect(activationRect);
+                        newRect->setBrush(Qt::white);
+                        newRect->setZValue(1);
+                        act->actRect = newRect;
+                        act->actRect->setFlag(QGraphicsItem::ItemIsSelectable);
+
 
                         this->activation = act;
-                        act->destAnchor->activation = act;
+                        act->sourceAnchor->activation = act;
+
+                        success = true;
                     }
 
-                    //Draw the rectangle
-                    QRect activationRect = QRect(act->sourcePos.x(), act->sourcePos.y(), act->destPos.x() - act->sourcePos.x(), act->destPos.y() - act->sourcePos.y());
-                    QGraphicsRectItem *newRect = seq_scene->addRect(activationRect);
-                    newRect->setBrush(Qt::white);
-                    newRect->setZValue(1);
-                    act->actRect = newRect;
-                    act->actRect->setFlag(QGraphicsItem::ItemIsSelectable);
-
-
-                    this->activation = act;
-                    act->sourceAnchor->activation = act;
+                }
                 //If the second anchor did not meet specified requirements, remove the starting point of the activation as well
-                }else{
+                //and remove the pointer from vector of activations
+                if(!success){
                     if(!seq_scene->activations.empty())
                         seq_scene->activations.removeLast();
                     if(act != nullptr)
                         delete act;
                 }
-                seq_scene->actClicked = false;
+
             }
+            seq_scene->actClicked = false;
         }
     }
 }
