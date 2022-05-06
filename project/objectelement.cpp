@@ -180,6 +180,7 @@ QGraphicsLineItem * ObjectElement::createLifeLine(ObjectElement* objectPtr){
 
 void ObjectElement::on_comboBox_currentTextChanged(const QString &arg1)
 {
+    (void)arg1;
     foreach(SeqMessage *message, seq_scene->messages){
         message->updateMessages();
     }

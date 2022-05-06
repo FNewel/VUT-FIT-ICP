@@ -68,9 +68,10 @@ void WorkScene::spawnNewObject(const QPointF local)
 
 void WorkScene::spawnNewText(const QPointF local)
 {
-    QLabel *testText = new QLabel("TestText");//TEST QLABEL
+    //Text spawning not implemented
+    /*QLabel *testText = new QLabel("TestText");//TEST QLABEL
     QGraphicsProxyWidget* proxyWidget = this->addWidget(testText);
-    proxyWidget->setPos(local);
+    proxyWidget->setPos(local);*/
 }
 
 void WorkScene::spawnNewActor(const QPointF local)
@@ -264,6 +265,9 @@ void WorkScene::addLineArrow(int where, QGraphicsItem *line, int type)  // TODO:
     else {
         qDebug() << "UH OH";    // TODO: ak to nebude treba, vymazať
     }
+
+    foreach(SeqMessage* message, seq_scene->messages)
+        message->updateMessages();
 }
 
 void WorkScene::setArrow(QGraphicsItem *msgLine, int arrowType)

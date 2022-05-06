@@ -108,7 +108,10 @@
      </rect>
     </property>
     <property name="text">
-     <string>Actor</string>
+     <string/>
+    </property>
+    <property name="placeholderText">
+     <string>Actor Name</string>
     </property>
    </widget>
   </widget>
