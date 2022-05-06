@@ -10,6 +10,7 @@
 
 #include <QGraphicsRectItem>
 
+
 ActivationElement::ActivationElement(QWidget *parent) : QWidget(parent)
 {
 

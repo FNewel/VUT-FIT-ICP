@@ -141,7 +141,9 @@ public:
     QPoint destPos;
 
 private:
+
     void findGen(QVector<ClassElement*> *possVector, QVector<ClassElement*> *trueVector, QVector<ClassElement*> *visited);
+
 
 signals:
 
