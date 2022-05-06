@@ -1,0 +1,46 @@
+{
+    "class_diagram": {
+        "classes": [
+            {
+                "attributes": [
+                ],
+                "methods": [
+                ],
+                "name": "",
+                "position": {
+                    "x": 634,
+                    "y": 127
+                }
+            },
+            {
+                "attributes": [
+                ],
+                "methods": [
+                ],
+                "name": "",
+                "position": {
+                    "x": 956,
+                    "y": 148
+                }
+            }
+        ],
+        "connections": [
+            {
+                "source": 0,
+                "source_arrow": 0,
+                "target": 1,
+                "target_arrow": 0
+            }
+        ]
+    },
+    "seq_diagram": {
+        "activations": [
+        ],
+        "actors": [
+        ],
+        "messages": [
+        ],
+        "objects": [
+        ]
+    }
+}

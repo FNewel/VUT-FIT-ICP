@@ -21,9 +21,7 @@ ItemObject::ItemObject(QWidget *parent) :
 
 ItemObject::~ItemObject()
 {
-    foreach(SeqMessage *message, seq_scene->messages){
-        message->updateMessages();
-    }
+
     delete ui;
 }
 
@@ -71,6 +69,11 @@ void ItemObject::on_removeButton_clicked()
         }
     }
 
+
+    foreach(SeqMessage* message, seq_scene->messages)
+        message->updateMessages();
+
+
     delete this;
 }
 
@@ -100,6 +103,11 @@ void ItemObject::on_comboBox_currentIndexChanged(int index)
             }
         }
     }
+
+
+    foreach(SeqMessage* message, seq_scene->messages)
+        message->updateMessages();
+
 }
 
 void ItemObject::on_lineEdit_textChanged(const QString &arg1)

@@ -21,6 +21,8 @@
 #include <QJsonDocument>
 #include <QMessageBox>
 
+#include <QDesktopServices>
+
 
 ProjectManager::ProjectManager(QObject *parent) : QObject(parent)
 {
@@ -75,7 +77,8 @@ void ProjectManager::newProject(int value)
                 delete fMeth;
             }
 
-            class_scene->classes.remove(class_scene->classes.indexOf(fClass));
+            //class_scene->classes.remove(class_scene->classes.indexOf(fClass));
+
             fClass->ui->name_input->setText("ahoj");
             delete fClass;
         }
@@ -342,7 +345,7 @@ void ProjectManager::openProject(int value)
     foreach(auto sMessage, sMessages){
 
         QJsonObject tempMessage = sMessage.toObject();
-        int target_class = tempMessage.value("target_class").toInt(); //TODO possibly not needed
+
         int target_method = tempMessage.value("id_method").toInt();
         int msg_type = tempMessage.value("msg_type").toInt();
         int src_object_id = tempMessage.value("source").toObject().value("id").toInt();
@@ -870,7 +873,12 @@ void ProjectManager::redoAction()
 
 void ProjectManager::showDocs()
 {
-    //qDebug() << "Show Documentation";
+
+    QString docFile = QDir::currentPath() + "/doc/html/index.html";
+    if (!QFileInfo::exists(docFile))
+        return;
+    QDesktopServices::openUrl(QUrl(docFile));
+
 }
 
 void ProjectManager::exitApp()

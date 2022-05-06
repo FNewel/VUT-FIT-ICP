@@ -1,0 +1,248 @@
+{
+    "class_diagram": {
+        "classes": [
+            {
+                "attributes": [
+                    {
+                        "name": "a1 : Class2",
+                        "type": 1
+                    },
+                    {
+                        "name": "a2 : string",
+                        "type": 2
+                    },
+                    {
+                        "name": "a3 : Class3",
+                        "type": 0
+                    }
+                ],
+                "methods": [
+                    {
+                        "name": "op1()",
+                        "type": 0
+                    }
+                ],
+                "name": "Class1",
+                "position": {
+                    "x": 872,
+                    "y": -8
+                }
+            },
+            {
+                "attributes": [
+                ],
+                "methods": [
+                    {
+                        "name": "op2()",
+                        "type": 0
+                    }
+                ],
+                "name": "Class2",
+                "position": {
+                    "x": 627,
+                    "y": 368
+                }
+            },
+            {
+                "attributes": [
+                ],
+                "methods": [
+                    {
+                        "name": "op3()",
+                        "type": 0
+                    }
+                ],
+                "name": "Class3",
+                "position": {
+                    "x": 1108,
+                    "y": 379
+                }
+            },
+            {
+                "attributes": [
+                ],
+                "methods": [
+                ],
+                "name": "Class4",
+                "position": {
+                    "x": 881,
+                    "y": 700
+                }
+            }
+        ],
+        "connections": [
+            {
+                "source": 3,
+                "source_arrow": 0,
+                "target": 1,
+                "target_arrow": 1
+            },
+            {
+                "source": 3,
+                "source_arrow": 0,
+                "target": 2,
+                "target_arrow": 1
+            },
+            {
+                "source": 1,
+                "source_arrow": 0,
+                "target": 2,
+                "target_arrow": 0
+            },
+            {
+                "source": 1,
+                "source_arrow": 0,
+                "target": 0,
+                "target_arrow": 1
+            },
+            {
+                "source": 2,
+                "source_arrow": 0,
+                "target": 0,
+                "target_arrow": 0
+            },
+            {
+                "source": 0,
+                "source_arrow": 0,
+                "target": 3,
+                "target_arrow": 3
+            }
+        ]
+    },
+    "seq_diagram": {
+        "activations": [
+            {
+                "item": 0,
+                "item_type": 0,
+                "source": 0,
+                "target": 7
+            },
+            {
+                "item": 1,
+                "item_type": 0,
+                "source": 0,
+                "target": 6
+            },
+            {
+                "item": 2,
+                "item_type": 0,
+                "source": 0,
+                "target": 4
+            }
+        ],
+        "actors": [
+        ],
+        "messages": [
+            {
+                "id_method": 0,
+                "msg_type": 1,
+                "source": {
+                    "id": 0,
+                    "position": 0,
+                    "type": 0
+                },
+                "target": {
+                    "id": 1,
+                    "position": 0,
+                    "type": 0
+                },
+                "target_class": 1
+            },
+            {
+                "id_method": 0,
+                "msg_type": 1,
+                "source": {
+                    "id": 1,
+                    "position": 1,
+                    "type": 0
+                },
+                "target": {
+                    "id": 2,
+                    "position": 1,
+                    "type": 0
+                },
+                "target_class": 2
+            },
+            {
+                "id_method": 0,
+                "msg_type": 1,
+                "source": {
+                    "id": 2,
+                    "position": 2,
+                    "type": 0
+                },
+                "target": {
+                    "id": 1,
+                    "position": 2,
+                    "type": 0
+                },
+                "target_class": 1
+            },
+            {
+                "id_method": 0,
+                "msg_type": 1,
+                "source": {
+                    "id": 0,
+                    "position": 3,
+                    "type": 0
+                },
+                "target": {
+                    "id": 1,
+                    "position": 3,
+                    "type": 0
+                },
+                "target_class": 1
+            },
+            {
+                "id_method": 0,
+                "msg_type": 1,
+                "source": {
+                    "id": 1,
+                    "position": 4,
+                    "type": 0
+                },
+                "target": {
+                    "id": 0,
+                    "position": 4,
+                    "type": 0
+                },
+                "target_class": 0
+            }
+        ],
+        "objects": [
+            {
+                "anchors": 9,
+                "class": "Class1",
+                "destructions": [
+                ],
+                "name": "Object1",
+                "position": {
+                    "x": 1091,
+                    "y": 68
+                }
+            },
+            {
+                "anchors": 9,
+                "class": "Class2",
+                "destructions": [
+                ],
+                "name": "Object2",
+                "position": {
+                    "x": 1335,
+                    "y": 67
+                }
+            },
+            {
+                "anchors": 9,
+                "class": "Class3",
+                "destructions": [
+                ],
+                "name": "Object3",
+                "position": {
+                    "x": 1580,
+                    "y": 69
+                }
+            }
+        ]
+    }
+}

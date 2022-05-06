@@ -76,9 +76,10 @@ void WorkScene::spawnNewObject(const QPointF local)
 
 void WorkScene::spawnNewText(const QPointF local)
 {
-    QLabel *testText = new QLabel("TestText");//TEST QLABEL
-    QGraphicsProxyWidget* proxyWidget = this->addWidget(testText);
-    proxyWidget->setPos(local);
+
+    (void)local;
+    //Text spawning not implemented
+
 }
 
 void WorkScene::spawnNewActor(const QPointF local)
@@ -269,6 +270,11 @@ void WorkScene::addLineArrow(int where, QGraphicsItem *line, int type)  // TODO:
         AggPoi->setRotation(rotate);
         AggPoi->setParentItem(lines.value(lineNum)->lineItem);
     }
+
+    
+    foreach(SeqMessage* message, seq_scene->messages)
+        message->updateMessages();
+
 }
 
 void WorkScene::setArrow(QGraphicsItem *msgLine, int arrowType)

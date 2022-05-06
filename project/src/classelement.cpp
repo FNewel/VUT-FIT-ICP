@@ -24,10 +24,7 @@ ClassElement::~ClassElement()
 {
     //Remove pointer to this class element on destruction
     class_scene->classes.removeOne(this);
-    //Update objects
-    foreach(auto object, seq_scene->objects){
-        object->updateClasses();
-    }
+
     delete ui;
 }
 
@@ -313,6 +310,12 @@ void ClassElement::on_pushButton_clicked()
             }
         }
     }
+
+    //Update objects
+    foreach(auto object, seq_scene->objects){
+        object->updateClasses();
+    }
+
 
     this->deleteLater(); //Using this instead of delete solves crashing on some machines
 }

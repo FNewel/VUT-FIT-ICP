@@ -10,6 +10,7 @@
 #include "headers/objectelement.h"
 #include "ui_actorelement.h"
 
+
 #include <QGraphicsItemGroup>
 #include <QGraphicsView>
 #include <QGraphicsProxyWidget>

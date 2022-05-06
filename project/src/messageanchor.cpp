@@ -75,6 +75,9 @@ MessageAnchor::~MessageAnchor()
 
 void MessageAnchor::mouseDoubleClickEvent(QMouseEvent *event)
 {
+
+    (void)event;
+
     //side anchor check
     ObjectElement *objectElement = nullptr;
     bool isSideAnchor = false;

@@ -72,12 +72,19 @@ void SeqMessage::updateMessages()
         QVector<ClassElement*> classesGenTrue;
 
 
+        //Prevents cyclic inheritance crash
+        QVector<ClassElement*> visitedVector;
+
+
+
         if(classPtr){
             //Add classptr to both
             classesGenPossible.append(classPtr);
             classesGenTrue.append(classPtr);
             //Call recursive function
-            this->findGen(&classesGenPossible,&classesGenTrue);
+
+            this->findGen(&classesGenPossible,&classesGenTrue, &visitedVector);
+
         }
 
         //If not yet in comboBox, add
@@ -171,7 +178,9 @@ void SeqMessage::setArrow(int arrowType)
     }
     this->messageType = arrowType;
 }
-void SeqMessage::findGen(QVector<ClassElement *> *possVector, QVector<ClassElement *> *trueVector)
+
+void SeqMessage::findGen(QVector<ClassElement *> *possVector, QVector<ClassElement *> *trueVector, QVector<ClassElement*> *visited)
+
 {
     if(possVector->empty()){
         return;
@@ -181,9 +190,14 @@ void SeqMessage::findGen(QVector<ClassElement *> *possVector, QVector<ClassEleme
     foreach(ClassLines* line, inspectedClass->lineItems){
         //If thiso bject is source of this line and the target is a generalization, add this item to the vector of generalizations
         if(line->source == inspectedClass && line->targetConnection == 1){
-            possVector->append(line->target);
-            trueVector->append(line->target);
+
+            if(!visited->contains(line->target)){
+                possVector->append(line->target);
+                trueVector->append(line->target);
+                visited->append(line->target);
+            }
         }
-        findGen(possVector, trueVector);
+        findGen(possVector, trueVector, visited);
+
     }
 }
