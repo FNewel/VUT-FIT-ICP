@@ -3,9 +3,8 @@ QT       += core gui
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
-CONFIG += debug
 
-TARGET = editor_ui
+TARGET = editor
 TEMPLATE = app
 
 # You can make your code fail to compile if it uses deprecated APIs.
@@ -13,37 +12,37 @@ TEMPLATE = app
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    activationelement.cpp \
-    actorelement.cpp \
-    classelement.cpp \
-    itemobject.cpp \
-    main.cpp \
-    editor_ui.cpp \
-    messageanchor.cpp \
-    objectelement.cpp \
-    projectmanager.cpp \
-    seqmessage.cpp \
-    workscene.cpp \
-    workview.cpp
+    src/activationelement.cpp \
+    src/actorelement.cpp \
+    src/classelement.cpp \
+    src/itemobject.cpp \
+    src/main.cpp \
+    src/editor_ui.cpp \
+    src/messageanchor.cpp \
+    src/objectelement.cpp \
+    src/projectmanager.cpp \
+    src/seqmessage.cpp \
+    src/workscene.cpp \
+    src/workview.cpp
 
 HEADERS += \
-    actorelement.h \
-    classelement.h \
-    classlines.h \
-    editor_ui.h \
-    itemobject.h \
-    objectelement.h \
-    projectmanager.h \
-    workscene.h \
-    workview.h
+    src/headers/actorelement.h \
+    src/headers/classelement.h \
+    src/headers/classlines.h \
+    src/headers/editor_ui.h \
+    src/headers/itemobject.h \
+    src/headers/objectelement.h \
+    src/headers/projectmanager.h \
+    src/headers/workscene.h \
+    src/headers/workview.h
 
 FORMS += \
-    actorelement.ui \
-    classelement.ui \
-    editor_ui.ui \
-    itemobject.ui \
-    messageanchor.ui \
-    objectelement.ui
+    src/gui/actorelement.ui \
+    src/gui/classelement.ui \
+    src/gui/editor_ui.ui \
+    src/gui/itemobject.ui \
+    src/gui/messageanchor.ui \
+    src/gui/objectelement.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

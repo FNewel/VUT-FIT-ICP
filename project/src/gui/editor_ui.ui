@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>ICP Projekt ~ xtalaj00, xkovac57</string>
+   <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QTabWidget" name="tabWidget">
@@ -197,7 +197,7 @@
   <customwidget>
    <class>WorkView</class>
    <extends>QGraphicsView</extends>
-   <header>workview.h</header>
+   <header>src/headers/workview.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

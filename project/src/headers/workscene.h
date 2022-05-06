@@ -1,9 +1,18 @@
+/**
+ * UML Editor - ICP Project 2022
+ * @file workscene.h
+ * @brief popis TODO
+ * @author Ondrej Kováč (xkovac57)
+ * @author Martin Talajka (xtalaj00)
+ */
+
 #ifndef WORKSCENE_H
 #define WORKSCENE_H
 
 #include <QObject>
 #include <QWidget>
 #include <QGraphicsScene>
+
 
 class ClassElement;
 class ObjectElement;

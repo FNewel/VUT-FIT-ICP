@@ -1,8 +1,15 @@
-#include "itemobject.h"
+/**
+ * UML Editor - ICP Project 2022
+ * @file itemobject.cpp
+ * @brief popis TODO
+ * @author Ondrej Kováč (xkovac57)
+ * @author Martin Talajka (xtalaj00)
+ */
+
+#include "headers/itemobject.h"
+#include "headers/classelement.h"
+#include "headers/projectmanager.h"
 #include "ui_itemobject.h"
-#include "classelement.h"
-#include <QDebug>
-#include "projectmanager.h"
 
 ItemObject::ItemObject(QWidget *parent) :
     QWidget(parent),
@@ -13,7 +20,6 @@ ItemObject::ItemObject(QWidget *parent) :
 
 ItemObject::~ItemObject()
 {
-
     delete ui;
 }
 

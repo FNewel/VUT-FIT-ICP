@@ -1,3 +1,11 @@
+/**
+ * UML Editor - ICP Project 2022
+ * @file actorelement.h
+ * @brief popis TODO
+ * @author Ondrej Kováč (xkovac57)
+ * @author Martin Talajka (xtalaj00)
+ */
+
 #ifndef ACTORELEMENT_H
 #define ACTORELEMENT_H
 
@@ -5,6 +13,7 @@
 
 #include <QGraphicsLineItem>
 #include <QWidget>
+
 
 namespace Ui {
 class ActorElement;

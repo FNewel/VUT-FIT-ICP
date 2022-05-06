@@ -1,5 +1,15 @@
-#include "objectelement.h"
+/**
+ * UML Editor - ICP Project 2022
+ * @file activationelement.cpp
+ * @brief popis TODO
+ * @author Ondrej Kováč (xkovac57)
+ * @author Martin Talajka (xtalaj00)
+ */
+
+#include "headers/objectelement.h"
+
 #include <QGraphicsRectItem>
+
 ActivationElement::ActivationElement(QWidget *parent) : QWidget(parent)
 {
 

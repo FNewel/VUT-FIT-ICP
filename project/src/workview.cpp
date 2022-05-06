@@ -1,14 +1,23 @@
-#include "workview.h"
-#include "workscene.h"
-#include "classelement.h"
-#include "objectelement.h"
+/**
+ * UML Editor - ICP Project 2022
+ * @file workview.cpp
+ * @brief popis TODO
+ * @author Ondrej Kováč (xkovac57)
+ * @author Martin Talajka (xtalaj00)
+ */
+
+#include "headers/workview.h"
+#include "headers/workscene.h"
+#include "headers/classelement.h"
+#include "headers/objectelement.h"
+
 #include <QGraphicsView>
 #include <QMenu>
 #include <QCursor>
 #include <QPointF>
 #include <QObject>
-#include <QDebug>
 #include <QGraphicsLineItem>
+
 
 #define SYNC_ARROW 0
 #define ASYNC_ARROW 1

@@ -1,3 +1,11 @@
+/**
+ * UML Editor - ICP Project 2022
+ * @file itemobject.h
+ * @brief popis TODO
+ * @author Ondrej Kováč (xkovac57)
+ * @author Martin Talajka (xtalaj00)
+ */
+
 #ifndef ITEMOBJECT_H
 #define ITEMOBJECT_H
 

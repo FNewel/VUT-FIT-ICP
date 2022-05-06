@@ -1,6 +1,15 @@
-#include "actorelement.h"
+/**
+ * UML Editor - ICP Project 2022
+ * @file actorelement.cpp
+ * @brief popis TODO
+ * @author Ondrej Kováč (xkovac57)
+ * @author Martin Talajka (xtalaj00)
+ */
+
+#include "headers/actorelement.h"
+#include "headers/objectelement.h"
 #include "ui_actorelement.h"
-#include "objectelement.h"
+
 
 #include <QGraphicsItemGroup>
 #include <QGraphicsView>

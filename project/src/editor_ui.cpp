@@ -1,13 +1,20 @@
-#include "editor_ui.h"
-#include "projectmanager.h"
+/**
+ * UML Editor - ICP Project 2022
+ * @file editor_ui.cpp
+ * @brief popis TODO
+ * @author Ondrej Kováč (xkovac57)
+ * @author Martin Talajka (xtalaj00)
+ */
+
+#include "headers/editor_ui.h"
+#include "headers/projectmanager.h"
+#include "headers/workscene.h"
+#include "headers/workview.h"
 #include "ui_editor_ui.h"
-#include "workscene.h"
-#include "workview.h"
 
 #include <QGraphicsView>
 #include <QGraphicsScene>
 #include <QGraphicsTextItem>
-#include <QDebug>
 
 #define MAX_WORKSPACE_SCALE 10
 

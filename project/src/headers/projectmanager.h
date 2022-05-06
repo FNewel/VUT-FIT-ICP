@@ -1,7 +1,16 @@
+/**
+ * UML Editor - ICP Project 2022
+ * @file projectmanager.h
+ * @brief popis TODO
+ * @author Ondrej Kováč (xkovac57)
+ * @author Martin Talajka (xtalaj00)
+ */
+
 #ifndef PROJECTMANAGER_H
 #define PROJECTMANAGER_H
 
 #include <QObject>
+
 
 class ProjectManager : public QObject
 {

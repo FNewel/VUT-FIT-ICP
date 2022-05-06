@@ -1,5 +1,13 @@
-#include "classelement.h"
-#include "projectmanager.h"
+/**
+ * UML Editor - ICP Project 2022
+ * @file classelement.cpp
+ * @brief popis TODO
+ * @author Ondrej Kováč (xkovac57)
+ * @author Martin Talajka (xtalaj00)
+ */
+
+#include "headers/classelement.h"
+#include "headers/projectmanager.h"
 
 bool isClicked = false;
 QVector <ClassLines*>lines;
@@ -13,13 +21,8 @@ ClassElement::ClassElement(QWidget *parent) :
 
 ClassElement::~ClassElement()
 {
-    qDebug() << "ahoj";
-    qDebug() << class_scene->classes.length();
-
-
     //Remove pointer to this class element on destruction
     class_scene->classes.removeOne(this);
-
     delete ui;
 }
 

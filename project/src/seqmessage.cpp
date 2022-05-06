@@ -1,11 +1,20 @@
-#include "objectelement.h"
+/**
+ * UML Editor - ICP Project 2022
+ * @file seqmessage.cpp
+ * @brief popis TODO
+ * @author Ondrej Kováč (xkovac57)
+ * @author Martin Talajka (xtalaj00)
+ */
+
+#include "headers/objectelement.h"
+#include "headers/classelement.h"
+#include "headers/itemobject.h"
 #include "ui_objectelement.h"
-#include "classelement.h"
 
 #include <QGraphicsLineItem>
 #include <QGraphicsProxyWidget>
-#include <itemobject.h>
 #include <QtMath>
+
 
 #define SYNC_ARROW 0
 #define ASYNC_ARROW 1
@@ -106,9 +115,7 @@ void SeqMessage::updateMessages()
             }else{
                 deletedLastItem = false;
             }
-        qDebug() << "Infinite Loop Check: " << i;
         }
-
     }
 
 }
@@ -169,9 +176,6 @@ void SeqMessage::setArrow(int arrowType)
 }
 void SeqMessage::findGen(QVector<ClassElement *> *possVector, QVector<ClassElement *> *trueVector, QVector<ClassElement*> *visited)
 {
-    qDebug() << "///";
-    qDebug() << "Poss Vector:" << possVector;
-    qDebug() << "Poss Vector:" << trueVector;
     if(possVector->empty()){
         return;
     }

@@ -1,6 +1,12 @@
 {
     "makefile.extensionOutputFolder": "./.vscode",
     "files.associations": {
-        "qmenu": "cpp"
+        "qmenu": "cpp",
+        "qgraphicsitemgroup": "cpp",
+        "qmoveevent": "cpp",
+        "qdebug": "cpp",
+        "qjsondocument": "cpp",
+        "qtmath": "cpp",
+        "qgraphicsitem": "cpp"
     }
 }
