@@ -83,16 +83,16 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="plusLineButton">
+      <widget class="QPushButton" name="minusLineButton">
        <property name="text">
-        <string>+</string>
+        <string>-</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="minusLineButton">
+      <widget class="QPushButton" name="plusLineButton">
        <property name="text">
-        <string>-</string>
+        <string>+</string>
        </property>
       </widget>
      </item>

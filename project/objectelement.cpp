@@ -45,6 +45,7 @@ ObjectElement::~ObjectElement()
     delete ui;
 }
 
+
 void ObjectElement::mousePressEvent(QMouseEvent *event)
 {
     offset = event->pos();

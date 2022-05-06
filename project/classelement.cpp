@@ -155,12 +155,14 @@ void ClassElement::mousePressEvent(QMouseEvent *event)
 
         // Check if target is same as source
         // if so, remove it and delete
-        if(lines.last()->source == this){
-            lines.last()->source->lineItems.removeLast();
-            delete lines.last();
-            lines.removeLast();
-            isClicked = false;
-            return;
+        if(!lines.empty()){
+            if(lines.last()->source == this){
+                lines.last()->source->lineItems.removeLast();
+                delete lines.last();
+                lines.removeLast();
+                isClicked = false;
+                return;
+            }
         }
 
         // Check if trying to create identical line
@@ -197,6 +199,7 @@ void ClassElement::mousePressEvent(QMouseEvent *event)
                 c_name->lineItems.append(lines.last());
             }
         }
+
     }
 }
 

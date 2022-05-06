@@ -11,6 +11,7 @@
 #define ASYNC_ARROW 1
 #define RETURN_ARROW 2
 
+
 SeqMessage::SeqMessage(QWidget *parent) : QWidget(parent)
 {
 
@@ -38,22 +39,7 @@ void SeqMessage::addComboBox()
     this->messageName = new QComboBox();
     this->messageNameProxy = seq_scene->addWidget(messageName);
     this->updateCBoxLoc();
-
-    ObjectElement* parentObject = qobject_cast <ObjectElement*>(this->destAnchor->parent());
-    QString className = parentObject->ui->comboBox->currentText();
-    ClassElement *classPtr = nullptr;
-    foreach(ClassElement *classElement, class_scene->classes){
-        if(classElement->name == className){
-            classPtr = classElement;
-            break;
-        }
-    }
-
-    if(classPtr){
-        foreach(ItemObject *itemObject, classPtr->methods){
-            this->messageName->addItem(itemObject->value);
-        }
-    }
+    updateMessages();
 
 }
 
@@ -71,37 +57,53 @@ void SeqMessage::updateMessages()
             }
         }
 
-        //If not yet in comboBox, add
+        //Classes with possible generalization pathss
+        QVector<ClassElement*> classesGenPossible;
+        //Classest hat are actually generalizations
+        QVector<ClassElement*> classesGenTrue;
+
+
         if(classPtr){
-            foreach(ItemObject *itemObject, classPtr->methods){
+            //Add classptr to both
+            classesGenPossible.append(classPtr);
+            classesGenTrue.append(classPtr);
+            //Call recursive function
+            this->findGen(&classesGenPossible,&classesGenTrue);
+        }
+
+        //If not yet in comboBox, add
+        foreach(ClassElement* classElement, classesGenTrue){
+            foreach(ItemObject *itemObject, classElement->methods){
                 if(this->messageName->findText(itemObject->value) == -1)
                     this->messageName->addItem(itemObject->value);
 
             }
+        }
 
-            //Remove all items from comboBox that are no longer valid methods
-            //If method name no longer exists empty the combo box
-            bool deletedLastItem = false;
-            for(int i = 0; i < this->messageName->count(); i++){
-                if (deletedLastItem)
-                    i--;
-                bool validMessage = false;
-                foreach(ItemObject *itemObject, classPtr->methods){
+        //Remove all items from comboBox that are no longer valid methods
+        //If method name no longer exists empty the combo box
+        bool deletedLastItem = false;
+        for(int i = 0; i < this->messageName->count(); i++){
+            if (deletedLastItem)
+                i--;
+            bool validMessage = false;
+            foreach(ClassElement* classElement, classesGenTrue){
+                foreach(ItemObject *itemObject, classElement->methods){
                     if(this->messageName->itemText((i)) == itemObject->value)
                         validMessage = true;
                 }
-                if (!validMessage){
-                    if(this->messageName->currentText() == this->messageName->itemText(i))
-                        this->messageName->setCurrentIndex(-1);
-
-                    this->messageName->removeItem(i);
-                    deletedLastItem = true;
-
-                }else{
-                    deletedLastItem = false;
-                }
-                qDebug() << "Infinite Loop Check: " << i;
             }
+            if (!validMessage){
+                if(this->messageName->currentText() == this->messageName->itemText(i))
+                    this->messageName->setCurrentIndex(-1);
+
+                this->messageName->removeItem(i);
+                deletedLastItem = true;
+
+            }else{
+                deletedLastItem = false;
+            }
+        qDebug() << "Infinite Loop Check: " << i;
         }
     }
 
@@ -160,4 +162,23 @@ void SeqMessage::setArrow(int arrowType)
         this->messageLine->setPen(penDashed);
     }
     this->messageType = arrowType;
+}
+void SeqMessage::findGen(QVector<ClassElement *> *possVector, QVector<ClassElement *> *trueVector)
+{
+    qDebug() << "///";
+    qDebug() << "Poss Vector:" << possVector;
+    qDebug() << "Poss Vector:" << trueVector;
+    if(possVector->empty()){
+        return;
+    }
+
+    ClassElement* inspectedClass = possVector->takeLast();
+    foreach(ClassLines* line, inspectedClass->lineItems){
+        //If thiso bject is source of this line and the target is a generalization, add this item to the vector of generalizations
+        if(line->source == inspectedClass && line->targetConnection == 1){
+            possVector->append(line->target);
+            trueVector->append(line->target);
+        }
+        findGen(possVector, trueVector);
+    }
 }

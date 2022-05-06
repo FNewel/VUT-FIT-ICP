@@ -1,7 +1,6 @@
 #include "objectelement.h"
 #include "actorelement.h"
 #include "ui_messageanchor.h"
-
 #include <QGraphicsLineItem>
 #include <QMoveEvent>
 #include <QDebug>
@@ -67,6 +66,7 @@ MessageAnchor::~MessageAnchor()
     delete ui;
 }
 
+
 void MessageAnchor::mouseDoubleClickEvent(QMouseEvent *event)
 {
     //side anchor check
@@ -112,6 +112,7 @@ void MessageAnchor::mousePressEvent(QMouseEvent *event)
         }else{
 
             if(this->message == nullptr && !seq_scene->messages.empty() && seq_scene->messages.last()->sourceAnchor != this){
+
                 SeqMessage *msg = seq_scene->messages.last();
                 msg->destAnchor = this;
                 msg->destPos = this->pos()+QPoint(this->width()/2,this->height()/2);
@@ -131,6 +132,10 @@ void MessageAnchor::mousePressEvent(QMouseEvent *event)
 
 
                 seq_scene->msgClicked = false;
+
+
+
+
             }
         }
     }else if(event->button() == Qt::RightButton){
