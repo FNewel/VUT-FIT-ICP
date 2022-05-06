@@ -36,7 +36,8 @@ ActorElement::ActorElement(QWidget *parent) :
 ActorElement::~ActorElement()
 {
     //Remove pointer to this object element on destruction
-    seq_scene->actors.removeOne(this);
+    if(!seq_scene->actors.empty())
+        seq_scene->actors.removeOne(this);
     if(this->lifeLine)
         delete this->lifeLine;
 

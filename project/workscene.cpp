@@ -28,9 +28,18 @@ WorkScene::WorkScene(QObject *parent) : QGraphicsScene(parent)
 }
 
 WorkScene::~WorkScene(){
-    foreach(ClassElement *test, classes){
-        delete test;
+    //Loops prevent crashes when exiting app because otherwise the destructors
+    //of the elements will try to remove themselves from the vector after the vector no longer exists
+    foreach(ClassElement *classElement, classes){
+        delete classElement;
     }
+    foreach(ActorElement *actorElement, actors){
+        delete actorElement;
+    }
+    foreach(ObjectElement *objectElement, objects){
+        delete objectElement;
+    }
+
 }
 
 void WorkScene::spawnNewClass(const QPointF local)
@@ -49,6 +58,8 @@ void WorkScene::spawnNewObject(const QPointF local)
     QGraphicsProxyWidget* proxyWidget = this->addWidget(testWidgetObject);
     proxyWidget->setPos(local);*/
 
+    projectManager->saveProjectNow(true);   // SAVE
+
     ObjectElement *objectElement = new ObjectElement();//TEST WIDGET
     QGraphicsProxyWidget* proxyWidget = this->addWidget(objectElement);
     proxyWidget->setPos(local);
@@ -64,6 +75,7 @@ void WorkScene::spawnNewText(const QPointF local)
 
 void WorkScene::spawnNewActor(const QPointF local)
 {
+    projectManager->saveProjectNow(true);   // SAVE
 
     ActorElement *actorElement = new ActorElement();
     QGraphicsProxyWidget* proxyWidget = this->addWidget(actorElement);
@@ -75,6 +87,8 @@ void WorkScene::spawnNewActor(const QPointF local)
 
 void WorkScene::removeLine(QGraphicsItem *line)
 {
+    projectManager->saveProjectNow(true);   // SAVE
+
     for (int i=0; i < lines.size(); i++){
         if(line == lines.value(i)->lineItem){
             foreach(ClassElement *c_name, class_scene->classes){
@@ -270,10 +284,11 @@ void WorkScene::setArrow(QGraphicsItem *msgLine, int arrowType)
 
 void WorkScene::removeMessage(QGraphicsItem *msgLine)
 {
+    projectManager->saveProjectNow(true);   // SAVE
+
     for (int i=0; i < seq_scene->messages.size(); i++){
         if(msgLine == seq_scene->messages.value(i)->messageLine){
             delete seq_scene->messages.value(i);
-            seq_scene->messages.remove(i);
             break;
         }
     }

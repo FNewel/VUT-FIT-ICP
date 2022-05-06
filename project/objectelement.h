@@ -53,6 +53,8 @@ private:
 
 
 
+
+
 protected:
     virtual void mousePressEvent(QMouseEvent *event);
     virtual void mouseMoveEvent(QMouseEvent *event);
@@ -87,6 +89,7 @@ public:
 
 private:
     Ui::MessageAnchor *ui;
+
 
 
 
@@ -127,6 +130,9 @@ public:
 
     QPoint sourcePos;
     QPoint destPos;
+
+private:
+    void findGen(QVector<ClassElement*> *possVector, QVector<ClassElement*> *trueVector);
 
 signals:
 
