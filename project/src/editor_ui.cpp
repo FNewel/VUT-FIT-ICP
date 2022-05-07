@@ -15,6 +15,7 @@
 #include <QGraphicsView>
 #include <QGraphicsScene>
 #include <QGraphicsTextItem>
+#include <QMessageBox>
 
 #define MAX_WORKSPACE_SCALE 10
 
@@ -48,9 +49,20 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-
     delete this->projectManager;
     delete ui;
+}
+
+void MainWindow::closeEvent(QCloseEvent *event){
+    (void)event;
+    // Check if project is empty (clean)
+    if(!class_scene->classes.empty()){
+        // Prompt to save project
+        int reply = QMessageBox(QMessageBox::Information, "Save file", "Do you want to save this file?", QMessageBox::Yes|QMessageBox::No).exec();
+        if (reply == 16384){    // Yes button clicked
+            seq_scene->projectManager->saveProject(0);
+        }
+    }
 }
 
 //Connect all the main window buttons to slots in project manager

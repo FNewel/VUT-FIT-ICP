@@ -36,6 +36,7 @@ public:
 
     /**
     * Function for creating Undo Save points.
+    * @param save Diferentiate between calls from Undo (false) or from checkpoints (true)
     */
     void saveProjectNow(bool save);
 

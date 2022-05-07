@@ -31,6 +31,7 @@ class MainWindow : public QMainWindow
 public:
     /**
     *Consturctor for the Main Window.
+    *@param parent Pointer to parent Widget
     */
     MainWindow(QWidget *parent = nullptr);
     /**
@@ -52,14 +53,27 @@ private:
     /**
     * Function for the initialization of the Work View.
     * Function initializes the QGraphicsView for the class and sequence diagram scenes.
+    * @param workspaceView to the initialized view.
     */
     void InitWorkView(WorkView *workspaceView );
     /**
     * Function for binding signals of the Main Window buttons.
     * Function binds the buttons signals from the main window to their respective slots for in Project Manager.
+    * @param projectManager Pointer to the project manager.
     */
     void bindSignals(ProjectManager *projectManager);
+
+private slots:
+    /**
+    * Redefinition of close event.
+    * Used for displaying a Save File prompt before exiting the program.
+    * @param event CloseEvent of the application.
+    */
+    void closeEvent(QCloseEvent *event);
 };
+
+extern WorkScene *seq_scene;
+extern WorkScene *class_scene;
 
 
 

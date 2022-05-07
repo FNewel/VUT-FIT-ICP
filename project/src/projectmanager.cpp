@@ -77,9 +77,6 @@ void ProjectManager::newProject(int value)
                 delete fMeth;
             }
 
-            //class_scene->classes.remove(class_scene->classes.indexOf(fClass));
-
-            fClass->ui->name_input->setText("ahoj");
             delete fClass;
         }
 

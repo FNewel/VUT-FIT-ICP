@@ -98,7 +98,9 @@ Known bugs:
 
 
 Design patterns (sourced from https://www.oodesign.com):
-Singleton
-Decorator
-Flyweight
-Observer
+Singleton - Ensure that only one instance of a class is created and Provide a global access point to the object
+    -Example: ProjectManager Class -> only one projectManager instance exists in the whole program and can be accessed via a pointer in WorkScene
+Flyweight - use sharing to support a large number of objects that have part of their internal state in common where the other part of state can vary
+    -Example: Multiple objects are created and saved in vectors with their own attributes
+Observer - Define a one-to-many dependency between objects so that when one object changes state, all its dependents are notified and updated automatically
+    -Examples: Class pools are edited for all objects if a class is created or deleted, same goes for methods and messages

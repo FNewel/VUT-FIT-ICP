@@ -38,6 +38,7 @@ protected slots:
     /**
     * Display custom context menu.
     * This slot is bound to a signal emitted from a pressed Right Mouse Button in an empty space of the currently displayed scene.
+    * @param pos Position of the context menu.
     */
     void workspaceViewCustomContextMenuRequested(const QPoint &pos);
 };
