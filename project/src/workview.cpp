@@ -1,7 +1,7 @@
 /**
  * UML Editor - ICP Project 2022
  * @file workview.cpp
- * @brief popis TODO
+ * @brief Source File for the WorkView Class
  * @author Ondrej Kováč (xkovac57)
  * @author Martin Talajka (xtalaj00)
  */
@@ -26,6 +26,7 @@
 
 WorkView::WorkView(QWidget *parent) : QGraphicsView(parent)
 {
+    //Set up custom context menu tag on creation
     connect(this ,SIGNAL(customContextMenuRequested(const QPoint &)),this,SLOT(workspaceViewCustomContextMenuRequested(const QPoint &)));
     this->setRenderHint(QPainter::Antialiasing);    // Better lines
 }
@@ -34,6 +35,7 @@ WorkView::WorkView(QWidget *parent) : QGraphicsView(parent)
 void WorkView::workspaceViewCustomContextMenuRequested(const QPoint &pos)
 {
     auto list = class_scene->selectedItems();
+    //Custom menu for lines in the class diagram
     if(!list.empty()){
         QMenu menu(this);
 

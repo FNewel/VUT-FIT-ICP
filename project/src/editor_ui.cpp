@@ -1,7 +1,7 @@
 /**
  * UML Editor - ICP Project 2022
  * @file editor_ui.cpp
- * @brief popis TODO
+ * @brief Source File for the MainWindow Class
  * @author Ondrej Kováč (xkovac57)
  * @author Martin Talajka (xtalaj00)
  */
@@ -25,14 +25,18 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    //Create new project manager and bind signals
     this->projectManager = new ProjectManager();
     bindSignals(projectManager);
 
+    //Set the tab widget as central widget
     this->setCentralWidget(ui->tabWidget);
-
+    
+    //Set up views to use custom context menus
     ui->classView->setContextMenuPolicy(Qt::CustomContextMenu);
     ui->seqView->setContextMenuPolicy(Qt::CustomContextMenu);
 
+    //Initialize the views
     InitWorkView(ui->classView);
     InitWorkView(ui->seqView);
 
@@ -44,10 +48,12 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+
     delete this->projectManager;
     delete ui;
 }
 
+//Connect all the main window buttons to slots in project manager
 void MainWindow::bindSignals(ProjectManager *projectManager){
     connect(ui->actionNew_Project, &QAction::triggered, projectManager, &ProjectManager::newProject);
     connect(ui->actionOpen_Project , &QAction::triggered, projectManager, &ProjectManager::openProject);

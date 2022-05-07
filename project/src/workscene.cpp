@@ -1,7 +1,7 @@
 /**
  * UML Editor - ICP Project 2022
  * @file workscene.cpp
- * @brief popis TODO
+ * @brief Source File for the WorkScene Class
  * @author Ondrej Kováč (xkovac57)
  * @author Martin Talajka (xtalaj00)
  */
@@ -21,6 +21,8 @@
 #include <QGraphicsLineItem>
 
 
+//Global variables for the work scenes
+//Yes, global variables are a bad idea but these really help the code readability since these scenes are accesed all over the code
 WorkScene *class_scene;
 WorkScene *seq_scene;
 
@@ -50,6 +52,7 @@ WorkScene::~WorkScene(){
 
 }
 
+//Spawn a new class and append it to the vector of classes
 void WorkScene::spawnNewClass(const QPointF local)
 {
     projectManager->saveProjectNow(true);   // SAVE
@@ -60,12 +63,9 @@ void WorkScene::spawnNewClass(const QPointF local)
     classes.append(classElement);
 }
 
+//Spawn a new object and append it to the vector of objects
 void WorkScene::spawnNewObject(const QPointF local)
 {
-    /*QLabel *testWidgetObject = new QLabel("TestObject"); //TEST QLABEL
-    QGraphicsProxyWidget* proxyWidget = this->addWidget(testWidgetObject);
-    proxyWidget->setPos(local);*/
-
     projectManager->saveProjectNow(true);   // SAVE
 
     ObjectElement *objectElement = new ObjectElement();//TEST WIDGET
@@ -82,6 +82,7 @@ void WorkScene::spawnNewText(const QPointF local)
 
 }
 
+//Spawn a new actor and append it to the vector of actors
 void WorkScene::spawnNewActor(const QPointF local)
 {
     projectManager->saveProjectNow(true);   // SAVE
@@ -94,6 +95,7 @@ void WorkScene::spawnNewActor(const QPointF local)
 
 }
 
+//Remove selected line in the class diagram
 void WorkScene::removeLine(QGraphicsItem *line)
 {
     projectManager->saveProjectNow(true);   // SAVE
@@ -277,6 +279,7 @@ void WorkScene::addLineArrow(int where, QGraphicsItem *line, int type)  // TODO:
 
 }
 
+//Set the arrow for a message line
 void WorkScene::setArrow(QGraphicsItem *msgLine, int arrowType)
 {
     SeqMessage *message = nullptr;
@@ -292,7 +295,7 @@ void WorkScene::setArrow(QGraphicsItem *msgLine, int arrowType)
 
 }
 
-
+//Remove a message from the sequence diagram
 void WorkScene::removeMessage(QGraphicsItem *msgLine)
 {
     projectManager->saveProjectNow(true);   // SAVE

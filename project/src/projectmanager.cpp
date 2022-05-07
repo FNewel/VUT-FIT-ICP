@@ -1,7 +1,7 @@
 /**
  * UML Editor - ICP Project 2022
  * @file projectmanager.cpp
- * @brief popis TODO
+ * @brief Source File for the ProjectManager Class
  * @author Ondrej Kováč (xkovac57)
  * @author Martin Talajka (xtalaj00)
  */
@@ -215,11 +215,12 @@ void ProjectManager::openProject(int value)
     QJsonArray sMessages = seqDiagram.value("messages").toArray();
     QJsonArray sActivations = seqDiagram.value("activations").toArray();
 
+    //Objects
     foreach(auto sObject, sObjects){
         QJsonObject tempObject = sObject.toObject();
         QJsonArray tempDestructions = tempObject.value("destructions").toArray();
-        QString tempName = tempObject.value("name").toString();  // name -> str
-        QString tempClassName = tempObject.value("class").toString();  // class -> str
+        QString tempName = tempObject.value("name").toString();  
+        QString tempClassName = tempObject.value("class").toString();  
         int tempSx = tempObject.value("position").toObject().value("x").toInt();
         int tempSy = tempObject.value("position").toObject().value("y").toInt();
         int anchors = tempObject.value("anchors").toInt();
@@ -741,7 +742,7 @@ QByteArray ProjectManager::createJson()
         int srcAnchor = -1; //Source anchor
         int dstAnchor = -1; //Destination anchor
 
-
+        //If the parent is an object
         if(QString::fromUtf8(fActivation->destAnchor->parent()->metaObject()->className()) == "ObjectElement"){
             ObjectElement *objectElement = dynamic_cast<ObjectElement*>(fActivation->destAnchor->parent());
 
@@ -762,6 +763,7 @@ QByteArray ProjectManager::createJson()
                 dstAnchor =  objectElement->proxyList.indexOf(destAnchorPtr->proxy);
             }
 
+        //If the parent is an actor
         }else if(QString::fromUtf8(fActivation->destAnchor->parent()->metaObject()->className()) == "ActorElement"){
             ActorElement *actorElement = dynamic_cast<ActorElement*>(fActivation->destAnchor->parent());
             objectIndex = seq_scene->actors.indexOf(actorElement);

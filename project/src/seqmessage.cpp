@@ -1,7 +1,7 @@
 /**
  * UML Editor - ICP Project 2022
  * @file seqmessage.cpp
- * @brief popis TODO
+ * @brief Source File for the SeqMessage Class
  * @author Ondrej Kováč (xkovac57)
  * @author Martin Talajka (xtalaj00)
  */
@@ -28,30 +28,40 @@ SeqMessage::SeqMessage(QWidget *parent) : QWidget(parent)
 
 SeqMessage::~SeqMessage()
 {
+
+    //Remove this as the pointer from the source anchor
     if(this->sourceAnchor)
         this->sourceAnchor->message = nullptr;
 
+    //Remove this as the pointer from the target anchor
     if(this->destAnchor)
           this->destAnchor->message = nullptr;
 
+    //Remove this from the vector of messages
     seq_scene->messages.removeOne(this);
 
+    //Remove the message line
     if(this->messageLine)
         delete this->messageLine;
 
+    //Remove the combo box
     if(this->messageName)
         delete this->messageName;
 }
 
+//Add the combo box above the line
 void SeqMessage::addComboBox()
 {
+    //Create
     this->messageName = new QComboBox();
     this->messageNameProxy = seq_scene->addWidget(messageName);
+    //Updaqte location and available methods
     this->updateCBoxLoc();
     updateMessages();
 
 }
 
+//Update the available methods for messages
 void SeqMessage::updateMessages()
 {
     //Only update if combobox actually exists (it does not for messages targeted at actors)
@@ -126,10 +136,12 @@ void SeqMessage::updateMessages()
 
 void SeqMessage::updateCBoxLoc()
 {
+    //Update the location of the combo box
     if(messageNameProxy)
         messageNameProxy->setPos(this->sourcePos.x()-(this->sourcePos.x()-this->destPos.x())/2 - this->messageName->width()/2, this->sourcePos.y()-(this->sourcePos.y()-this->destPos.y())/2 - 30);
 }
 
+//Update the arrowhead location and rotation
 void SeqMessage::updateArrowHead()
 {
     if(this->arrowHeadProxy){
@@ -140,15 +152,20 @@ void SeqMessage::updateArrowHead()
     }
 }
 
+//Update the type of message arrow
 void SeqMessage::setArrow(int arrowType)
 {
+    //Delete current arrowhead
     if(this->arrowHeadProxy){
         delete this->arrowHeadProxy;
         this->arrowHeadProxy = nullptr;
     }
+    //Set up burshes and pens
     QBrush brush = QBrush(Qt::black);
     QPen penSolid = QPen(brush, 3, Qt::SolidLine);
     QPen penDashed = QPen(brush, 3, Qt::DashLine);
+
+    //Sync message -> filled arrow, solid line
     if(arrowType == SYNC_ARROW){
         this->messageLine->setPen(penSolid);
         QPolygon arrowHead;
@@ -158,6 +175,7 @@ void SeqMessage::setArrow(int arrowType)
         this->arrowHeadProxy = polygonProxy;
         this->arrowHeadProxy->setParentItem(this->messageLine);
         this->updateArrowHead();
+    //Async message -> V arrow, solid line
     }else if(arrowType == ASYNC_ARROW){
         this->messageLine->setPen(penSolid);
         QLine line1 = QLine(-10,-10,0,0);
@@ -172,6 +190,7 @@ void SeqMessage::setArrow(int arrowType)
         this->arrowHeadProxy->setParentItem(this->messageLine);
         this->updateArrowHead();
 
+    //Return message -> V arrow, dashed line
     }else if(arrowType == RETURN_ARROW){
         this->setArrow(ASYNC_ARROW);
         this->messageLine->setPen(penDashed);
@@ -179,9 +198,11 @@ void SeqMessage::setArrow(int arrowType)
     this->messageType = arrowType;
 }
 
+//Find the methods accesible via generalization
 void SeqMessage::findGen(QVector<ClassElement *> *possVector, QVector<ClassElement *> *trueVector, QVector<ClassElement*> *visited)
 
 {
+    //End if the vector of possible class elements is empty
     if(possVector->empty()){
         return;
     }
@@ -197,6 +218,7 @@ void SeqMessage::findGen(QVector<ClassElement *> *possVector, QVector<ClassEleme
                 visited->append(line->target);
             }
         }
+        //Recursive call
         findGen(possVector, trueVector, visited);
 
     }

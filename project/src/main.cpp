@@ -1,7 +1,7 @@
 /**
  * UML Editor - ICP Project 2022
  * @file main.cpp
- * @brief popis TODO
+ * @brief Main File
  * @author Ondrej Kováč (xkovac57)
  * @author Martin Talajka (xtalaj00)
  */

@@ -1,7 +1,7 @@
 /**
  * UML Editor - ICP Project 2022
  * @file itemobject.cpp
- * @brief popis TODO
+ * @brief Source File for the ItemObject Class
  * @author Ondrej Kováč (xkovac57)
  * @author Martin Talajka (xtalaj00)
  */
@@ -43,7 +43,7 @@ void ItemObject::on_removeButton_clicked()
 
     // Remove attribute and method from list in ClassElement
     if (this->parent()->objectName() == "operationFrame_attribute"){
-        // nájde ClassElement v zozname všetkých vytvorených klás, ktorý je rovnaký ako kliknutý element
+        // Find the Class Element in the vector of classes
         foreach(auto *c_name, class_scene->classes){
             if(c_name == this->parent()->parent()->parent()){
                 for(int i = 0; i < c_name->attributes.length(); i++){
@@ -56,7 +56,7 @@ void ItemObject::on_removeButton_clicked()
         }
     }
     else {
-        // nájde ClassElement v zozname všetkých vytvorených klás, ktorý je rovnaký ako kliknutý element
+        // Find the Class Element in the vector of classes
         foreach(auto *c_name, class_scene->classes){
             if(c_name == this->parent()->parent()->parent()){
                 for(int i = 0; i < c_name->methods.length(); i++){
@@ -80,7 +80,7 @@ void ItemObject::on_removeButton_clicked()
 void ItemObject::on_comboBox_currentIndexChanged(int index)
 {
     if (this->parent()->objectName() == "operationFrame_attribute"){
-        // nájde ClassElement v zozname všetkých vytvorených klás, ktorý je rovnaký ako kliknutý element
+        // Find the Class Element in the vector of classes
         foreach(auto *c_name, class_scene->classes){
             if(c_name == this->parent()->parent()->parent()){
                 foreach(auto *c_att, c_name->attributes){
@@ -92,7 +92,7 @@ void ItemObject::on_comboBox_currentIndexChanged(int index)
         }
     }
     else {
-        // nájde ClassElement v zozname všetkých vytvorených klás, ktorý je rovnaký ako kliknutý element
+        // Find the Class Element in the vector of classes
         foreach(auto *c_name, class_scene->classes){
             if(c_name == this->parent()->parent()->parent()){
                 foreach(auto *c_met, c_name->methods){
@@ -113,7 +113,7 @@ void ItemObject::on_comboBox_currentIndexChanged(int index)
 void ItemObject::on_lineEdit_textChanged(const QString &arg1)
 {
     if (this->parent()->objectName() == "operationFrame_attribute"){
-        // nájde ClassElement v zozname všetkých vytvorených klás, ktorý je rovnaký ako kliknutý element
+        // Find the Class Element in the vector of classes
         foreach(auto *c_name, class_scene->classes){
             if(c_name == this->parent()->parent()->parent()){
                 foreach(auto *c_att, c_name->attributes){
@@ -125,7 +125,7 @@ void ItemObject::on_lineEdit_textChanged(const QString &arg1)
         }
     }
     else {
-        // nájde ClassElement v zozname všetkých vytvorených klás, ktorý je rovnaký ako kliknutý element
+        // Find the Class Element in the vector of classes
         foreach(auto *c_name, class_scene->classes){
             if(c_name == this->parent()->parent()->parent()){
                 foreach(auto *c_met, c_name->methods){

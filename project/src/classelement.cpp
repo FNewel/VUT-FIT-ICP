@@ -1,7 +1,7 @@
 /**
  * UML Editor - ICP Project 2022
  * @file classelement.cpp
- * @brief popis TODO
+ * @brief Source File for the ClassElement Class
  * @author Ondrej Kováč (xkovac57)
  * @author Martin Talajka (xtalaj00)
  */
@@ -144,8 +144,8 @@ void ClassElement::mousePressEvent(QMouseEvent *event)
         lines.append(line);
         isClicked = true;
 
-        // nájde ClassElement v zozname všetkých vytvorených klás, ktorý je rovnaký ako kliknutý element
-        // uloží do line, ClassLines
+        // Find the Class Element in the vector of classes
+        // save the line to it
         foreach(ClassElement *c_name, class_scene->classes){
             if(c_name == this){
                 c_name->lineItems.append(line);
@@ -195,8 +195,8 @@ void ClassElement::mousePressEvent(QMouseEvent *event)
         line->setZValue(-1);
         line->setCursor(Qt::PointingHandCursor);
 
-        // nájde ClassElement v zozname všetkých vytvorených klás, ktorý je rovnaký ako kliknutý element
-        // uloží do line, ClassLines
+        // Find the Class Element in the vector of classes
+        // save the line to it
         foreach(ClassElement *c_name, class_scene->classes){
             if(c_name == this){
                 c_name->lineItems.append(lines.last());
@@ -212,7 +212,7 @@ void ClassElement::mouseMoveEvent(QMouseEvent *event)
         this->move(mapToParent(event->pos() - offset));
 
         if (!lines.empty()){
-            // nájde ClassElement v zozname všetkých vytvorených klás, ktorý je rovnaký ako kliknutý element
+            // Find the Class Element in the vector of classes
             foreach(ClassElement *c_name, class_scene->classes){
                 if(c_name == this){
                     foreach(auto *line, c_name->lineItems)
@@ -244,7 +244,7 @@ void ClassElement::on_operationAddButton_clicked()
 
     ItemObject *newItem = new ItemObject();
 
-    // nájde ClassElement v zozname všetkých vytvorených klás, ktorý je rovnaký ako kliknutý element
+    // Find the Class Element in the vector of classes
     foreach(ClassElement *c_name, class_scene->classes){
         if(c_name == this){
             c_name->methods.append(newItem);
@@ -274,7 +274,7 @@ void ClassElement::on_attributeAddButton_clicked()
 
     ItemObject *newItem = new ItemObject();
 
-    // nájde ClassElement v zozname všetkých vytvorených klás, ktorý je rovnaký ako kliknutý element
+    // Find the Class Element in the vector of classes
     foreach(ClassElement *c_name, class_scene->classes){
         if(c_name == this){
             c_name->attributes.append(newItem);
@@ -289,7 +289,7 @@ void ClassElement::on_pushButton_clicked()
 {
     class_scene->projectManager->saveProjectNow(true);  // SAVE
 
-    // nájde ClassElement v zozname všetkých vytvorených klás, ktorý je rovnaký ako kliknutý element
+    // Find the Class Element in the vector of classes
     foreach(ClassElement *c_name, class_scene->classes){
         if(c_name == this){
             foreach(auto *line, c_name->lineItems){
